@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { RootState } from '../reduxStore/Store'; // Giả sử bạn có RootState đã được định nghĩa
-import { loginSuccess } from '../reduxStore/UserSlice';
+import { RootState } from '../reduxStore/Store';
 import styles from './register.module.css';
 
 // Định nghĩa kiểu cho trạng thái người dùng trong Redux store
@@ -17,18 +16,10 @@ function Login() {
     const [error, setError] = useState<string>('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const users = useSelector((state: RootState) => state.user.users); // Lấy danh sách người dùng từ Redux store
+    const users = null;
 
     const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
-        const user = users.find((user: User) => user.email === email && user.password === password);
-
-        if (user) {
-            dispatch(loginSuccess(user)); // Lưu thông tin người dùng hiện tại vào Redux store
-            navigate('/'); // Chuyển hướng sau khi đăng nhập thành công
-        } else {
-            setError('Email hoặc mật khẩu không chính xác !');
-        }
+        
     };
 
     return (

@@ -3,7 +3,6 @@ import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import styles from './register.module.css';
-import {registerUser} from "../reduxStore/UserSlice";
 
 function Register() {
     const [email, setEmail] = useState('');
@@ -13,14 +12,6 @@ function Register() {
     const navigate = useNavigate();
 
     const handleRegister = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (password !== confirmPassword) {
-            alert("Mật khẩu không khớp!");
-            return;
-        }
-        // Dispatch action to store email and password in Redux store
-        dispatch(registerUser({email, password}));
-        navigate('/login');
     };
 
     return (

@@ -9,6 +9,7 @@ import Detail from "./detail/detail";
 import SearchPage from './searchpage/search';
 import History from './history/history';
 import Contact from "./contact/Contact";
+import ManaInfo from "./manageInfo/ManaInfo";
 
 function RouterConfig() {
     return (
@@ -24,6 +25,7 @@ function RouterConfig() {
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/register' element={<Register/>}/>
                     <Route path='/contact' element={<Contact/>}/>
+                    <Route path='/manaInfo' element={<ManaInfo/>}/>
                 </Route>
                 <Route path='/test' element={<Test/>}/>
                 <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
