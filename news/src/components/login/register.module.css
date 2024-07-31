@@ -1,0 +1,71 @@
+.bigContainer {
+    margin: 50px auto;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+.authContainer {
+    min-width: 400px;
+    margin: 50px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.authContainer h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #447ec5;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.formGroup {
+    margin-bottom: 15px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.formGroup input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+.imageContainer {
+    width: 400px;
+    heiht: 400px;
+    margin: 50px;
+    padding: 20px;
+    border-radius: 4px;
+     background: url("../../../public/images/login.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.exampleImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
