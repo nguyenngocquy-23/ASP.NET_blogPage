@@ -7,7 +7,7 @@ import {Link, useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../reduxStore/Store';
 import {FaRegMessage, FaVolumeHigh, FaVolumeOff} from 'react-icons/fa6';
-import {addComment, addReadArticle} from "../reduxStore/UserSlice";
+import {addReadArticle} from "../reduxStore/UserSlice";
 import podStyles from "./Podcast.module.css";
 
 // Định nghĩa interface cho chi tiết bài viết
@@ -33,10 +33,11 @@ const Detail: React.FC = () => {
     const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
     const [commentContent, setCommentContent] = useState<string>(''); // State để lưu nội dung bình luận
     const dispatch = useDispatch();
-    const currentUser = useSelector((state: RootState) => state.user.currentUser);
-    const comments = useSelector((state: RootState) =>
-        state.user.comments.filter((comment) => comment.link === link)
-    ); // Lọc bình luận theo link của bài viết hiện tại
+    const currentUser = null;
+    const comments = null;
+    // const comments = useSelector((state: RootState) =>
+    //     state.user.comments.filter((comment) => comment.link === link)
+    // ); // Lọc bình luận theo link của bài viết hiện tại
     function convertToSlug(text: string) {
         // Chuyển đổi chuỗi thành chữ thường
         let slug = text.toLowerCase();
@@ -201,16 +202,6 @@ const Detail: React.FC = () => {
     }, [detail]);
 
     const handleCommentSubmit = () => {
-        if (currentUser && commentContent) {
-            const newComment = {
-                link: link + '',
-                email: currentUser.email,
-                content: commentContent,
-                time: new Date().toLocaleString(),
-            };
-            dispatch(addComment(newComment)); // Thêm bình luận vào Redux store
-            setCommentContent(''); // Xóa nội dung bình luận sau khi gửi
-        }
     };
 
     return (
@@ -309,13 +300,13 @@ const Detail: React.FC = () => {
                         <Link to={'/login'}> Đăng nhập </Link>
                         để tiến hành bình luận !</span>
                 )}
-                {Array.isArray(comments) && comments.map((comment, index) => (
+                {/* {Array.isArray(comments) && comments.map((comment, index) => (
                     <div key={index} className={styles.commentItem}>
                         <div className={styles.commentUser}>{comment.email}</div>
                         <div className={styles.commentContent}>{comment.content}</div>
                         <div className={styles.commentTime}>{comment.time}</div>
                     </div>
-                ))}
+                ))} */}
             </div>
         </div>
     );

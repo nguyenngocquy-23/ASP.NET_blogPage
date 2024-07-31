@@ -5,16 +5,12 @@ import { FaFacebook, FaTwitter, FaInstagram, FaHistory } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import styles from "./header.module.css";
 import { RootState } from "../reduxStore/Store";
-import { logoutSuccess } from "../reduxStore/UserSlice";
 
 function Header() {
-  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const currentUser = null;
   const dispatch = useDispatch();
   const handleLogout = () => {
-    // Xóa currentUser khỏi sessionStorage
-    sessionStorage.removeItem("currentUser");
-    // Xóa thông tin người dùng khỏi Redux store
-    dispatch(logoutSuccess());
+    
   };
   return (
     <header className={styles.header}>
@@ -33,7 +29,7 @@ function Header() {
             {currentUser ? (
               <>
                 <li className={styles.account}>
-                  <Link to="/">{currentUser.email}</Link>
+                  <Link to="/">{"currentUser.email"}</Link>
                   <div className={styles.logout}>
                     <Link to="/login" onClick={handleLogout}>
                       Đăng xuất
@@ -41,7 +37,7 @@ function Header() {
                   </div>
                 </li>
                 <li className={styles.account}>
-                  <Link to="/">{currentUser.email}</Link>
+                  <Link to="/">{"currentUser.email"}</Link>
                   <div className={styles.info}>
                     <Link to="/manaInfo">
                       Tài khoản
