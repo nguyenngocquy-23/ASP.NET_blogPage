@@ -83,7 +83,7 @@ const Contact: React.FC = () => {
                                 </li>
                                 <li className={styles.contactInfo__mainListItem}>
                                     <span className="label">Email: </span>
-                                    nhom33@trangtintuc.com
+                                    nhomX@trangtintuc.com
                                 </li>
                             </ul>
                         </div>
