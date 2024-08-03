@@ -10,11 +10,11 @@ namespace apiServer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public WeatherForecastController(AppDbContext context)
+        public UserController(AppDbContext context)
         {
             _context = context;
         }
@@ -27,9 +27,9 @@ namespace apiServer.Controllers
         }*/
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<StudentDetail>> Get(int id)
+        public async Task<ActionResult<User>> Get(int id)
         {
-            var forecast = await _context.Students.FindAsync(id);
+            var forecast = await _context.User.FindAsync(id);
             if (forecast == null)
             {
                 return NotFound();
@@ -38,37 +38,36 @@ namespace apiServer.Controllers
         }
 
         [HttpGet("Filter")]
-        public async Task<ActionResult<IEnumerable<StudentDetail>>> FilterStudents(int age)
+        public async Task<ActionResult<IEnumerable<User>>> FilterStudents(int status)
         {
-            var students = await _context.Students
-                .Where(s => s.Age > age)
-                .Select(s => new StudentDetail
+            var users = await _context.User
+                .Where(u => u.Status == status)
+                .Select(u => new User
                 {
-                    Id = s.Id,
-                    Name = s.Name,
-                    Age = s.Age
+                    Id = u.Id,
+                    FullName = u.FullName,
                 })
                 .ToListAsync();
 
-            return students;
+            return users;
         }
 
         [HttpPost]
-        public async Task<ActionResult<StudentDetail>> Post(StudentDetail student)
+        public async Task<ActionResult<User>> Post(User user)
         {
-            if (student == null)
+            if (user == null)
             {
-                return BadRequest("Student data is null.");
+                return BadRequest("User data is null.");
             }
 
             // Thêm sinh viên vào DbContext
-            await _context.Students.AddAsync(student);
+            await _context.User.AddAsync(user);
 
             // Lưu thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
 
             // Trả về kết quả với mã trạng thái HTTP 201 (Created) và thông tin sinh viên vừa thêm
-            return CreatedAtAction(nameof(Get), new { id = student.Id }, student);
+            return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
         }
     }
 }
