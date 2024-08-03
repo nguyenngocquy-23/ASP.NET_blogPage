@@ -19,12 +19,36 @@ namespace apiServer.Controllers
             _context = context;
         }
 
-       /* [HttpGet]
-        public async Task<IEnumerable<StudentDetail>> Get()
+        [HttpPost]
+        public async Task<ActionResult<bool>> UpdateUser(User user)
         {
-            var forecasts = await _context.Students.ToListAsync();
-            return forecasts;
-        }*/
+            if (user == null)
+            {
+                return BadRequest("User không tồn tại.");
+            }
+
+            var existingUser = await _context.User.FindAsync(user.Id);
+            if (existingUser == null)
+            {
+                return NotFound($"User với ID {user.Id} không tồn tại.");
+            }
+
+            existingUser.Username = user.Username;
+            existingUser.Password = user.Password;
+            existingUser.FullName = user.FullName;
+            existingUser.Email = user.Email;
+            existingUser.PhoneNumber = user.PhoneNumber;
+            existingUser.Role = user.Role;
+            existingUser.Status = user.Status;
+            existingUser.CreatedAt = user.CreatedAt;
+
+            _context.User.Update(existingUser);
+            await _context.SaveChangesAsync();
+
+            return Ok(true);
+        }
+
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> Get(int id)
