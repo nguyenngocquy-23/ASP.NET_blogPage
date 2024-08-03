@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Cors;
 
 namespace apiServer.Controllers
 {
     [ApiController]
+    [EnableCors("AllowAllOrigins")] // Enable CORS for this controller
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
@@ -19,7 +21,7 @@ namespace apiServer.Controllers
             _context = context;
         }
 
-        [HttpPost]
+        [HttpPost("updateInf")]
         public async Task<ActionResult<bool>> UpdateUser(User user)
         {
             if (user == null)
@@ -48,7 +50,23 @@ namespace apiServer.Controllers
             return Ok(true);
         }
 
+        [HttpPost("updatePass")]
+        public async Task<ActionResult<bool>> UpdateUser(int id, string newPassword)
+        {
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound($"User with ID {id} does not exist.");
+            }
 
+            // Cập nhật mật khẩu mới cho người dùng
+            user.Password = newPassword;
+
+            _context.User.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(true);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> Get(int id)
