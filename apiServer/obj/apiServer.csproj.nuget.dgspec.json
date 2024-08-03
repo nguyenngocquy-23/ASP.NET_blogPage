@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\asp.net\\apiServer\\apiServer.csproj": {}
+    "C:\\Users\\Hieu\\Desktop\\.net\\ASP.NET_blogPage\\apiServer\\apiServer.csproj": {}
   },
   "projects": {
-    "D:\\asp.net\\apiServer\\apiServer.csproj": {
+    "C:\\Users\\Hieu\\Desktop\\.net\\ASP.NET_blogPage\\apiServer\\apiServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\asp.net\\apiServer\\apiServer.csproj",
+        "projectUniqueName": "C:\\Users\\Hieu\\Desktop\\.net\\ASP.NET_blogPage\\apiServer\\apiServer.csproj",
         "projectName": "apiServer",
-        "projectPath": "D:\\asp.net\\apiServer\\apiServer.csproj",
-        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\asp.net\\apiServer\\obj\\",
+        "projectPath": "C:\\Users\\Hieu\\Desktop\\.net\\ASP.NET_blogPage\\apiServer\\apiServer.csproj",
+        "packagesPath": "C:\\Users\\Hieu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Hieu\\Desktop\\.net\\ASP.NET_blogPage\\apiServer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Hieu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -68,7 +68,7 @@
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.4.0, )"
+              "version": "[6.7.0, )"
             }
           },
           "imports": [
