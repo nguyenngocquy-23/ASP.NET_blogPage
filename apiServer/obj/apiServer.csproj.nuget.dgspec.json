@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\asp.net\\apiServer\\apiServer.csproj": {}
+    "D:\\DoanDotNet\\apiServer\\apiServer.csproj": {}
   },
   "projects": {
-    "D:\\asp.net\\apiServer\\apiServer.csproj": {
+    "D:\\DoanDotNet\\apiServer\\apiServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\asp.net\\apiServer\\apiServer.csproj",
+        "projectUniqueName": "D:\\DoanDotNet\\apiServer\\apiServer.csproj",
         "projectName": "apiServer",
-        "projectPath": "D:\\asp.net\\apiServer\\apiServer.csproj",
+        "projectPath": "D:\\DoanDotNet\\apiServer\\apiServer.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\asp.net\\apiServer\\obj\\",
+        "outputPath": "D:\\DoanDotNet\\apiServer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
