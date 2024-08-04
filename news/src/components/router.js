@@ -10,6 +10,7 @@ import SearchPage from './searchpage/search';
 import History from './history/history';
 import Contact from "./contact/Contact";
 import ManaInfo from "./manageInfo/ManaInfo";
+import BlogForm from "./admin/blogDetail/blogDetail";
 
 function RouterConfig() {
     return (
@@ -26,6 +27,7 @@ function RouterConfig() {
                     <Route path='/register' element={<Register/>}/>
                     <Route path='/contact' element={<Contact/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
+                    <Route path='/admin/blogDetail' element={<BlogForm/>}/>
                 </Route>
                 <Route path='/test' element={<Test/>}/>
                 <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>

@@ -12,11 +12,10 @@ namespace apiServer.Models
 
         [Required]
         [StringLength(50)]
-        public string UserId { get; set; }
+        public string Auth { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -34,11 +33,9 @@ namespace apiServer.Models
         public DateTime? UpdatedAt { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string Status { get; set; }
+        public byte Status { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string NumLike { get; set; }
+        public int NumLike { get; set; }
     }
 }
