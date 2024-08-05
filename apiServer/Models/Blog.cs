@@ -8,6 +8,7 @@ namespace apiServer.Models
     public class Blog
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -22,12 +23,17 @@ namespace apiServer.Models
         public string Title { get; set; }
 
         [Required]
+        [StringLength(100)]
+        public string ShortDescription { get; set; }
+
+        [Required]
         public string Image { get; set; }
 
         [Required]
         public string Content { get; set; }
 
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }

@@ -1,26 +1,58 @@
 ﻿using apiServer.Data;
 using apiServer.DTO;
 using apiServer.Models;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apiServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     [EnableCors("AllowAllOrigins")] // Enable CORS for this controller
     public class AdminBlogController : ControllerBase
     {
         private readonly AppDbContext _context;
-
+        private readonly StorageClient _storageClient;
+        private readonly string _bucketName;
         public AdminBlogController(AppDbContext context)
         {
+            //dotnet add package FirebaseAdmin
+            // Kiểm tra và chỉ khởi tạo FirebaseApp nếu nó chưa tồn tại
+            if (FirebaseApp.DefaultInstance == null)
+            {
+                FirebaseApp.Create(new AppOptions()
+                {
+                    Credential = GoogleCredential.FromFile("D:\\DoanDotNet\\apiServer\\path\\firebase\\webblog-6eee4-firebase-adminsdk-3ja5x-89dda28363.json")
+                });
+            }
+
+            // Cấu hình Google Cloud Storage Client với thông tin xác thực
+            var credential = GoogleCredential.FromFile("D:\\DoanDotNet\\apiServer\\path\\firebase\\webblog-6eee4-firebase-adminsdk-3ja5x-89dda28363.json");
+            _storageClient = StorageClient.Create(credential);
+            /*_storageClient = StorageClient.Create();*/
+            _bucketName = "webblog-6eee4.appspot.com";
+        
             _context = context;
+        } 
+
+        //Cho phép client tải lên tệp mà không cần phải xử lý quyền truy cập trực tiếp
+        [HttpGet("generatePresignedUrl")]
+        public IActionResult GeneratePresignedUrl()
+        {
+            var ObjectName = Guid.NewGuid().ToString();
+            var urlSigner = UrlSigner.FromServiceAccountPath("D:\\DoanDotNet\\apiServer\\path\\firebase\\webblog-6eee4-firebase-adminsdk-3ja5x-89dda28363.json");
+            var expiration = TimeSpan.FromMinutes(10); // URL sẽ hết hạn sau 10 phút
+            var Url = urlSigner.Sign(_bucketName, ObjectName, expiration, HttpMethod.Put);
+
+            return Ok(new { Url = Url, ObjectName = ObjectName });
         }
 
         [HttpPost("createBlog")]
-        public async Task<ActionResult<bool>> createBlog(Blog blog)
+        public async Task<ActionResult<bool>> create(Blog blog)
         {
             if (blog == null)
             {
@@ -31,11 +63,11 @@ namespace apiServer.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(Get), new { id = blog.Id }, blog);
+            return CreatedAtAction(nameof(Get), new { blogId = blog.Id }, blog);
         }
 
         [HttpPost("updateBlog")]
-        public async Task<ActionResult<bool>> UpdateBlog(BlogDetailDTO blogDTO)
+        public async Task<ActionResult<bool>> update(BlogDetailDTO blogDTO)
         {
             if (blogDTO == null)
             {

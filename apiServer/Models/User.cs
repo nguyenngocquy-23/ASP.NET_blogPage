@@ -9,6 +9,7 @@ namespace apiServer.Models
     public class User
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -29,8 +30,9 @@ namespace apiServer.Models
         [StringLength(50)]
         public string Email { get; set; }
 
+        [Required]
         [Phone]
-        [StringLength(50)]
+        [StringLength(10)]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -40,6 +42,6 @@ namespace apiServer.Models
         public byte Status { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

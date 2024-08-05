@@ -8,12 +8,11 @@ namespace apiServer.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { 
             
         }
-        public DbSet<User> User { get; set; }
         public DbSet<Blog> Blog { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Contact> Contact { get; set; }
-
+        public DbSet<User> User { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

@@ -1,0 +1,76 @@
+.main {
+    background: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1140px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 20px;
+}
+
+h2 {
+    color: #2d67ab;
+    font-family: notosans-bold;
+    font-size: 24px;
+    line-height: 30px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.formGroup {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.formGroup label {
+    font-family: notosans-bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #5d5d5d;
+}
+
+.formControl {
+    border: 1px solid silver;
+    border-radius: 3px;
+    height: 40px;
+    outline: none;
+    padding: 10px;
+    font-family: notosans-regular;
+    font-size: 14px;
+}
+
+.formControl[type="file"] {
+    height: auto;
+}
+
+.mt3 {
+    margin-top: 20px;
+}
+
+.errorInput {
+    color: #f33a58;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.buttonSubmit {
+    background: #447ec5;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    height: 40px;
+    width: 150px;
+    align-self: flex-start;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}

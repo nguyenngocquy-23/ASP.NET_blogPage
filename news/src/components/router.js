@@ -10,7 +10,7 @@ import SearchPage from './searchpage/search';
 import History from './history/history';
 import Contact from "./contact/Contact";
 import ManaInfo from "./manageInfo/ManaInfo";
-import BlogForm from "./admin/blogDetail/blogDetail";
+import BlogForm from "./admin/blogDetail/BlogDetail";
 
 function RouterConfig() {
     return (
