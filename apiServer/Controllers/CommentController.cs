@@ -30,7 +30,8 @@ namespace apiServer.Controllers
                 {
                     UserId = user.FullName,
                     Content = comment.Content,
-                    CreatedAt = comment.CreatedAt
+                    CreatedAt = comment.CreatedAt,
+                    ParentId = comment.ParentId
                 }
                 )
                 
@@ -42,12 +43,10 @@ namespace apiServer.Controllers
         [HttpPost]
         public async Task<ActionResult<Comment>> PostComment(Comment comment)
         {
-            if(comment == null)
+            if(comment == null || string.IsNullOrWhiteSpace(comment.Content))
 
             {
-                return BadRequest("Comment data is null!");
-
-
+                return BadRequest("Bạn không thể để trống comment!");
 
             }        
             await _context.Comment.AddAsync(comment); 

@@ -27,5 +27,14 @@ namespace apiServer.Models
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
+
+        //Trường dành cho comment lồng nhau.
+        public int? ParentId { get; set; }
+
+
+
+
+
+
     }
 }
