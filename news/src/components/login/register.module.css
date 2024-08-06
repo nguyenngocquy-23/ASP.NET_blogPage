@@ -4,6 +4,7 @@
     display: flex;
     justify-content: center;
 }
+
 .authContainer {
     min-width: 400px;
     margin: 50px;
@@ -52,13 +53,14 @@
 .btn:hover {
     background-color: #0056b3;
 }
+
 .imageContainer {
     width: 400px;
-    heiht: 400px;
+    height: 400px; /* Fixed typo here */
     margin: 50px;
     padding: 20px;
     border-radius: 4px;
-     background: url("../../../public/images/login.svg");
+    background: url("../../../public/images/login.svg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -68,4 +70,45 @@
     max-width: 100%;
     height: auto;
     border-radius: 4px;
+}
+
+.linkContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.linkContainer label {
+    font-size: 14px;
+    margin: 0;
+}
+
+.linkContainer a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.linkContainer a:hover {
+    text-decoration: underline;
+}
+input{
+    height: 40px;
+}
+.loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
