@@ -5,3 +5,6 @@
 
 #have secret key
 /path/firebase
+
+#file lưu cấu hình hay gì đó
+*.sln

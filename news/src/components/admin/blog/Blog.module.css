@@ -1,0 +1,128 @@
+.main {
+    background: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1140px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 20px;
+    position: relative;
+}
+
+h2 {
+    color: #2d67ab;
+    font-family: notosans-bold;
+    font-size: 24px;
+    line-height: 30px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.error {
+    color: #f33a58;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* Blog.module.css */
+.dataTable {
+    font-size: 15px !important;
+}
+
+/* Để đảm bảo không ảnh hưởng đến các phần tử khác, có thể cần phải chỉ định các phần tử cụ thể */
+.dataTable .rdt_TableBody {
+    font-size: 15px !important;
+}
+
+.dataTable .rdt_TableHead {
+    font-size: 15px !important;
+}
+
+.dataTable .rdt_TableRow {
+    font-size: 15px !important;
+}
+
+
+.data-table-container {
+    margin-top: 20px;
+    font-size: 15px !important;
+}
+
+/* Styles for DataTable */
+.react-data-table-component {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.react-data-table-component .rdt_TableHead {
+    background: #f4f4f4;
+}
+
+.react-data-table-component .rdt_TableHead th {
+    padding: 10px;
+    text-align: left;
+    font-family: notosans-bold;
+    font-size: 14px;
+    color: #5d5d5d;
+    border-bottom: 1px solid silver;
+}
+
+.react-data-table-component .rdt_TableBody td {
+    padding: 10px;
+    font-family: notosans-regular;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid silver;
+}
+
+.react-data-table-component .rdt_TableBody img {
+    max-width: 50px;
+    height: auto;
+}
+
+.react-data-table-component .rdt_TableBody .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.react-data-table-component .rdt_TableBody .actions a {
+    color: #447ec5;
+    text-decoration: none;
+}
+
+.react-data-table-component .rdt_TableBody .actions a:hover {
+    color: #2d67ab;
+}
+
+.addIcon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: 1px solid #447ec5;
+    color: #447ec5;
+    border-radius: 10px;
+    padding: 0 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.addIcon:hover {
+    background-color: #365f9d;
+    color: white;
+}
+
+.dataTable .rdt_TableBody:nth-child(even) {
+  background-color: #eb9393; /* Màu nền cho hàng chẵn */
+}
+
+.dataTable .rdt_TableBody:nth-child(odd) {
+  background-color: #ffffff; /* Màu nền cho hàng lẻ */
+}

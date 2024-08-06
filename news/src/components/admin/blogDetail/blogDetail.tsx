@@ -1,248 +1,54 @@
-// import React, { useState } from "react";
-// import axios from "axios";
-// import Swal from "sweetalert2";
-// import styles from "../blogDetail/BlogDetail.module.css";
-
-// const BlogForm: React.FC = () => {
-//   const [title, setTitle] = useState("");
-//   const [image, setImage] = useState<File | null>(null);
-//   const [shortDescription, setShortDescription] = useState("");
-//   const [content, setContent] = useState("");
-//   const [contentError, setContentError] = useState("");
-//   const [shortDescError, setShortDescError] = useState("");
-
-//   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     if (e.target.files && e.target.files[0]) {
-//       setImage(e.target.files[0]);
-//     }
-//   };
-//   async function uploadFile(file: File) {
-//     try {
-//       // Gọi API để lấy Presigned URL
-//       const { data } = await axios.get(
-//         "https://localhost:7125/AdminBlog/generatePresignedUrl"
-//       );
-//       const { Url, ObjectName } = data;
-
-//       // Upload file lên Firebase Storage sử dụng Presigned URL
-//       const uploadResponse = await axios.put(Url, file, {
-//         headers: {
-//           "Content-Type": file.type,
-//         },
-//       });
-
-//       if (uploadResponse.status === 200) {
-//         console.log("File uploaded successfully");
-//         const fileUrl = `https://storage.googleapis.com/webblog-6eee4.appspot.com/${ObjectName}`;
-
-//         // Gửi URL của file về server để lưu
-//         const saveResponse = await axios.post(
-//           "https://localhost:7125/AdminBlog/createBlog",
-//           {
-//             Url: fileUrl,
-//             ObjectName: ObjectName,
-//           },
-//           {
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//           }
-//         );
-
-//         if (saveResponse.status === 200) {
-//           console.log("File URL saved successfully");
-//         } else {
-//           console.error("Failed to save file URL");
-//         }
-//       } else {
-//         console.error("Failed to upload file");
-//       }
-//     } catch (error) {
-//       console.error("An error occurred:", error);
-//     }
-//   }
-
-//   // Kiểm tra nếu fileInput không phải là null trước khi thêm sự kiện
-//   const fileInput = document.getElementById(
-//     "fileInput"
-//   ) as HTMLInputElement | null;
-//   // dự bị nếu có upload file # image
-//   if (fileInput) {
-//     fileInput.addEventListener("change", (event) => {
-//       const target = event.target as HTMLInputElement;
-//       const file = target.files?.[0]; // Cẩn thận với trường hợp `files` có thể là `undefined`
-
-//       if (file) {
-//         uploadFile(file);
-//       }
-//     });
-//   }
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-
-//     if (content.length === 0) {
-//       setContentError("Nội dung không được để trống.");
-//     } else {
-//       setContentError("");
-//     }
-
-//     if (shortDescription.length === 0) {
-//       setShortDescError("Mô tả ngắn không được để trống.");
-//     } else {
-//       setShortDescError("");
-//     }
-
-//     if (content.length > 0 && shortDescription.length > 0) {
-//       const formData = new FormData();
-//       formData.append("auth", "auth");
-//       formData.append("categoryId", "0");
-//       formData.append("title", title);
-//       if (image) formData.append("image", image);
-//       formData.append("shortDescription", shortDescription);
-//       formData.append("content", content);
-//       formData.append("status", "1");
-//       formData.append("numLike", "0");
-//       formData.append("createAt", Date.now().toString());
-
-//       Array.from(formData.entries()).forEach(([key, value]) => {
-//         console.log(`${key}: ${value}`);
-//       });
-
-//       try {
-//         await axios.post(
-//           "https://localhost:7125/AdminBlog/createBlog",
-//           formData,
-//           {
-//             headers: { "Content-Type": "multipart/form-data" },
-//           }
-//         );
-//         Swal.fire({
-//           icon: "success",
-//           title: "Đã lưu thành công",
-//           toast: true,
-//           position: "top-end",
-//           showConfirmButton: false,
-//           timer: 500,
-//           timerProgressBar: true,
-//           didOpen: (toast) => {
-//             toast.onmouseenter = Swal.stopTimer;
-//             toast.onmouseleave = Swal.resumeTimer;
-//           },
-//         });
-//         setTimeout(() => {
-//           window.location.href = "/admin/blogs";
-//         }, 600);
-//       } catch (error) {
-//         Swal.fire({
-//           icon: "warning",
-//           title: "Lưu thất bại!",
-//           toast: true,
-//           position: "top-end",
-//           showConfirmButton: false,
-//           timer: 1000,
-//           timerProgressBar: true,
-//           didOpen: (toast) => {
-//             toast.onmouseenter = Swal.stopTimer;
-//             toast.onmouseleave = Swal.resumeTimer;
-//           },
-//         });
-//       }
-//     }
-//   };
-
-//   return (
-//     <div className={styles.container}>
-//       <h2>Quản lý bài viết</h2>
-//       <form onSubmit={handleSubmit}>
-//         <div className={styles.formGroup}>
-//           <label htmlFor="title">Tiêu đề</label>
-//           <input
-//             type="text"
-//             className={styles.formControl}
-//             id="title"
-//             value={title}
-//             onChange={(e) => setTitle(e.target.value)}
-//             required
-//           />
-//         </div>
-//         <div className={styles.formGroup}>
-//           <label htmlFor="image">Hình ảnh</label>
-//           <input
-//             type="file"
-//             className={styles.formControl}
-//             id="image"
-//             accept=".jpg, .jpeg, .png, .gif, .svg"
-//             onChange={handleImageChange}
-//           />
-//           {image && (
-//             <div>
-//               <img src={URL.createObjectURL(image)} alt="Selected" />
-//             </div>
-//           )}
-//         </div>
-//         <div className={styles.formGroup}>
-//           <label htmlFor="shortDescription">Mô tả ngắn</label>
-//           <textarea
-//             style={{ height: "100px" }}
-//             className={styles.formControl}
-//             id="shortDescription"
-//             rows={8}
-//             value={shortDescription}
-//             onChange={(e) => setShortDescription(e.target.value)}
-//             required
-//           />
-//           {shortDescError && (
-//             <label className="error-input">{shortDescError}</label>
-//           )}
-//         </div>
-//         <div className={styles.formGroup}>
-//           <label htmlFor="content">Nội dung</label>
-//           <textarea
-//             style={{ height: "100px" }}
-//             className={styles.formControl}
-//             id="content"
-//             rows={8}
-//             value={content}
-//             onChange={(e) => setContent(e.target.value)}
-//             required
-//           />
-//           {contentError && (
-//             <label className={styles.errorInput}>{contentError}</label>
-//           )}
-//         </div>
-//         <div className={"${styles.formGroup} ${styles.mt3}"}>
-//           <button type="submit" className={styles.buttonSubmit}>
-//             Lưu
-//           </button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default BlogForm;
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import styles from "../blogDetail/BlogDetail.module.css";
+import { useParams } from "react-router-dom";
+import { url } from "inspector";
 
 const BlogForm: React.FC = () => {
+  const { blogId } = useParams<{ blogId?: string }>();
   const [title, setTitle] = useState("");
   const [auth, setAuth] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [shortDescription, setShortDescription] = useState("");
   const [content, setContent] = useState("");
   const [contentError, setContentError] = useState("");
   const [shortDescError, setShortDescError] = useState("");
 
+  useEffect(() => {
+    if (blogId) {
+      const fetchBlogDetails = async () => {
+        try {
+          const { data } = await axios.get(
+            `https://localhost:7125/AdminBlog/${blogId}`
+          );
+          setTitle(data.title);
+          setAuth(data.auth);
+          setCategoryId(data.categoryId);
+          setShortDescription(data.shortDescription);
+          setContent(data.content);
+          if (data.image) {
+            setImageUrl(data.image); // Set the URL for the existing image
+          }
+        } catch (error) {
+          console.error("Failed to fetch blog details", error);
+        }
+      };
+
+      fetchBlogDetails();
+    }
+  }, [blogId]);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
+      setImageUrl(URL.createObjectURL(e.target.files[0])); // Create a URL for the selected image
     }
   };
 
+  // submit form create
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -268,7 +74,7 @@ const BlogForm: React.FC = () => {
             "https://localhost:7125/AdminBlog/generatePresignedUrl"
           );
           const { url, objectName } = data;
-          console.log("dataa : " + url );
+          console.log("dataa : " + url);
 
           const uploadResponse = await axios.put(url, image, {
             headers: {
@@ -284,17 +90,17 @@ const BlogForm: React.FC = () => {
         }
 
         const blogData = {
-          auth:"quy",
+          auth: "quy",
           title,
           image: imageUrl,
           shortDescription,
           content,
-          categoryId: 0,
+          categoryId,
           status: 1,
           numLike: 0,
           createAt: new Date().toISOString(),
         };
-        console.log('blogData:', JSON.stringify(blogData, null, 2));
+        console.log("blogData:", JSON.stringify(blogData, null, 2));
 
         await axios.post(
           "https://localhost:7125/AdminBlog/createBlog",
@@ -307,7 +113,7 @@ const BlogForm: React.FC = () => {
           icon: "success",
           title: "Đã lưu thành công",
           toast: true,
-          position: "top-end",
+          position: "center",
           showConfirmButton: false,
           timer: 2000,
           timerProgressBar: true,
@@ -339,7 +145,7 @@ const BlogForm: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Quản lý bài viết</h2>
+      <h2>Chi tiết bài viết</h2>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label htmlFor="title">Tiêu đề</label>
@@ -353,6 +159,25 @@ const BlogForm: React.FC = () => {
           />
         </div>
         <div className={styles.formGroup}>
+          <label htmlFor="category">Thể loại</label>
+          <select
+            className={styles.formControl}
+            id="category"
+            name="category"
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            required
+          >
+            <option value="">Chọn thể loại</option>
+            <option value="0">Tin nổi bật</option>
+            <option value="1">Thể thao</option>
+            <option value="2">Phòng ban</option>
+            <option value="3">Nhân sự</option>
+            <option value="4">Qui định</option>
+            <option value="5">Chính sách</option>
+          </select>
+        </div>
+        <div className={styles.formGroup}>
           <label htmlFor="image">Hình ảnh</label>
           <input
             type="file"
@@ -361,9 +186,26 @@ const BlogForm: React.FC = () => {
             accept=".jpg, .jpeg, .png, .gif, .svg"
             onChange={handleImageChange}
           />
-          {image && (
+          {/* {image && (
             <div>
               <img src={URL.createObjectURL(image)} alt="Selected" />
+            </div>
+          )} */}
+          {/* {(imageUrl || image) && (
+            <div>
+              <img
+                src={imageUrl || URL.createObjectURL(image!)}
+                alt="Selected"
+              />
+            </div>
+          )} */}
+          {(imageUrl || image) && (
+            <div>
+              <img
+                src={imageUrl || URL.createObjectURL(image!)}
+                alt="Selected"
+                style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
+              />
             </div>
           )}
         </div>

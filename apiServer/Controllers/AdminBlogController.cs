@@ -7,6 +7,7 @@ using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace apiServer.Controllers
 {
@@ -43,12 +44,12 @@ namespace apiServer.Controllers
         [HttpGet("generatePresignedUrl")]
         public IActionResult GeneratePresignedUrl()
         {
-            var ObjectName = Guid.NewGuid().ToString();
+            var objectName = Guid.NewGuid().ToString();
             var urlSigner = UrlSigner.FromServiceAccountPath("D:\\DoanDotNet\\apiServer\\path\\firebase\\webblog-6eee4-firebase-adminsdk-3ja5x-89dda28363.json");
             var expiration = TimeSpan.FromMinutes(10); // URL sẽ hết hạn sau 10 phút
-            var Url = urlSigner.Sign(_bucketName, ObjectName, expiration, HttpMethod.Put);
+            var url = urlSigner.Sign(_bucketName, objectName, expiration, HttpMethod.Put);
 
-            return Ok(new { Url = Url, ObjectName = ObjectName });
+            return Ok(new { Url = url, ObjectName = objectName });
         }
 
         [HttpPost("createBlog")]
@@ -102,6 +103,12 @@ namespace apiServer.Controllers
                 return NotFound();
             }
             return blog;
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Blog>>> GetBlogs()
+        {
+            var blogs = await _context.Blog.ToListAsync();
+            return Ok(blogs);
         }
     }
 }
