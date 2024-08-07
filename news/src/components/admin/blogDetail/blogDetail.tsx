@@ -100,15 +100,38 @@ const BlogForm: React.FC = () => {
           numLike: 0,
           createAt: new Date().toISOString(),
         };
-        console.log("blogData:", JSON.stringify(blogData, null, 2));
+        
+        if (blogId) {
+          // Update existing blog
+          const blogUpdate = {
+            id: blogId,
+            auth: "quy",
+            title,
+            image: imageUrl,
+            shortDescription,
+            content,
+            categoryId,
+            status: 1,
+          };
+          await axios.post(
+            `https://localhost:7125/AdminBlog/updateBlog`,
+            blogUpdate,
+            {
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          console.log("blogData:", JSON.stringify(blogUpdate, null, 2));
+        } else {
+          await axios.post(
+            "https://localhost:7125/AdminBlog/createBlog",
+            blogData,
+            {
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          console.log("blogData:", JSON.stringify(blogData, null, 2));
+        }
 
-        await axios.post(
-          "https://localhost:7125/AdminBlog/createBlog",
-          blogData,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
         Swal.fire({
           icon: "success",
           title: "Đã lưu thành công",
@@ -191,20 +214,16 @@ const BlogForm: React.FC = () => {
               <img src={URL.createObjectURL(image)} alt="Selected" />
             </div>
           )} */}
-          {/* {(imageUrl || image) && (
-            <div>
-              <img
-                src={imageUrl || URL.createObjectURL(image!)}
-                alt="Selected"
-              />
-            </div>
-          )} */}
           {(imageUrl || image) && (
             <div>
               <img
                 src={imageUrl || URL.createObjectURL(image!)}
                 alt="Selected"
-                style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "200px",
+                  marginTop: "10px",
+                }}
               />
             </div>
           )}

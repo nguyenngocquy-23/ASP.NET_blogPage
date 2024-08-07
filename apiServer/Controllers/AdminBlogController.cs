@@ -27,25 +27,25 @@ namespace apiServer.Controllers
             {
                 FirebaseApp.Create(new AppOptions()
                 {
-                    Credential = GoogleCredential.FromFile("D:\\DoanDotNet\\apiServer\\path\\firebase\\webblog-6eee4-firebase-adminsdk-3ja5x-89dda28363.json")
+                    Credential = GoogleCredential.FromFile("../apiServer/path/firebase/webblog-6eee4-firebase-adminsdk-3ja5x-89dda28363.json")
                 });
             }
 
             // Cấu hình Google Cloud Storage Client với thông tin xác thực
-            var credential = GoogleCredential.FromFile("D:\\DoanDotNet\\apiServer\\path\\firebase\\webblog-6eee4-firebase-adminsdk-3ja5x-89dda28363.json");
+            var credential = GoogleCredential.FromFile("../apiServer/path/firebase/webblog-6eee4-firebase-adminsdk-3ja5x-89dda28363.json");
             _storageClient = StorageClient.Create(credential);
             /*_storageClient = StorageClient.Create();*/
             _bucketName = "webblog-6eee4.appspot.com";
-        
+
             _context = context;
-        } 
+        }
 
         //Cho phép client tải lên tệp mà không cần phải xử lý quyền truy cập trực tiếp
         [HttpGet("generatePresignedUrl")]
         public IActionResult GeneratePresignedUrl()
         {
             var objectName = Guid.NewGuid().ToString();
-            var urlSigner = UrlSigner.FromServiceAccountPath("D:\\DoanDotNet\\apiServer\\path\\firebase\\webblog-6eee4-firebase-adminsdk-3ja5x-89dda28363.json");
+            var urlSigner = UrlSigner.FromServiceAccountPath("../apiServer/path/firebase/webblog-6eee4-firebase-adminsdk-3ja5x-89dda28363.json");
             var expiration = TimeSpan.FromMinutes(10); // URL sẽ hết hạn sau 10 phút
             var url = urlSigner.Sign(_bucketName, objectName, expiration, HttpMethod.Put);
 
@@ -86,6 +86,7 @@ namespace apiServer.Controllers
             existingBlog.Image = blogDTO.Image;
             existingBlog.Content = blogDTO.Content;
             existingBlog.Status = blogDTO.Status;
+            existingBlog.ShortDescription = blogDTO.ShortDescription;
 
             _context.Blog.Update(existingBlog);
             await _context.SaveChangesAsync();
@@ -109,6 +110,26 @@ namespace apiServer.Controllers
         {
             var blogs = await _context.Blog.ToListAsync();
             return Ok(blogs);
+        }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> Delete(int id)
+        {
+            try
+            {
+                var blog = await _context.Blog.FindAsync(id);
+                if (blog == null)
+                {
+                    return NotFound(); // Trả về mã 404 nếu không tìm thấy bài viết
+                }
+
+                _context.Blog.Remove(blog);
+                await _context.SaveChangesAsync();
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }
