@@ -11,6 +11,8 @@ import History from './history/history';
 import Contact from "./contact/Contact";
 import ManaInfo from "./manageInfo/ManaInfo";
 import BlogForm from "./admin/blogDetail/blogDetail";
+import UserList from "./login/UserList";
+import Unauthorized from "./login/Unauthorized";
 
 function RouterConfig() {
     return (
@@ -25,6 +27,8 @@ function RouterConfig() {
                     <Route path='/history' element={<History/>}></Route>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/register' element={<Register/>}/>
+                    <Route path="/users" element={<UserList/>} />
+                    <Route path="/unauthorized" element={<Unauthorized/>} />
                     <Route path='/contact' element={<Contact/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
                     <Route path='/admin/blogDetail' element={<BlogForm/>}/>
