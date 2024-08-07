@@ -11,6 +11,7 @@ using apiServer.Services;
 using Microsoft.AspNetCore.Identity.Data;
 using System.Security.Claims;
 using apiServer.Dto;
+using Microsoft.AspNetCore.Authorization;
 
 namespace apiServer.Controllers
 {
@@ -168,7 +169,10 @@ namespace apiServer.Controllers
             if (!user.IsEnable)
                 return StatusCode(StatusCodes.Status400BadRequest, "Tài khoản chưa kích hoạt. Hãy kiểm tra hộp thư email của bạn để kích hoạt!");
 
-            if (!UserService.VerifyPassword(loginRequest.Password, user.Password))
+            if (user.Status == 0)
+                return StatusCode(StatusCodes.Status403Forbidden, "Tài khoản của bạn đã bị khóa! Liên hệ qua blogwebsite@gmail.com để được hỗ trợ!");
+
+                if (!UserService.VerifyPassword(loginRequest.Password, user.Password))
             {
                 return StatusCode(StatusCodes.Status409Conflict, "Sai mật khẩu.");
             }
@@ -357,12 +361,75 @@ namespace apiServer.Controllers
         {
             var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
             if (userNameClaim == null)
+            {
                 Console.WriteLine("Token does not contain 'unique_name' claim.");
+                return null;
+            }
+
             var userName = userNameClaim.Value;
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
+            User user = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
             if (user == null)
                 Console.WriteLine("User not found");
             return user;
+        }
+
+        [Authorize]
+        [HttpGet("checkAdmin")]
+        public async Task<IActionResult> CheckAdmin()
+        {
+            var user = await GetUserFromTokenAsync();
+            if (user == null)
+            {
+                return Unauthorized("Người dùng không xác thực.");
+            }
+            if (user.Role == 0)
+            {
+                return Ok(new { isAdmin = true });
+            }
+            return Ok(new { isAdmin = false });
+        }
+
+
+        [HttpGet("getAll")]
+        public async Task<ActionResult<IEnumerable<User>>> GetAll()
+        {
+            User adminUser = await GetUserFromTokenAsync();
+            if (adminUser != null && adminUser.Role == 0)
+            {
+                try
+                {
+                    var users = await _context.User
+                        .Where(u => u.Id != adminUser.Id)
+                        .ToListAsync();
+                    return Ok(users);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                }
+            }
+             return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+        }
+
+        [HttpPut("toggleLockStatus/{userId:int}")]
+        public async Task<IActionResult> toggleLockStatus([FromRoute] int userId)
+        {
+            User adminUser = await GetUserFromTokenAsync();
+            if (adminUser == null || adminUser.Role == 1)
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+            if (adminUser.Role == 0)
+            {
+                User updateUser = await _context.User.FirstOrDefaultAsync(u => u.Id == userId);
+                if (updateUser == null)
+                    return StatusCode(StatusCodes.Status404NotFound, "Tài khoản không tồn tại");
+
+                updateUser.Status = (byte)((updateUser.Status == 0) ? 1 : 0);
+                _context.User.Update(updateUser);
+                await _context.SaveChangesAsync();
+
+                return Ok("Thay đổi thành công");
+            }
+            return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
         }
     }
 }
