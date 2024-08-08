@@ -204,17 +204,12 @@ namespace apiServer.Controllers
 
             // Save activation code to database (id, token, userId)
             var user = await _context.User
-            .FirstOrDefaultAsync(u => u.Email == emailorUsername);
+            .FirstOrDefaultAsync(u => u.Email == emailorUsername || u.Username == emailorUsername);
 
             if (user == null)
                 //return StatusCode(StatusCodes.Status404NotFound, $"Không tồn tại tài khoản có email là {email}");
-                return StatusCode(StatusCodes.Status404NotFound, "Email chưa đăng ký tài khoản!");
+                return StatusCode(StatusCodes.Status404NotFound, "Email hoặc username chưa đăng ký tài khoản!");
             
-            user = await _context.User
-           .FirstOrDefaultAsync(u => u.Username == emailorUsername);
-            if (user == null)
-                //return StatusCode(StatusCodes.Status404NotFound, $"Không tồn tại tài khoản có email là {email}");
-                return StatusCode(StatusCodes.Status404NotFound, "Username không tồn tại!");
             // save token
             var existingActivationInfo = await _context.ActivationInfo.FirstOrDefaultAsync(a => a.UserId == user.Id);
 

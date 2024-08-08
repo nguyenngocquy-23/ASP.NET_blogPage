@@ -11,6 +11,7 @@ function Register() {
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const [success, setSuccess] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -30,18 +31,25 @@ function Register() {
                 password,
                 confirmPassword
             });
-            await axios.post('https://localhost:7125/User/requireActivateAccount', null, {
-                params: { email }
-            });
-            console.log('Registration successful:', response.data);
-            navigate('/login');
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                setError(error.response.data || 'Đăng ký không thành công. Vui lòng thử lại sau.');
+            try {
+                await axios.post('https://localhost:7125/User/requireActivateAccount', null, {
+                    params: { emailorUsername: email }
+                });
+                setSuccess("Đăng ký thành công!")
+                setTimeout(() => {
+                    navigate('/login');
+                }, 3000);
+            } catch (error) {
+                console.error('Gởi mail kích hoạt không thành công!', error);
+            }
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                const errorMsg = err.response?.data?.title || 'Đăng ký không thành công. Vui lòng thử lại sau.';
+                setError(errorMsg);
             } else {
                 setError('Đã xảy ra lỗi. Vui lòng thử lại sau.');
             }
-            console.error('Registration failed:', error);
+            console.error('Registration failed:', err); // Change 'error' to 'err'
         } finally {
             setLoading(false); // Kết thúc loading
         }
@@ -107,6 +115,7 @@ function Register() {
                         />
                     </div>
                     {error && <p style={{ color: 'red', fontWeight: 600, fontStyle: 'italic', textAlign: 'center' }}>{error}</p>}
+                    {success && <p style={{ color: 'green', fontWeight: 600, fontStyle: 'italic', textAlign: 'center' }}>{success}</p>}
                     <button type="submit" className={styles.btn} disabled={loading}>
                         {loading ? 'Đang Xử Lý...' : 'Đăng Ký'}
                     </button>
