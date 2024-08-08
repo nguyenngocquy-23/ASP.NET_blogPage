@@ -37,7 +37,7 @@ function Login() {
         setError('');
         try {
             await axios.post('https://localhost:7125/User/requireActivateAccount', null, {
-                params: { email: usernameOrEmail }
+                params: { emailorUsername: usernameOrEmail }
             });
             alert('Yêu cầu gửi lại link kích hoạt đã được gửi thành công! Vui lòng kiểm tra hộp thư email của bạn.');
         } catch (err) {
