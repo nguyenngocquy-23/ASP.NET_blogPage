@@ -13,6 +13,8 @@ namespace apiServer.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<Contact> Contact { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<ActivationInfo> ActivationInfo { get; set; }
+        public DbSet<ChangePwCode> ChangePwCode { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

@@ -23,7 +23,6 @@ namespace apiServer.Models
         [StringLength(200)]
         public string Content { get; set; }
 
-        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
     }
