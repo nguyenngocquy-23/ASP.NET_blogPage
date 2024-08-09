@@ -28,12 +28,13 @@ const Contact: React.FC = () => {
             setStatusDanger('Chưa điền đầy đủ thông tin!');
         }else{
                 try {
+                    const feedback = 0;
                     const response = await fetch('https://localhost:7125/Contact', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ FullName, Email, Title,Content,currentDateTime}),
+                        body: JSON.stringify({ FullName, Email, Title,Content,currentDateTime,feedback}),
                     });
 
                     if (!response.ok) {

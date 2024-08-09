@@ -13,6 +13,7 @@ import ManaInfo from "./manageInfo/ManaInfo";
 import BlogForm from "./admin/blogDetail/blogDetail";
 import UserList from "./login/UserList";
 import Unauthorized from "./login/Unauthorized";
+import ContactManager from "./admin/ContactManager/ContactManager";
 
 function RouterConfig() {
     return (
@@ -32,6 +33,7 @@ function RouterConfig() {
                     <Route path='/contact' element={<Contact/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
                     <Route path='/admin/blogDetail' element={<BlogForm/>}/>
+                    <Route path='/admin/contactManager' element={<ContactManager/>}/>
                 </Route>
                 <Route path='/test' element={<Test/>}/>
                 <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
