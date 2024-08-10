@@ -17,7 +17,7 @@ namespace apiServer.DTO
         [StringLength(50)]
         public string Title { get; set; }
         [Required]
-        [StringLength(100)]
+        [StringLength(200)]
         public string ShortDescription { get; set; }
 
         [Required]

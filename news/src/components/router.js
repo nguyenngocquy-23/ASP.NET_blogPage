@@ -14,6 +14,7 @@ import BlogForm from "./admin/blogDetail/BlogDetail";
 import Blog from './admin/blog/Blog';
 import UserList from "./login/UserList";
 import Unauthorized from "./login/Unauthorized";
+import ContactManager from "./admin/ContactManager/ContactManager";
 
 function RouterConfig() {
     return (
@@ -35,6 +36,7 @@ function RouterConfig() {
                     <Route path='/admin/blogs' element={<Blog/>}/>
                     <Route path='/admin/blogDetail' element={<BlogForm/>}/>
                     <Route path='/admin/blogDetail/:blogId' element={<BlogForm/>}/>
+                    <Route path='/admin/contactManager' element={<ContactManager/>}/>
                 </Route>
                 {/* <Route path='/test' element={<Test/>}/> */}
                 <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>

@@ -11,6 +11,7 @@ interface Blog {
   id: number;
   image: string;
   title: string;
+  categoryId: number;
   shortDescription: string;
   createdAt: string;
   // Thêm các trường khác nếu cần thiết
@@ -78,7 +79,24 @@ const Blog: React.FC = () => {
       name: "Tiêu đề",
       selector: (row: Blog) => row.title,
       sortable: true,
-      width: "250px",
+      width: "150px",
+    },
+    {
+      name: "Thể loại",
+      selector: (row: Blog) => {
+        switch (row.categoryId) {
+          case 1: return 'Tin nổi bật';
+          case 2: return 'Thể thao';
+          case 3: return 'Nhân sự';
+          case 4: return 'Qui định';
+          case 5: return 'Chính sách';
+          case 6: return 'Phòng ban';
+          case 7: return 'Lương';
+          default: return 'Khác';
+        }
+      },
+      sortable: true,
+      width: "130px",
     },
     {
       name: "Hình ảnh",
@@ -89,18 +107,19 @@ const Blog: React.FC = () => {
           style={{ width: "50px", height: "50px" }}
         />
       ),
-      width: "150px",
+      width: "110px",
     },
     {
       name: "Mô tả ngắn",
       selector: (row: Blog) => row.shortDescription,
+      width: "380px",
     },
     {
       name: "Ngày tạo",
       selector: (row: Blog) =>
         format(parseISO(row.createdAt), "dd/MM/yyyy HH:mm:ss"),
       sortable: true,
-      width: "200px",
+      width: "180px",
     },
     {
       name: "Tác vụ",
@@ -130,14 +149,14 @@ const Blog: React.FC = () => {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      width: "100px",
+      width: "109px",
     },
   ];
 
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Danh sách bài viết</h2>
-      {loading && <p>Đang tải...</p>}
+      {loading && <p style={{textAlign:'center'}}>Đang tải...</p>}
       {error && <p className={styles.error}>{error}</p>}
       <Link
         to={"/admin/blogDetail"}
@@ -157,12 +176,19 @@ const Blog: React.FC = () => {
               headCells: {
                 style: {
                   fontSize: "17px",
+                  background: "#009879",
+                  color: "#ffffff",
+                  textAlign: "left",
+                  fontWeight: "bold",
                 },
               },
               cells: {
                 style: {
                   borderCollapse: "collapse",
                   fontSize: "15px",
+                  whiteSpace: "normal", 
+                  wordWrap: "break-word",
+                  height:"auto"
                 },
               },
             }}

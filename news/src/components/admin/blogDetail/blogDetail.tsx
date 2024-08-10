@@ -4,6 +4,9 @@ import Swal from "sweetalert2";
 import styles from "../blogDetail/BlogDetail.module.css";
 import { useParams } from "react-router-dom";
 import { url } from "inspector";
+import { data } from "cheerio/lib/api/attributes";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 
 const BlogForm: React.FC = () => {
   const { blogId } = useParams<{ blogId?: string }>();
@@ -16,6 +19,28 @@ const BlogForm: React.FC = () => {
   const [content, setContent] = useState("");
   const [contentError, setContentError] = useState("");
   const [shortDescError, setShortDescError] = useState("");
+
+  useEffect(() => {
+    const fetchAndConvertImage = async () => {
+      try {
+        if (imageUrl) {
+          const response = await fetch(imageUrl);
+          if (!response.ok) throw new Error("Network response was not ok");
+
+          // Chuyển đổi dữ liệu thành Blob
+          const blob = await response.blob();
+
+          // Tạo đối tượng File từ Blob
+          const file = new File([blob], "image.jpg", { type: blob.type });
+          setImage(file);
+        }
+      } catch (error) {
+        console.error("Error fetching or converting image:", error);
+      }
+    };
+
+    fetchAndConvertImage();
+  }, [imageUrl]);
 
   useEffect(() => {
     if (blogId) {
@@ -32,6 +57,7 @@ const BlogForm: React.FC = () => {
           if (data.image) {
             setImageUrl(data.image); // Set the URL for the existing image
           }
+          console.log("image: " + data.image);
         } catch (error) {
           console.error("Failed to fetch blog details", error);
         }
@@ -87,6 +113,8 @@ const BlogForm: React.FC = () => {
           } else {
             console.error("Failed to upload image");
           }
+        } else if (imageUrl) {
+          imageUrl = imageUrl; // Use existing image URL if no new image is uploaded
         }
 
         const blogData = {
@@ -100,7 +128,7 @@ const BlogForm: React.FC = () => {
           numLike: 0,
           createAt: new Date().toISOString(),
         };
-        
+
         if (blogId) {
           // Update existing blog
           const blogUpdate = {
@@ -209,11 +237,6 @@ const BlogForm: React.FC = () => {
             accept=".jpg, .jpeg, .png, .gif, .svg"
             onChange={handleImageChange}
           />
-          {/* {image && (
-            <div>
-              <img src={URL.createObjectURL(image)} alt="Selected" />
-            </div>
-          )} */}
           {(imageUrl || image) && (
             <div>
               <img
@@ -245,7 +268,7 @@ const BlogForm: React.FC = () => {
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="content">Nội dung</label>
-          <textarea
+          {/* <textarea
             style={{ height: "100px" }}
             className={styles.formControl}
             id="content"
@@ -253,6 +276,25 @@ const BlogForm: React.FC = () => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
+          /> */}
+          <CKEditor
+            editor={ClassicEditor}
+            data={content}
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              setContent(data);
+            }}
+            config={{
+              ckfinder: {
+                uploadUrl: "https://your-upload-url",
+              },
+              toolbar: [
+                'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload'
+              ],
+              image: {
+                toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
+              }
+            }}
           />
           {contentError && (
             <label className={styles.errorInput}>{contentError}</label>

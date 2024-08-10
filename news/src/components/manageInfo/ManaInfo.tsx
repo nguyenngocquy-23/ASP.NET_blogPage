@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../manageInfo/ManaInfo.module.css";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ManaInfo: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -14,38 +15,44 @@ const ManaInfo: React.FC = () => {
   });
 
   const [userInfo, setUserInfo] = useState<any>(null);
-  const [userId, setUserId] = useState("");
 
   // Fetch user data when the component mounts
   useEffect(() => {
     const fetchUserData = async () => {
-      const response = await axios.get("https://localhost:7125/User/testToken");
-        const fetchedUserId = response.data.userId; // Assuming the response contains userId
-        setUserId(fetchedUserId);
-      try {
-        const response = await axios.get("https://localhost:7125/User/1"); // Thay 0 thành id user hiện tại
-        setUserInfo(response.data);
-        setFormData({
-          ...formData,
-          fullName: response.data.fullName || "",
-          email: response.data.email || "",
-          phoneNumber: response.data.phoneNumber || "",
-        });
-      } catch (error) {
-        console.error("Failed to fetch user data", error);
-      }
+      const response = await axios.get(
+        "https://localhost:7125/User/testToken",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+      console.log(response.data);
+      setFormData({
+        ...formData,
+        fullName: response.data.fullName || "",
+        email: response.data.email || "",
+        phoneNumber: response.data.phoneNumber || "",
+        currentPassword: response.data.password || "",
+      });
+      setUserInfo(response.data);
     };
-
     fetchUserData();
   }, []);
 
   const handleCurrentPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(formData.currentPassword);
-    if (formData.currentPassword !== "c") {
-      alert("password wrong!");
-      return;
-    }
+    console.log("in form:" + formData.currentPassword);
+    console.log("in db:" + userInfo.password);
+    const fetchPassword = async () => {
+      const response = await axios.post("https://localhost:7125/User/checkPass?userId="+userInfo.id+"&input="+formData.currentPassword)
+      if (response.data == false) {
+        alert("password wrong!");
+        return;
+      }
+    };
+    fetchPassword();
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -58,33 +65,41 @@ const ManaInfo: React.FC = () => {
     e.preventDefault();
 
     try {
-      await axios.post("https://localhost:7125/User/updateInf", {
-        id: 0, // Đảm bảo có ID người dùng
-        username: "quy",
-        password: "c", // Cập nhật thuộc tính phù hợp
-        fullName: formData.fullName,
-        email: formData.email,
-        phoneNumber: formData.phoneNumber,
-        role: 1, // Cập nhật theo yêu cầu của API
-        status: 1, // Cập nhật theo yêu cầu của API
-        createdAt: new Date().toISOString(),
-      });
+      await axios.post("https://localhost:7125/User/updateInf?userId="+userInfo.id+"&fullName="+formData.fullName+"&email="+formData.email+"&phoneNumber="+formData.phoneNumber);
 
-      alert("Update successful");
+      Swal.fire({
+        icon:"success",
+        title:"Thay đổi thông tin thành công!",
+        toast:true,
+        showConfirmButton:false,
+        position:"center",
+        timer:2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
     } catch (error) {
       console.error("Failed to update user", error);
-      alert("Update failed...");
+      Swal.fire({
+        icon: "warning",
+        title: "Cập nhật thất bại!",
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
     }
   };
 
   const handlePasswordChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (formData.currentPassword !== "c") {
-      // get password tu sessionStorage
-      alert("Passwords wrong!");
-      return;
-    }
 
     if (formData.newPassword !== formData.confirmPassword) {
       alert("Passwords do not match");
@@ -93,15 +108,44 @@ const ManaInfo: React.FC = () => {
 
     try {
       // Tạo URL với tham số query string
-      const url = `https://localhost:7125/User/updatePass?id=0&newPassword=${formData.newPassword}`;
+      const url = `https://localhost:7125/User/updatePass?id=`+userInfo.id+`&newPassword=${formData.newPassword}`;
 
       // Gọi API
       await axios.post(url);
-
-      alert("Password changed successfully");
+      setFormData({
+        ...formData,
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+      Swal.fire({
+        icon: "success",
+        title: "Đổi mật khẩu thành công!",
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
     } catch (error) {
       console.error("Failed to change password", error);
-      alert("Password change failed");
+      Swal.fire({
+        icon: "warning",
+        title: "Đổi mật khẩu thất bại!",
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
     }
   };
 
@@ -161,7 +205,7 @@ const ManaInfo: React.FC = () => {
         <div className={styles.container__right}>
           <div className={styles.contactInfo}>
             <div>
-              <h2 className={styles.contactInfo__headTitle}>Đổi mật khẩu</h2>
+              <h1 className={styles.contactInfo__headTitle}>Đổi mật khẩu</h1>
             </div>
             <div className={styles.contactInfo__main}>
               <form

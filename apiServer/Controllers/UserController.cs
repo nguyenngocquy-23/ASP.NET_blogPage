@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using System.Security.Claims;
 using apiServer.Dto;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.RegularExpressions;
 
 namespace apiServer.Controllers
 {
@@ -30,28 +31,65 @@ namespace apiServer.Controllers
         }
 
         [HttpPost("updateInf")]
-        public async Task<ActionResult<bool>> UpdateUser(User User)
+        public async Task<ActionResult<bool>> UpdateUser([FromQuery] int userId, [FromQuery] string fullName, [FromQuery] string email, [FromQuery] string phoneNumber)
         {
-            if (User == null)
+            if (await _context.User.FindAsync(userId) == null)
             {
                 return BadRequest("User không tồn tại.");
             }
 
-            var existingUser = await _context.User.FindAsync(User.Id);
+            var existingUser = await _context.User.FindAsync(userId);
             if (existingUser == null)
             {
-                return NotFound($"User với ID {User.Id} không tồn tại.");
+                return NotFound($"User với ID {userId} không tồn tại.");
+            }
+            // Kiểm tra xem các tham số có rỗng hay không
+            if (string.IsNullOrWhiteSpace(fullName))
+            {
+                return BadRequest("FullName không được rỗng.");
             }
 
-            existingUser.Username = User.Username;
-            existingUser.FullName = User.FullName;
-            existingUser.Email = User.Email;
-            existingUser.PhoneNumber = User.PhoneNumber;
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return BadRequest("Email không được rỗng.");
+            }
+
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                return BadRequest("PhoneNumber không được rỗng.");
+            }
+
+            // Kiểm tra định dạng email
+            if (!(new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$").IsMatch(email)))
+            {
+                return BadRequest("Email không đúng định dạng.");
+            }
+
+            // Kiểm tra định dạng số điện thoại
+            if (!(new Regex(@"^\d{10}$").IsMatch(phoneNumber)))
+            {
+                return BadRequest("PhoneNumber không đúng định dạng.");
+            }
+
+            existingUser.FullName = fullName;
+            existingUser.Email = email;
+            existingUser.PhoneNumber = phoneNumber;
 
             _context.User.Update(existingUser);
             await _context.SaveChangesAsync();
 
             return Ok(true);
+        }
+
+        [HttpPost("checkPass")]
+        public async Task<ActionResult<bool>> checkPass(int userId, string input)
+        {
+            User user = await _context.User.FindAsync(userId);
+            if(user != null)
+            {
+                return UserService.VerifyPassword(input,user.Password);  
+            }
+            return false;
         }
 
         [HttpPost("updatePass")]
@@ -64,7 +102,7 @@ namespace apiServer.Controllers
             }
 
             // Cập nhật mật khẩu mới cho người dùng
-            User.Password = newPassword;
+            User.Password = UserService.HashPw(newPassword);
 
             _context.User.Update(User);
             await _context.SaveChangesAsync();
@@ -200,17 +238,12 @@ namespace apiServer.Controllers
 
             // Save activation code to database (id, token, userId)
             var user = await _context.User
-            .FirstOrDefaultAsync(u => u.Email == emailorUsername);
+            .FirstOrDefaultAsync(u => u.Email == emailorUsername || u.Username == emailorUsername);
 
             if (user == null)
                 //return StatusCode(StatusCodes.Status404NotFound, $"Không tồn tại tài khoản có email là {email}");
-                return StatusCode(StatusCodes.Status404NotFound, "Email chưa đăng ký tài khoản!");
+                return StatusCode(StatusCodes.Status404NotFound, "Email hoặc username chưa đăng ký tài khoản!");
             
-            user = await _context.User
-           .FirstOrDefaultAsync(u => u.Username == emailorUsername);
-            if (user == null)
-                //return StatusCode(StatusCodes.Status404NotFound, $"Không tồn tại tài khoản có email là {email}");
-                return StatusCode(StatusCodes.Status404NotFound, "Username không tồn tại!");
             // save token
             var existingActivationInfo = await _context.ActivationInfo.FirstOrDefaultAsync(a => a.UserId == user.Id);
 

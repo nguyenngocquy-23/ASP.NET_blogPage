@@ -25,5 +25,7 @@ namespace apiServer.Models
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
+        [Required]
+        public byte FeedBack { get; set; }
     }
 }

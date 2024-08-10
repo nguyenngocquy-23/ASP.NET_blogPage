@@ -25,8 +25,7 @@
 
 .category {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Khoảng cách giữa các ô */
+    gap: 20px;
     list-style: none;
     padding-bottom: 10px;
     margin: 0;
@@ -34,9 +33,9 @@
 }
 
 .category li {
-    flex: 0 1 calc(20% - 10px); /* Mỗi ô chiếm 20% trừ khoảng cách */
+    /* flex: 0 1 calc(20% - 10px); Mỗi ô chiếm 20% trừ khoảng cách */
     box-sizing: border-box;
-    padding: 10px;
+    padding: 10px 35px;
     text-align: center;
     border-radius: 4px; /* Bo góc ô tùy chọn */
     transition: background-color 0.3s, transform 0.3s; /* Hiệu ứng hover */

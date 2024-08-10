@@ -110,7 +110,7 @@ namespace apiServer.Controllers
         [HttpGet("the-loai/{categoryName}")]
         public async Task<ActionResult<IEnumerable<Blog>>> GetByCategory(string categoryName)
         {
-            var category = await _context.Category.Where(c => c.Name == categoryName).Select(c => c.Id).FirstOrDefaultAsync();
+            var category = await _context.Category.Where(c => c.Name == categoryName).Select(c => new { c.Id }).FirstOrDefaultAsync();
             var blogs = await _context.Blog
                .Where(b => b.CategoryId == category.Id)
                .Select(b => new Blog
