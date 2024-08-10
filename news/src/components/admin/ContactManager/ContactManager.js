@@ -10,13 +10,32 @@ const ContactManager = () => {
     const [email,setEmail] = useState("");
     const [feedbackAdmin,setFeedbackAdmin] = useState("");
     const [message,setMessage] = useState("");
+    const [checkFeedBack,setCheckFeedBack] = useState("0");
+    const [clickedCPH, setClickedCPH] = useState(true);
+    const [clickedDPH, setClickedDPH] = useState(false);
+
 
     useEffect(() => {
-        fetchData();
+        if(checkFeedBack == 0){
+            fetchDataCPH();
+        }else{
+            fetchDataDPH();
+        }
     }, []);
-    const fetchData = async () => {
+    const fetchDataCPH = async () => {
         // Gọi API để lấy dữ liệu
-        axios.get('https://localhost:7125/Contact/all')
+        axios.get('https://localhost:7125/Contact/allCPH')
+            .then(response => {
+                setDataContact(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+            });
+    }
+    const fetchDataDPH = async () => {
+        // Gọi API để lấy dữ liệu
+        axios.get('https://localhost:7125/Contact/allDPH')
             .then(response => {
                 setDataContact(response.data);
                 console.log(response.data);
@@ -56,7 +75,11 @@ const ContactManager = () => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            fetchData();
+            if(checkFeedBack == 0){
+                fetchDataCPH();
+            }else{
+                fetchDataDPH();
+            }
             setMessage('');
             setEmail('');
             setFeedbackAdmin('');
@@ -74,8 +97,25 @@ const ContactManager = () => {
             setMessage('Đã xảy ra lỗi khi gửi phản hồi!');
         }
     }
+    const CPH = () => {
+        setCheckFeedBack(0);
+        setClickedCPH(true);
+        setClickedDPH(false);
+        fetchDataCPH();
+
+    }
+    const DPH = () => {
+        setCheckFeedBack(1);
+        setClickedDPH(true);
+        setClickedCPH(false);
+        fetchDataDPH();
+    }
     return (
         <div className="table-container">
+            <div>
+                <button className={clickedCPH ? 'button-clicked' : 'button-normal'} onClick={() => CPH()}>Chưa Phản Hồi</button>
+                <button className={clickedDPH ? 'button-clicked' : 'button-normal'} style={{marginLeft : "10px"}}  onClick={() => DPH()}>Đã Phản Hồi</button>
+            </div>
             <h2 className="table-title" style={{fontWeight: "bold"}}>Các Liên Hệ Từ Người Dùng</h2>
             <table className="styled-table">
                 <thead>
@@ -97,7 +137,9 @@ const ContactManager = () => {
                         <td>{item.title}</td>
                         <td>{item.content}</td>
                         <td>
-                            <button className="btn edit-btn" style={{fontWeight: "bold"}} onClick={() => handleFeedBack(item.email,item.content)}>Phản Hồi</button>
+                            <button className="btn edit-btn" style={{fontWeight: "bold"}}
+                                    onClick={() => handleFeedBack(item.email, item.content)}>Phản Hồi
+                            </button>
                         </td>
                     </tr>
                 ))}
@@ -115,11 +157,11 @@ const ContactManager = () => {
                         <form onSubmit={handleSubmit}>
                             <div>
                                 <label style={{fontWeight: 'bold'}}>Người dùng:</label>
-                                <p>- {contentFeedback}</p>
+                                <p style={{margin: "10px 0"}}>- {contentFeedback}</p>
                             </div>
                             <div className="form-group">
                                 <lable htmlFor="feedback-content" style={{fontWeight: 'bold'}}>Admin phản hồi:</lable>
-                                <div>
+                                <div style={{ marginTop: "5px"}}>
                                     <textarea
                                         id="feedback-content"
                                         placeholder="Nội dung phản hồi"

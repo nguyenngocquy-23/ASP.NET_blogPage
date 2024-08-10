@@ -45,12 +45,20 @@ namespace apiServer.Controllers
             }
             return contact;
         }
-        //Lấy tất cả các contact
-        [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<Contact>>> GetContactAll()
+        //Lấy tất cả các contact chua phan hoi
+        [HttpGet("allCPH")]
+        public async Task<ActionResult<IEnumerable<Contact>>> GetContactAllCPH()
         {
             return await _context.Contact
                             .Where(c => c.FeedBack == 0)
+                            .ToListAsync();
+        }
+        //Lấy tất cả các contact da phan hoi
+        [HttpGet("allDPH")]
+        public async Task<ActionResult<IEnumerable<Contact>>> GetContactAllDPH()
+        {
+            return await _context.Contact
+                            .Where(c => c.FeedBack == 1)
                             .ToListAsync();
         }
         //Gửi Mail FeedBack
