@@ -1,0 +1,356 @@
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90%;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-template-rows: auto;
+    padding: 20px;
+}
+
+.container img{
+    max-width: 100%;
+    margin: 10px 0;
+}
+
+.subContainer {
+    max-width: 760px;
+    padding-top: 20px;
+}
+
+.breadCrumbDetail {
+    -ms-flex-pack: justify;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.breadCrumbDetail ul {
+    align-items: center;
+    display: flex;
+}
+
+.breadCrumbDetail ul li{
+    padding: 0 5px;
+    color: #2d67ad;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.breadCrumbDetail__time {
+    color: #555;
+    font-family: notosans-regular;
+    font-size: 12px;
+    line-height: 15px;
+    text-transform: lowercase;
+}
+
+.contentDetailTitle {
+    color: #2a2a2a;
+    font-family: notosans-bold;
+    font-size: 1.875rem;
+    line-height: 2.375rem;
+    margin-bottom: 1.25rem;
+    margin-top: 1.25rem;
+}
+
+.contentDetailSapo {
+    color: #404040;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.625rem;
+    margin: 1.25rem 0;
+}
+
+.maincontent p {
+    margin-top: 1em;
+    line-height: 1.75rem;
+    font-size: 1rem;
+    color: #505050;
+}
+.maincontent figure figcaption {
+    font-family: arial;
+    font-size: .9375rem;
+    font-style: italic;
+    line-height: 1.4;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.maincontent article a picture img{
+    max-width: 200px;
+    height: auto ;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+.maincontent article h3{
+    padding: 10px 0 ;
+    font-size: 17px;
+}
+.maincontent article{
+    background: #e3f6f2;
+    font-family: "arial";
+    font-size: 14px;
+    padding: 25px 20px;
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    gap: 20px;
+    display: flex;
+    line-height: 1.5rem;
+}
+
+.maincontent article span{
+    text-indent: 0px;
+    color: #277879;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #cecece;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.maincontent sapn.ck-cms-color-background-full.type-4 span.color-wiki__title {
+    text-indent: 0px !important;
+    color: #277879 !important;
+    padding-bottom: 15px !important;
+    border-bottom: 1px solid #cecece !important;
+    margin-bottom: 15px !important;
+}
+
+.maincontent figure.image:not(.image-style-align-left):not(.image-style-align-right):not(.ck-photo-collage):not(.ck-cms-football-ranking):not(.ck-cms-football-schedule):not(.ck-cms-football-result):not(.ck-cms-wiki-football-top-goal), .content-detail .maincontent table.image:not(.image-style-align-left):not(.image-style-align-right):not(.ck-photo-collage):not(.ck-cms-football-ranking):not(.ck-cms-football-schedule):not(.ck-cms-football-result):not(.ck-cms-wiki-football-top-goal) {
+     font-family: arial;
+     font-size: 14px;
+     font-style: italic;
+     margin-bottom: 20px;
+     margin-top: 20px;
+     text-align: center;
+     width: 100%;
+}
+
+.horizontalHeading {
+    border-bottom: 1px solid #add2ff;
+    color: #2d67ad;
+    font-family: notosans-bold;
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding-bottom: 7px;
+    text-transform: uppercase;
+}
+
+.noMess{
+    font-size: 25px;
+}
+
+.comments {
+    display: block;
+    margin-top: 20px;
+}
+
+.comments .inputComment {
+    width: 100%;
+    height: 250px;
+    outline: #2d67ad;
+    border-radius: 10px;
+    border: 1px solid #ababab;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.comments .title {
+    font-size: 30px;
+    color: #2d67ad;
+    font-weight: 700;
+}
+
+.comments .btnComment:hover {
+    cursor: pointer;
+    opacity: 0.8;
+    border: 1px #2d67ad solid;
+    background: #2d67ad;
+    color: white;
+}
+.comments .btnComment {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    border:1px #ababab solid;
+    margin-bottom: 20px;
+}
+
+.maincontent .newsFeature__listInfomation {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: calc(100% - 15px);
+    position: absolute;
+    right: 0;
+}
+.maincontent .newsFeature__listInfomation .newsFeature__listInfomation-boxItem .newsFeature__listInfomation-item .newsFeature__listInfomation-itemIntroduce .newsFeature__listInfomation-itemBoxIcon img {
+    border: 1px solid #838383;
+    border-radius: 50%;
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+    height: 25px;
+    padding: 5px;
+    width: 25px;
+}
+
+.noZoom{
+    border: 1px solid #838383;
+    border-radius: 50%;
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+    height: 25px;
+    padding: 5px;
+    width: 25px;
+}
+
+.maincontent .ck-cms-insert-neww-group {
+    clear: both;
+    border: 1px solid #c4c4c4;
+    font-family: "arial";
+    padding: 15px;
+    background: #f8f8f8;
+    margin: 15px 0px;
+}
+.container a{
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    margin: 0;
+    padding: 0;
+    color: #2d67ad;
+    list-style: none !important;
+}
+
+.commentItem {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.commentUser {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.commentContent {
+    margin-bottom: 5px;
+}
+
+.commentTime {
+    font-size: 12px;
+    color: #666;
+}
+.horizontalItem{
+    padding: 10px;
+    margin-bottom: 5px;
+    display: flex;
+    border-bottom: 0.5px solid #ababab;
+}
+
+.horizontalImage{
+    width: 120px;
+    margin-right: 10px;
+}
+.horizontalImage img{
+    background-position: center;
+    background-size: cover;
+    margin: 0;
+    width: 120px;
+    height: 80px;
+}
+.horizontalTitle{
+    width: 150px;
+}
+.horizontalTitle a:hover{
+    color: #2d67ad;
+}
+.horizontalTitle a{
+    color: #2a2a2a;
+    font-size: 15px;
+}
+
+.podcastPlayer {
+    width: 100%;
+}
+.podcastPlayerContainer audio{
+    width: 100%;
+    height: 400px;
+    background: url("../../../public/images/pod.jpg");
+    border-radius: 10px;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+.podcastPlayerContainer {
+    align-items: center;
+    width: 100%;
+    padding: 0 10px;
+}
+.audioControls {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.audioIcon {
+    cursor: pointer;
+    font-size: 24px;
+    margin-left: 10px;
+}
+.contentDetail .maincontent table {
+    color: #505050;
+    height: auto;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.contentDetail .maincontent table thead tr:first-child td {
+    background-image: url(https://static.vnncdn.net/v1/background/bg-football-long.jpg);
+    font-size: 14px;
+    color: #fff;
+    padding: 15px;
+    font-weight: 600;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    text-transform: initial;
+}
+.contentDetail .maincontent table td, .contentDetail .maincontent table th {
+    color: #2a2a2a;
+    text-transform: uppercase;
+    word-break: break-word;
+    font-size: 14px;
+    padding: 15px 0px;
+}
+.contentDetail .maincontent table tbody tr td a {
+    font-size: 13px;
+    color: #5d5d5d;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    text-transform: initial;
+}
+.contentDetail .maincontent table tbody tr td img {
+    margin-right: 5px;
+    /*width: 24px;*/
+    /*height: 24px;*/
+    object-fit: contain;
+}
