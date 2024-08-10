@@ -12,8 +12,8 @@ using apiServer.Data;
 namespace apiServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240807103142_migrations")]
-    partial class migrations
+    [Migration("20240810084835_updateLenghtDataBlog")]
+    partial class updateLenghtDataBlog
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,8 +86,8 @@ namespace apiServer.Migrations
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<byte>("Status")
                         .HasColumnType("tinyint unsigned");
@@ -208,8 +208,8 @@ namespace apiServer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<bool>("FeedBack")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<byte>("FeedBack")
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<string>("FullName")
                         .IsRequired()

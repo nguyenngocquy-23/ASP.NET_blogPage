@@ -12,8 +12,8 @@ using apiServer.Data;
 namespace apiServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240807103142_migrations")]
-    partial class migrations
+    [Migration("20240807234424_updateMigrationOfPhung")]
+    partial class updateMigrationOfPhung
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -208,9 +208,6 @@ namespace apiServer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<bool>("FeedBack")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -235,10 +232,7 @@ namespace apiServer.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
 
                     b.Property<string>("Email")
                         .IsRequired()

@@ -1,0 +1,60 @@
+/* DataTable.css */
+.container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.heading {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    text-align: center;
+}
+
+.addIcon {
+    margin-bottom: 10px;
+    width: 50px;
+    height: 50px;
+    background-color: #009879;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    font-size: 24px;
+    text-decoration: none;
+    padding-top: 5px;
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.addIcon:hover {
+    background-color: #007f67;
+}
+
+.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: left;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    display: block !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
