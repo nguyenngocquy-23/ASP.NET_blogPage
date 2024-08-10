@@ -118,3 +118,11 @@
     width: 100%;
     padding: 5px;
 }
+.button-clicked{
+    background: red;
+    color: white;
+}
+.button-normal{
+    background: white;
+    color: black;
+}
