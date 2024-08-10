@@ -167,11 +167,12 @@ function Home() {
         );
     };
     const feeds = {
-        thoi_su: 'https://vietnamnet.vn/thoi-su.rss',
-        the_thao: 'https://vietnamnet.vn/the-thao.rss',
-        chinh_tri: 'https://vietnamnet.vn/chinh-tri.rss',
-        su_kien: 'https://vietnamnet.vn/su-kien.rss',
-        tuan_viet_nam: 'https://vietnamnet.vn/tuan-viet-nam.rss'
+        tin_noi_bat: 'https://localhost:7125/AdminBlog/tin_noi_bat',
+        the_thao: 'https://localhost:7125/AdminBlog/the-thao',
+        phong_ban: 'https://localhost:7125/AdminBlog/phong-ban',
+        nhan_su: 'https://localhost:7125/AdminBlog/nhan-su',
+        qui_dinh: 'https://localhost:7125/AdminBlog/qui-dinh',
+        chinh_sach: 'https://localhost:7125/AdminBlog/chinh-sach',
     };
     return (
         <>

@@ -105,6 +105,32 @@ namespace apiServer.Controllers
             }
             return blog;
         }
+
+        // lấy danh sách bài viết theo thể loại
+        [HttpGet("the-loai/{categoryName}")]
+        public async Task<ActionResult<IEnumerable<Blog>>> GetByCategory(string categoryName)
+        {
+            var category = await _context.Category.Where(c => c.Name == categoryName).Select(c => c.Id).FirstOrDefaultAsync();
+            var blogs = await _context.Blog
+               .Where(b => b.CategoryId == category.Id)
+               .Select(b => new Blog
+               {
+                   Id = b.Id,
+                   Auth = b.Auth,
+                   Title = b.Title,
+                   Image = b.Image,
+                   ShortDescription = b.ShortDescription,
+                   NumLike = b.NumLike
+               })
+               .ToListAsync();
+
+            return blogs;
+            if (blogs == null)
+            {
+                return NotFound();
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Blog>>> GetBlogs()
         {

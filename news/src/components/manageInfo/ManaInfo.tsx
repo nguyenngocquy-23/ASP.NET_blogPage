@@ -14,12 +14,16 @@ const ManaInfo: React.FC = () => {
   });
 
   const [userInfo, setUserInfo] = useState<any>(null);
+  const [userId, setUserId] = useState("");
 
   // Fetch user data when the component mounts
   useEffect(() => {
     const fetchUserData = async () => {
+      const response = await axios.get("https://localhost:7125/User/testToken");
+        const fetchedUserId = response.data.userId; // Assuming the response contains userId
+        setUserId(fetchedUserId);
       try {
-        const response = await axios.get("https://localhost:7125/User/0"); // Thay 0 thành id user hiện tại
+        const response = await axios.get("https://localhost:7125/User/1"); // Thay 0 thành id user hiện tại
         setUserInfo(response.data);
         setFormData({
           ...formData,

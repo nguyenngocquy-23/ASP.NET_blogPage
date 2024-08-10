@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Home from './home/Home';
 import Main from './main';
-import Test from './home/Test';
+// import Test from './home/Test';
 import Category from './category/category';
 import Login from "./login/Login";
 import Register from "./login/Register";
@@ -36,7 +36,7 @@ function RouterConfig() {
                     <Route path='/admin/blogDetail' element={<BlogForm/>}/>
                     <Route path='/admin/blogDetail/:blogId' element={<BlogForm/>}/>
                 </Route>
-                <Route path='/test' element={<Test/>}/>
+                {/* <Route path='/test' element={<Test/>}/> */}
                 <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
             </Routes>
         </Router>
