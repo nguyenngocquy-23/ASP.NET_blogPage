@@ -21,10 +21,18 @@ namespace apiServer.Models
         public string Content { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string Status { get; set; }
+        public int Status { get; set; } // 1. Bình thường | 0. Ẩn.
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
+
+        //Trường dành cho comment lồng nhau.
+        public int? ParentId { get; set; }
+
+
+
+
+
+
     }
 }

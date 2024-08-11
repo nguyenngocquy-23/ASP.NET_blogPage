@@ -5,16 +5,15 @@
 namespace apiServer.Migrations
 {
     /// <inheritdoc />
-    public partial class updateTypeDataBlogx2 : Migration
+    public partial class EditComentStatus : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<int>(
-                name: "CategoryId",
-                table: "blogs",
+                name: "Status",
+                table: "comments",
                 type: "int",
-                maxLength: 50,
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "varchar(50)",
@@ -26,14 +25,13 @@ namespace apiServer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "CategoryId",
-                table: "blogs",
+                name: "Status",
+                table: "comments",
                 type: "varchar(50)",
                 maxLength: 50,
                 nullable: false,
                 oldClrType: typeof(int),
-                oldType: "int",
-                oldMaxLength: 50)
+                oldType: "int")
                 .Annotation("MySql:CharSet", "utf8mb4");
         }
     }
