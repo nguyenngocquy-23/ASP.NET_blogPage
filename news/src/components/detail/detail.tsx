@@ -9,6 +9,7 @@ import {RootState} from '../reduxStore/Store';
 import {FaRegMessage, FaVolumeHigh, FaVolumeOff} from 'react-icons/fa6';
 import {addReadArticle} from "../reduxStore/UserSlice";
 import podStyles from "./Podcast.module.css";
+import CommentList from "./comment/CommentList";
 
 // Định nghĩa interface cho chi tiết bài viết
 interface DetailContent {
@@ -33,10 +34,10 @@ const Detail: React.FC = () => {
     const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
     const [commentContent, setCommentContent] = useState<string>(''); // State để lưu nội dung bình luận
     const dispatch = useDispatch();
-    const currentUser = null;
+    const currentUser =1; // test với 1.
     const comments = null;
     // const comments = useSelector((state: RootState) =>
-    //     state.user.comments.filter((comment) => comment.link === link)
+    //     state.user.comments.filter((comment  ) => comment.link === link)
     // ); // Lọc bình luận theo link của bài viết hiện tại
     function convertToSlug(text: string) {
         // Chuyển đổi chuỗi thành chữ thường
@@ -277,29 +278,34 @@ const Detail: React.FC = () => {
                     ))}
                 </div>
             </div>
-            {/*Bình luận*/}
+            {/*Bình luận - */}
             <div className={styles.comments}>
                 <span className={styles.title}>Bình luận</span><br/>
-                {currentUser ? (
-                    <>
-                        <textarea className={styles.inputComment} maxLength={500}
-                                  value={commentContent}
-                                  onChange={(e) => setCommentContent(e.target.value)}
-                                  placeholder={"Bình luận của bạn..."}/><br/>
-                        <button className={styles.btnComment} onClick={handleCommentSubmit}>
-                            Bình luận
-                        </button>
-                        <span className="comment-bg emptyComment" style={{display: 'none'}}>
-                            <img src="https://static.vnncdn.net/v1/icon/chat(1).svg" alt="comment icon"/>
-                        </span>
-                        <span className="comment-number vnn-comment-count-detail"></span>
-                    </>
-                ) : (
-                    <span className={styles.noMess}>
-                        <FaRegMessage/>
-                        <Link to={'/login'}> Đăng nhập </Link>
-                        để tiến hành bình luận !</span>
-                )}
+                {/*{currentUser ? (*/}
+                {/*    <>*/}
+                {/*        <textarea className={styles.inputComment} maxLength={500}*/}
+                {/*                  value={commentContent}*/}
+                {/*                  onChange={(e) => setCommentContent(e.target.value)}*/}
+                {/*                  placeholder={"Bình luận của bạn..."}/><br/>*/}
+                {/*        <button className={styles.btnComment} onClick={handleCommentSubmit}>*/}
+                {/*            Bình luận*/}
+                {/*        </button>*/}
+                {/*        <span className="comment-bg emptyComment" style={{display: 'none'}}>*/}
+                {/*            <img src="https://static.vnncdn.net/v1/icon/chat(1).svg" alt="comment icon"/>*/}
+                {/*        </span>*/}
+                {/*        <span className="comment-number vnn-comment-count-detail"></span>*/}
+                {/*    </>*/}
+
+
+                <CommentList currentUser = {currentUser} blogId = {2}/>
+
+
+                {/*) : (*/}
+                {/*    <span className={styles.noMess}>*/}
+                {/*        <FaRegMessage/>*/}
+                {/*        <Link to={'/login'}> Đăng nhập </Link>*/}
+                {/*        để tiến hành bình luận !</span>*/}
+                {/*)}*/}
                 {/* {Array.isArray(comments) && comments.map((comment, index) => (
                     <div key={index} className={styles.commentItem}>
                         <div className={styles.commentUser}>{comment.email}</div>
