@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using apiServer.services;
+using Org.BouncyCastle.Utilities;
 
 namespace apiServer.Controllers
 {
@@ -63,21 +64,30 @@ namespace apiServer.Controllers
         }
         //Gửi Mail FeedBack
         [HttpPost("send")]
-        public async Task<IActionResult> sendEmail([FromBody] MailContent mail)
+        public async Task<IActionResult> sendEmail([FromBody] MailContent mail , string Id)
         {
+
             if (mail == null || string.IsNullOrEmpty(mail.To) || string.IsNullOrEmpty(mail.Subject) || string.IsNullOrEmpty(mail.Body))
             {
                 return BadRequest("Gửi Email Thất Bại!");
             }
             await MailService.SendMail(mail);
-            var contact = await _context.Contact.FirstOrDefaultAsync(c => c.Email == mail.To);
+            int Ids = int.Parse(Id);
+            var contact = await _context.Contact.FirstOrDefaultAsync(c => c.Id == Ids);
             if (contact != null)
             {
+                Console.WriteLine("Có Zô");
                 contact.FeedBack = 1;
                 _context.Contact.Update(contact);
                 await _context.SaveChangesAsync();
+                return Ok("Phản Hồi Thành Công!");
+
             }
-            return Ok("Phản Hồi Thành Công!");
+            else
+            {
+                return BadRequest("Phản Hồi Không Thành Công!");
+               
+            }
         }
     }
 }
