@@ -94,10 +94,8 @@ namespace apiServer.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BlogId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -110,15 +108,14 @@ namespace apiServer.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

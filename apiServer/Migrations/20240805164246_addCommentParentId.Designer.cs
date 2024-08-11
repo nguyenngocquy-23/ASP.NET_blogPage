@@ -12,8 +12,8 @@ using apiServer.Data;
 namespace apiServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240804170352_updateTypeDataBlogx4")]
-    partial class updateTypeDataBlogx4
+    [Migration("20240805164246_addCommentParentId")]
+    partial class addCommentParentId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,10 +97,8 @@ namespace apiServer.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BlogId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -113,15 +111,16 @@ namespace apiServer.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
