@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Home from './home/Home';
 import Main from './main';
-import Test from './home/Test';
+// import Test from './home/Test';
 import Category from './category/category';
 import Login from "./login/Login";
 import Register from "./login/Register";
@@ -10,7 +10,11 @@ import SearchPage from './searchpage/search';
 import History from './history/history';
 import Contact from "./contact/Contact";
 import ManaInfo from "./manageInfo/ManaInfo";
-import BlogForm from "./admin/blogDetail/blogDetail";
+import BlogForm from "./admin/blogDetail/BlogDetail";
+import Blog from './admin/blog/Blog';
+import UserList from "./login/UserList";
+import Unauthorized from "./login/Unauthorized";
+import ContactManager from "./admin/ContactManager/ContactManager";
 
 function RouterConfig() {
     return (
@@ -25,11 +29,16 @@ function RouterConfig() {
                     <Route path='/history' element={<History/>}></Route>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/register' element={<Register/>}/>
+                    <Route path="/users" element={<UserList/>} />
+                    <Route path="/unauthorized" element={<Unauthorized/>} />
                     <Route path='/contact' element={<Contact/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
+                    <Route path='/admin/blogs' element={<Blog/>}/>
                     <Route path='/admin/blogDetail' element={<BlogForm/>}/>
+                    <Route path='/admin/blogDetail/:blogId' element={<BlogForm/>}/>
+                    <Route path='/admin/contactManager' element={<ContactManager/>}/>
                 </Route>
-                <Route path='/test' element={<Test/>}/>
+                {/* <Route path='/test' element={<Test/>}/> */}
                 <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
             </Routes>
         </Router>

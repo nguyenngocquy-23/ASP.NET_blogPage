@@ -166,12 +166,13 @@ function Home() {
             </div>
         );
     };
-    const feeds = {
-        thoi_su: 'https://vietnamnet.vn/thoi-su.rss',
-        the_thao: 'https://vietnamnet.vn/the-thao.rss',
-        chinh_tri: 'https://vietnamnet.vn/chinh-tri.rss',
-        su_kien: 'https://vietnamnet.vn/su-kien.rss',
-        tuan_viet_nam: 'https://vietnamnet.vn/tuan-viet-nam.rss'
+    const feedUrl = {
+        tin_noi_bat: 'https://localhost:7125/AdminBlog/tin_noi_bat',
+        the_thao: 'https://localhost:7125/AdminBlog/the-thao',
+        phong_ban: 'https://localhost:7125/AdminBlog/phong-ban',
+        nhan_su: 'https://localhost:7125/AdminBlog/nhan-su',
+        qui_dinh: 'https://localhost:7125/AdminBlog/qui-dinh',
+        chinh_sach: 'https://localhost:7125/AdminBlog/chinh-sach',
     };
     return (
         <>
@@ -256,14 +257,14 @@ function Home() {
             <div className={styles.home__block1}>
                 <div className={styles.block1__groups}>
                     <div className={styles.group1}>
-                        <RSSFeed feedUrl={feeds.thoi_su} title="Thời Sự"/>
-                        <RSSFeed feedUrl={feeds.the_thao} title="Thể Thao"/>
+                        <RSSFeed feedUrl={feedUrl.thoi_su} title="Thời Sự"/>
+                        <RSSFeed feedUrl={feedUrl.the_thao} title="Thể Thao"/>
                     </div>
                     <div>
                         <div className={styles.group2}>
-                            <RSSFeed feedUrl={feeds.chinh_tri} title="Chính Trị"/>
-                            <RSSFeed feedUrl={feeds.su_kien} title="Sự Kiện"/>
-                            <RSSFeed feedUrl={feeds.tuan_viet_nam} title="Tuần Việt Nam"/>
+                            <RSSFeed feedUrl={feedUrl.chinh_tri} title="Chính Trị"/>
+                            <RSSFeed feedUrl={feedUrl.su_kien} title="Sự Kiện"/>
+                            <RSSFeed feedUrl={feedUrl.tuan_viet_nam} title="Tuần Việt Nam"/>
                         </div>
                     </div>
                 </div>

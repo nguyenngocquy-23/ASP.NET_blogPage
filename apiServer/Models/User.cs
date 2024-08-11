@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,9 +7,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace apiServer.Models
 {
     [Table("users")]
+    [Index(nameof(Username), IsUnique = true)]
+    [Index(nameof(Email), IsUnique = true)]
     public class User
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -29,8 +33,9 @@ namespace apiServer.Models
         [StringLength(50)]
         public string Email { get; set; }
 
+        [Required]
         [Phone]
-        [StringLength(50)]
+        [StringLength(10)]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -38,8 +43,9 @@ namespace apiServer.Models
 
         [Required]
         public byte Status { get; set; }
-
-        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
+
+        public bool IsEnable { get; set; }
     }
 }
