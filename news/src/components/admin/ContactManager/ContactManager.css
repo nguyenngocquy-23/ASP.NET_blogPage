@@ -1,9 +1,9 @@
 /* DataTable.css */
 .table-container {
-    width: 80%;
+    width: 95%;
     margin: 20px auto;
     padding: 10px;
-    background-color: #f4f4f4;
+    background-color: #83cce3;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
