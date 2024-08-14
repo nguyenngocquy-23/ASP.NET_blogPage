@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import styles from "../blogDetail/BlogDetail.module.css";
-import { useParams } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import { url } from "inspector";
 import { data } from "cheerio/lib/api/attributes";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
+import {FaPlus} from "react-icons/fa";
+import {MdCancel} from "react-icons/md";
 
 const BlogForm: React.FC = () => {
   const { blogId } = useParams<{ blogId?: string }>();
@@ -193,82 +195,91 @@ const BlogForm: React.FC = () => {
       }
     }
   };
-
   return (
-    <div className={styles.container}>
-      <h2>Chi tiết bài viết</h2>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formGroup}>
-          <label htmlFor="title">Tiêu đề</label>
-          <input
-            type="text"
-            className={styles.formControl}
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="category">Thể loại</label>
-          <select
-            className={styles.formControl}
-            id="category"
-            name="category"
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
-            required
-          >
-            <option value="">Chọn thể loại</option>
-            <option value="0">Tin nổi bật</option>
-            <option value="1">Thể thao</option>
-            <option value="2">Phòng ban</option>
-            <option value="3">Nhân sự</option>
-            <option value="4">Qui định</option>
-            <option value="5">Chính sách</option>
-          </select>
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="image">Hình ảnh</label>
-          <input
-            type="file"
-            className={styles.formControl}
-            id="image"
-            accept=".jpg, .jpeg, .png, .gif, .svg"
-            onChange={handleImageChange}
-          />
-          {(imageUrl || image) && (
-            <div>
-              <img
-                src={imageUrl || URL.createObjectURL(image!)}
-                alt="Selected"
-                style={{
-                  maxWidth: "100%",
-                  maxHeight: "200px",
-                  marginTop: "10px",
-                }}
-              />
-            </div>
-          )}
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="shortDescription">Mô tả ngắn</label>
-          <textarea
-            style={{ height: "100px" }}
-            className={styles.formControl}
-            id="shortDescription"
-            rows={8}
-            value={shortDescription}
-            onChange={(e) => setShortDescription(e.target.value)}
-            required
-          />
-          {shortDescError && (
-            <label className={styles.errorInput}>{shortDescError}</label>
-          )}
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="content">Nội dung</label>
-          {/* <textarea
+      <div className={styles.container}>
+        <Link
+            to={"/admin/blogs"}
+            className={styles.addIcon}
+            style={{float: "right", fontWeight: "bold",fontSize: "20px", border: "none", margin: "0", padding: "0"}}
+            title="Tắt Thêm Bài Viết"
+        >
+          <MdCancel/>
+        </Link>
+        <h2>Chi tiết bài viết</h2>
+
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
+            <label htmlFor="title">Tiêu đề</label>
+            <input
+                type="text"
+                className={styles.formControl}
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="category">Thể loại</label>
+            <select
+                className={styles.formControl}
+                id="category"
+                name="category"
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                required
+            >
+              <option value="">Chọn thể loại</option>
+              <option value="0">Tin nổi bật</option>
+              <option value="1">Thể thao</option>
+              <option value="2">Phòng ban</option>
+              <option value="3">Nhân sự</option>
+              <option value="4">Qui định</option>
+              <option value="5">Chính sách</option>
+            </select>
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="image">Hình ảnh</label>
+            <input
+                type="file"
+                className={styles.formControl}
+                id="image"
+                style={{background: "white"}}
+                accept=".jpg, .jpeg, .png, .gif, .svg"
+                onChange={handleImageChange}
+            />
+            {(imageUrl || image) && (
+                <div>
+                  <img
+                      src={imageUrl || URL.createObjectURL(image!)}
+                      alt="Selected"
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "200px",
+                        marginTop: "10px",
+                      }}
+                  />
+                </div>
+            )}
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="shortDescription">Mô tả ngắn</label>
+            <textarea
+                style={{height: "100px"}}
+                className={styles.formControl}
+                id="shortDescription"
+                rows={8}
+                value={shortDescription}
+                onChange={(e) => setShortDescription(e.target.value)}
+                required
+            />
+            {shortDescError && (
+                <label className={styles.errorInput}>{shortDescError}</label>
+            )}
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="content">Nội dung</label>
+            {/* <textarea
             style={{ height: "100px" }}
             className={styles.formControl}
             id="content"
@@ -277,36 +288,36 @@ const BlogForm: React.FC = () => {
             onChange={(e) => setContent(e.target.value)}
             required
           /> */}
-          <CKEditor
-            editor={ClassicEditor}
-            data={content}
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              setContent(data);
-            }}
-            config={{
-              ckfinder: {
-                uploadUrl: "https://your-upload-url",
-              },
-              toolbar: [
-                'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload'
-              ],
-              image: {
-                toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
-              }
-            }}
-          />
-          {contentError && (
-            <label className={styles.errorInput}>{contentError}</label>
-          )}
-        </div>
-        <div className={"${styles.formGroup} ${styles.mt3}"}>
-          <button type="submit" className={styles.buttonSubmit}>
-            Lưu
-          </button>
-        </div>
-      </form>
-    </div>
+            <CKEditor
+                editor={ClassicEditor}
+                data={content}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  setContent(data);
+                }}
+                config={{
+                  ckfinder: {
+                    uploadUrl: "https://your-upload-url",
+                  },
+                  toolbar: [
+                    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload'
+                  ],
+                  image: {
+                    toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
+                  }
+                }}
+            />
+            {contentError && (
+                <label className={styles.errorInput}>{contentError}</label>
+            )}
+          </div>
+          <div className={"${styles.formGroup} ${styles.mt3}"}>
+            <button type="submit" className={styles.buttonSubmit}>
+              Lưu
+            </button>
+          </div>
+        </form>
+      </div>
   );
 };
 
