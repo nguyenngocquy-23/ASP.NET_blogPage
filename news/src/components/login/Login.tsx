@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './register.module.css';
+import {useDispatch} from "react-redux";
+import {loginCurrentUser} from "../reduxStore/UserSlice";
 
 function Login() {
     const [usernameOrEmail, setUsernameOrEmail] = useState<string>('');
@@ -9,6 +11,7 @@ function Login() {
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,6 +22,10 @@ function Login() {
                 password
             });
             localStorage.setItem('authToken', response.data.token);
+            //
+            const { id, username, fullName, email, phoneNumber } = response.data;
+            const userData = { id, username, fullName, email, phoneNumber };
+            dispatch(loginCurrentUser(userData));
             navigate('/');
         } catch (err) {
             if (axios.isAxiosError(err)) {
