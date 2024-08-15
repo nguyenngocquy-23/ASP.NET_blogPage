@@ -127,7 +127,6 @@ namespace apiServer.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -153,7 +152,6 @@ namespace apiServer.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<int>("BlogId")
                         .HasColumnType("int");
 
