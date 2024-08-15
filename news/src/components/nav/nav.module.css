@@ -55,6 +55,7 @@
     position: relative;
     width: auto !important;
 }
+
 .swiper-slide {
     -ms-flex-negative: 0;
     flex-shrink: 0;
@@ -120,4 +121,26 @@ ol, ul {
     color: #2a2a2a;
     display: inline-block;
     white-space: nowrap;
+}
+
+.wrapNav .mainNav__list-item:last-child:hover ul {
+    cursor: pointer;
+    display: block;
+}
+
+.sub-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index:10000;
+    top: 103%;
+}
+
+.sub-menu__title {
+    padding: 10px
+}
+
+.showSub-menu:hover .sub-menu {
+    display: block;
 }

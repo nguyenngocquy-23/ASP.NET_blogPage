@@ -14,8 +14,11 @@ import Blog from './admin/blog/Blog';
 import UserList from "./login/UserList";
 import Unauthorized from "./login/Unauthorized";
 import ContactManager from "./admin/ContactManager/ContactManager";
+
 import BlogForm from "./admin/blogDetail/blogDetail";
 import CommentManage from "./admin/CommentManager/CommentManage";
+import AdminHome from "./admin/AdminHome/AdminHome";
+import Dashboard from "./admin/Dashboard/Dashboard";
 function RouterConfig() {
     return (
         <Router>
@@ -24,7 +27,7 @@ function RouterConfig() {
                     <Route index element={<Home/>}/>
                     <Route path='/:category' element={<Category/>}></Route>
                     <Route path='/:category/:subcategory' element={<Category/>}></Route>
-                    <Route path='/detail/:link' element={<Detail/>}></Route>
+                    <Route path='/detail/:id' element={<Detail/>}></Route>
                     <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}></Route>
                     <Route path='/history' element={<History/>}></Route>
                     <Route path='/login' element={<Login/>}/>
@@ -32,6 +35,7 @@ function RouterConfig() {
                     <Route path="/users" element={<UserList/>} />
                     <Route path="/unauthorized" element={<Unauthorized/>} />
                     <Route path='/contact' element={<Contact/>}/>
+                    <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
                     <Route path='/admin/blogs' element={<Blog/>}/>
                     <Route path='/admin/blogDetail' element={<BlogForm/>}/>
@@ -40,7 +44,13 @@ function RouterConfig() {
                     <Route path='/admin/commentManager' element={<CommentManage/>}/>
                 </Route>
                 {/* <Route path='/test' element={<Test/>}/> */}
-                <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
+                <Route path='/admin' element={<AdminHome/>}>
+                    <Route index element={<Dashboard/>}/>
+                    <Route path='blogs' element={<Blog/>}/>
+                    <Route path='blogDetail' element={<BlogForm/>}/>
+                    <Route path='blogDetail/:blogId' element={<BlogForm/>}/>
+                    <Route path='contactManager' element={<ContactManager/>}/>
+                </Route>
             </Routes>
         </Router>
     );

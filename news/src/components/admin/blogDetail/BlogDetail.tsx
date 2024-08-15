@@ -7,8 +7,9 @@ import { url } from "inspector";
 import { data } from "cheerio/lib/api/attributes";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import {FaPlus} from "react-icons/fa";
+import {FaArrowLeft, FaPlus} from "react-icons/fa";
 import {MdCancel} from "react-icons/md";
+import { FaRegCircleLeft } from "react-icons/fa6";
 
 const BlogForm: React.FC = () => {
   const { blogId } = useParams<{ blogId?: string }>();
@@ -200,10 +201,10 @@ const BlogForm: React.FC = () => {
         <Link
             to={"/admin/blogs"}
             className={styles.addIcon}
-            style={{float: "right", fontWeight: "bold",fontSize: "20px", border: "none", margin: "0", padding: "0"}}
-            title="Tắt Thêm Bài Viết"
+            style={{float: "left", fontWeight: "bold",fontSize: "25px", border: "none", margin: "0", padding: "2px"}}
+            title="Quay lại"
         >
-          <MdCancel/>
+          <FaRegCircleLeft/>
         </Link>
         <h2>Chi tiết bài viết</h2>
 
@@ -230,12 +231,13 @@ const BlogForm: React.FC = () => {
                 required
             >
               <option value="">Chọn thể loại</option>
-              <option value="0">Tin nổi bật</option>
-              <option value="1">Thể thao</option>
-              <option value="2">Phòng ban</option>
-              <option value="3">Nhân sự</option>
-              <option value="4">Qui định</option>
-              <option value="5">Chính sách</option>
+              <option value="1">Tin nổi bật</option>
+              <option value="2">Thể thao</option>
+              <option value="3">Phòng ban</option>
+              <option value="4">Nhân sự</option>
+              <option value="5">Qui định</option>
+              <option value="6">Chính sách</option>
+              <option value="7">Lương</option>
             </select>
           </div>
           <div className={styles.formGroup}>

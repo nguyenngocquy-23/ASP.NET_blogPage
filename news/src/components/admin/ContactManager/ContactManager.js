@@ -16,6 +16,7 @@ const ContactManager = () => {
     const [clickedCPH, setClickedCPH] = useState(true);
     const [clickedDPH, setClickedDPH] = useState(false);
     const [id , setID] = useState("");
+    const [name ,setName] = useState("");
     const [loading, setLoading] = useState(true);
 
 
@@ -62,6 +63,7 @@ const ContactManager = () => {
         setEmail(row.email);
         setContentFeedback(row.content);
         setID(row.id);
+        setName(row.fullName);
     };
     const CancalForm = () => {
         setFormVisible(false);
@@ -190,7 +192,7 @@ const ContactManager = () => {
                         <h3 style={{fontWeight: "bold"}}>Phản Hồi Người Dùng</h3>
                         <form onSubmit={handleSubmit}>
                             <div>
-                                <label style={{fontWeight: 'bold'}}>Người dùng:</label>
+                                <label style={{fontWeight: 'bold'}}>{name}:</label>
                                 <p style={{margin: "10px 0"}}>- {contentFeedback}</p>
                             </div>
                             <div className="form-group">
