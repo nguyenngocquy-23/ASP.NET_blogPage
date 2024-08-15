@@ -69,7 +69,10 @@ namespace apiServer.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
 
                     b.Property<string>("Image")
                         .IsRequired()
@@ -77,6 +80,11 @@ namespace apiServer.Migrations
 
                     b.Property<int>("NumLike")
                         .HasColumnType("int");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<byte>("Status")
                         .HasColumnType("tinyint unsigned");
@@ -119,7 +127,6 @@ namespace apiServer.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -145,7 +152,6 @@ namespace apiServer.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<int>("BlogId")
                         .HasColumnType("int");
 
@@ -160,10 +166,11 @@ namespace apiServer.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -197,6 +204,9 @@ namespace apiServer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<byte>("FeedBack")
+                        .HasColumnType("tinyint unsigned");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -221,7 +231,10 @@ namespace apiServer.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -243,8 +256,8 @@ namespace apiServer.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<byte>("Role")
                         .HasColumnType("tinyint unsigned");

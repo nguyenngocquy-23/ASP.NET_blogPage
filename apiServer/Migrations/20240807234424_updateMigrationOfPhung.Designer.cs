@@ -12,8 +12,8 @@ using apiServer.Data;
 namespace apiServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240804162929_updateTypeDataBlog")]
-    partial class updateTypeDataBlog
+    [Migration("20240807234424_updateMigrationOfPhung")]
+    partial class updateMigrationOfPhung
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,32 @@ namespace apiServer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("apiServer.Models.ActivationInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("activationInfo");
+                });
 
             modelBuilder.Entity("apiServer.Models.Blog", b =>
                 {
@@ -38,28 +64,32 @@ namespace apiServer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("CategoryId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
 
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("NumLike")
-                        .HasMaxLength(50)
                         .HasColumnType("int");
 
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<byte>("Status")
-                        .HasMaxLength(50)
                         .HasColumnType("tinyint unsigned");
 
                     b.Property<string>("Title")
@@ -93,6 +123,32 @@ namespace apiServer.Migrations
                     b.ToTable("categories");
                 });
 
+            modelBuilder.Entity("apiServer.Models.ChangePwCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("changePwCode");
+                });
+
             modelBuilder.Entity("apiServer.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
@@ -101,10 +157,8 @@ namespace apiServer.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BlogId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -122,10 +176,8 @@ namespace apiServer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -192,6 +244,9 @@ namespace apiServer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -199,8 +254,8 @@ namespace apiServer.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<byte>("Role")
                         .HasColumnType("tinyint unsigned");
@@ -214,6 +269,12 @@ namespace apiServer.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("users");
                 });

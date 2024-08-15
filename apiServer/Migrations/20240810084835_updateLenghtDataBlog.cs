@@ -5,7 +5,7 @@
 namespace apiServer.Migrations
 {
     /// <inheritdoc />
-    public partial class addSomeTable : Migration
+    public partial class updateLenghtDataBlog : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

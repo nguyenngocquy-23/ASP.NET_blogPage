@@ -6,6 +6,9 @@ namespace apiServer.DTO
     {
         [Required]
         public int Id { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string Auth { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
@@ -13,6 +16,9 @@ namespace apiServer.DTO
         [Required]
         [StringLength(50)]
         public string Title { get; set; }
+        [Required]
+        [StringLength(200)]
+        public string ShortDescription { get; set; }
 
         [Required]
         public string Image { get; set; }

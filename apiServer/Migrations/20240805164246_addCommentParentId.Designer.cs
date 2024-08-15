@@ -12,8 +12,8 @@ using apiServer.Data;
 namespace apiServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240809074414_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240805164246_addCommentParentId")]
+    partial class addCommentParentId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,32 +24,6 @@ namespace apiServer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
-
-            modelBuilder.Entity("apiServer.Models.ActivationInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Token")
-                        .IsUnique();
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("activationInfo");
-                });
 
             modelBuilder.Entity("apiServer.Models.Blog", b =>
                 {
@@ -115,32 +89,6 @@ namespace apiServer.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("apiServer.Models.ChangePwCode", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("changePwCode");
-                });
-
             modelBuilder.Entity("apiServer.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
@@ -162,6 +110,9 @@ namespace apiServer.Migrations
                         .HasColumnType("datetime(6)");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -236,9 +187,6 @@ namespace apiServer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<bool>("IsEnable")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -261,12 +209,6 @@ namespace apiServer.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Username")
-                        .IsUnique();
 
                     b.ToTable("users");
                 });

@@ -7,25 +7,19 @@ function Footer() {
         <footer className={styles.footer}>
             <div className={styles.preContainer}>
                 <ul className={styles.category}>
-                    <li><a href="/giao-duc">Giáo dục</a></li>
-                    <li><a href="/chinh-tri">Chính trị</a></li>
-                    <li><a href="/van-hoa">Văn hóa</a></li>
+                    <li><a href="/tin-noi-bat">Tin nổi bật</a></li>
                     <li><a href="/the-thao">Thể thao</a></li>
-                    <li><a href="/doi-song">Đời sống</a></li>
-                    <li><a href="/suc-khoe">Sức khỏe</a></li>
-                    <li><a href="/du-lich">Du lịch</a></li>
-                    <li><a href="/kinh-doanh">Kinh doanh</a></li>
-                    <li><a href="/talkshow">Talks</a></li>
-                    <li><a href="/su-kien">Sự kiện</a></li>
-                    <li><a href="/podcast">Podcast</a></li>
-                    <li><a href="/tin-tuc-24h">Tin tức 24h</a></li>
+                    <li><a href="/nhan-su">Nhân sự</a></li>
+                    <li><a href="/qui-dinh">Qui định</a></li>
+                    <li><a href="/chinh-sach">Chính sách</a></li>
+                    <li><a href="/phong-ban">Phòng ban</a></li>
+                    <li><a href="/luonng">Lương</a></li>
                 </ul>
             </div>
             <div className={styles.container}>
                 <div className={styles.footerSection}>
                     <h4>Về Chúng Tôi</h4>
-                    <p>Trang cung cấp những thông tin mới mẻ và chính xác nhất. Đáp ứng nhu cầu theo dõi thông tin xã
-                        hội trong và ngoài nước.</p>
+                    <p>Trang cung cấp những thông tin mới nhất từ công ty cũng như tình hình phát triển và cạnh tranh của công ty nhằm giúp nhân viên nắm được tình hình công ty và nâng cao tinh thần trách nhiệm trong công việc.</p>
                 </div>
                 <div className={styles.footerSection}>
                     <h4>Liên Hệ</h4>

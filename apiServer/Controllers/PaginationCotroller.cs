@@ -34,6 +34,19 @@ namespace apiServer.Controllers
             return Ok(totalPages);
 
         }
+
+        [HttpPost("paginationBlogsByCategory")]
+        public async Task<ActionResult<IEnumerable<int>>> totalPageBlogsByCategory([FromQuery] int id, int limit)
+        {
+            var totalCount = await _context.Blog
+                .Where(blog => blog.CategoryId == id)
+                .CountAsync();
+
+            var totalPages = (int)Math.Ceiling((double)totalCount / limit);
+
+            return Ok(totalPages);
+
+        }
     }
 
 }

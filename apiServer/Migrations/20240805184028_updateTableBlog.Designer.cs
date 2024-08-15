@@ -12,8 +12,8 @@ using apiServer.Data;
 namespace apiServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240802145238_AddTableContact")]
-    partial class AddTableContact
+    [Migration("20240805184028_updateTableBlog")]
+    partial class updateTableBlog
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,31 +33,38 @@ namespace apiServer.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CategoryId")
+                    b.Property<string>("Auth")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<DateTime>("CreatedAt"));
 
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("NumLike")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("NumLike")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("ShortDescription")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -66,11 +73,6 @@ namespace apiServer.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
@@ -201,8 +203,8 @@ namespace apiServer.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<byte>("Role")
                         .HasColumnType("tinyint unsigned");
