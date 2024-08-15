@@ -1,3 +1,4 @@
+
 import React, {useState} from 'react';
 import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom';
@@ -24,7 +25,6 @@ function Login() {
             localStorage.setItem('authToken', response.data.token);
             const {id, username, fullName, email, phoneNumber, role, status} = response.data;
             const userData = {id, username, fullName, email, phoneNumber, role, status};
-            console.log('userData : '+ userData.email)
             dispatch(loginCurrentUser(userData));
             if (response.data.role == 0)
                 navigate('/admin');
