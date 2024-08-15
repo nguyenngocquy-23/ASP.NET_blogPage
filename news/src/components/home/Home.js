@@ -39,7 +39,18 @@ function Home() {
             console.error("Home error: ", error)
         }
     }
-
+    function extractLinkPath(url){
+        const parts = url.split('/');
+        return parts[parts.length - 1];
+    };
+    const feedUrl = {
+        tin_noi_bat: 'https://localhost:7125/AdminBlog/tin_noi_bat',
+        the_thao: 'https://localhost:7125/AdminBlog/the-thao',
+        phong_ban: 'https://localhost:7125/AdminBlog/phong-ban',
+        nhan_su: 'https://localhost:7125/AdminBlog/nhan-su',
+        qui_dinh: 'https://localhost:7125/AdminBlog/qui-dinh',
+        chinh_sach: 'https://localhost:7125/AdminBlog/chinh-sach',
+    };
     useEffect(() => {
         fetch();
     }, []);

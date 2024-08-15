@@ -33,7 +33,7 @@ function RouterConfig() {
                     <Route path="/users" element={<UserList/>} />
                     <Route path="/unauthorized" element={<Unauthorized/>} />
                     <Route path='/contact' element={<Contact/>}/>
-
+                    <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
                     <Route path='/admin/blogs' element={<Blog/>}/>
                     <Route path='/admin/blogDetail' element={<BlogForm/>}/>
@@ -41,7 +41,6 @@ function RouterConfig() {
                     <Route path='/admin/contactManager' element={<ContactManager/>}/>
                 </Route>
                 {/* <Route path='/test' element={<Test/>}/> */}
-                <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
                 <Route path='/admin' element={<AdminHome/>}>
                     <Route index element={<Dashboard/>}/>
                     <Route path='blogs' element={<Blog/>}/>
