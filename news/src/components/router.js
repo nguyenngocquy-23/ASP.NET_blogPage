@@ -25,7 +25,7 @@ function RouterConfig() {
                     <Route index element={<Home/>}/>
                     <Route path='/:category' element={<Category/>}></Route>
                     <Route path='/:category/:subcategory' element={<Category/>}></Route>
-                    <Route path='/detail/:link' element={<Detail/>}></Route>
+                    <Route path='/detail/:id' element={<Detail/>}></Route>
                     <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}></Route>
                     <Route path='/history' element={<History/>}></Route>
                     <Route path='/login' element={<Login/>}/>
@@ -35,6 +35,10 @@ function RouterConfig() {
                     <Route path='/contact' element={<Contact/>}/>
                     <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
+                    <Route path='/admin/blogs' element={<Blog/>}/>
+                    <Route path='/admin/blogDetail' element={<BlogForm/>}/>
+                    <Route path='/admin/blogDetail/:blogId' element={<BlogForm/>}/>
+                    <Route path='/admin/contactManager' element={<ContactManager/>}/>
                 </Route>
                 {/* <Route path='/test' element={<Test/>}/> */}
                 <Route path='/admin' element={<AdminHome/>}>
