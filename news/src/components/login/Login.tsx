@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+
+import React, {useState} from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import styles from './register.module.css';
+import {useDispatch} from "react-redux";
+import {loginCurrentUser} from "../reduxStore/UserSlice";
 
 function Login() {
     const [usernameOrEmail, setUsernameOrEmail] = useState<string>('');
@@ -9,6 +12,7 @@ function Login() {
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,7 +23,14 @@ function Login() {
                 password
             });
             localStorage.setItem('authToken', response.data.token);
-            navigate('/');
+            //
+            const {id, username, fullName, email, phoneNumber} = response.data;
+            const userData = {id, username, fullName, email, phoneNumber};
+            dispatch(loginCurrentUser(userData));
+            if (response.data.role == 0)
+                navigate('/admin');
+            else
+                navigate('/')
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 const errorMsg = typeof err.response?.data === 'string' ? err.response.data : 'Đăng nhập không thành công. Vui lòng thử lại sau.';
@@ -37,7 +48,7 @@ function Login() {
         setError('');
         try {
             await axios.post('https://localhost:7125/User/requireActivateAccount', null, {
-                params: { emailorUsername: usernameOrEmail }
+                params: {emailorUsername: usernameOrEmail}
             });
             alert('Yêu cầu gửi lại link kích hoạt đã được gửi thành công! Vui lòng kiểm tra hộp thư email của bạn.');
         } catch (err) {
@@ -58,9 +69,14 @@ function Login() {
             <div>
                 <div>
                     {error &&
-                        <p style={{ color: 'red', fontWeight: 600, fontStyle: 'italic', textAlign: 'center' }}>{error}</p>}
+                        <p style={{
+                            color: 'red',
+                            fontWeight: 600,
+                            fontStyle: 'italic',
+                            textAlign: 'center'
+                        }}>{error}</p>}
                     {error && typeof error === 'string' && error.includes("kiểm tra hộp thư email") &&
-                        <div className={styles.linkContainer} style={{ float: "right", cursor: "pointer" }}>
+                        <div className={styles.linkContainer} style={{float: "right", cursor: "pointer"}}>
                             <p onClick={handleResendActivationLink}>Yêu cầu gửi lại</p>
                         </div>
                     }
@@ -92,7 +108,7 @@ function Login() {
                         </button>
                         {loading && <div className={styles.loader}></div>}
                         <div className={styles.linkContainer}>
-                            <div style={{ marginTop: '5px' }}>
+                            <div style={{marginTop: '5px'}}>
                                 <label>Chưa có tài khoản? </label>
                                 <Link to="/register">Đăng ký</Link>
                             </div>

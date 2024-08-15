@@ -1,16 +1,18 @@
 // Header.tsx
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaFacebook, FaTwitter, FaInstagram, FaHistory } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram, FaHistory, FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import styles from "./header.module.css";
 import { RootState } from "../reduxStore/Store";
+import {logoutCurrentUser} from "../reduxStore/UserSlice";
 
 function Header() {
-  const currentUser = null;
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const dispatch = useDispatch();
   const handleLogout = () => {
-    
+    dispatch(logoutCurrentUser())
+    localStorage.removeItem('authToken');
   };
   return (
     <header className={styles.header}>
@@ -29,26 +31,24 @@ function Header() {
             {currentUser ? (
               <>
                 <li className={styles.account}>
-                  <Link to="/">{"currentUser.email"}</Link>
-                  <div className={styles.logout}>
-                    <Link to="/login" onClick={handleLogout}>
-                      Đăng xuất
-                    </Link>
-                  </div>
-                </li>
-                <li className={styles.account}>
-                  <Link to="/">{"currentUser.email"}</Link>
+                  <Link to="/"></Link>
                   <div className={styles.info}>
                     <Link to="/manaInfo">
-                      Tài khoản
+                      <FaUser style={{marginRight: "4px"}}/>
+                      {currentUser.fullName}
                     </Link>
+                    <div className={styles.logout}>
+                      <Link to="/login" onClick={handleLogout}>
+                        Đăng xuất
+                      </Link>
+                    </div>
                   </div>
                 </li>
               </>
             ) : (
-              <li>
-                <Link to="/login">Đăng nhập</Link>
-              </li>
+                <li>
+                  <Link to="/login">Đăng nhập</Link>
+                </li>
             )}
           </ul>
         </nav>
