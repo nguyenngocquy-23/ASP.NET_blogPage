@@ -170,8 +170,10 @@ namespace apiServer.Migrations
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 

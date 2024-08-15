@@ -10,12 +10,12 @@ import SearchPage from './searchpage/search';
 import History from './history/history';
 import Contact from "./contact/Contact";
 import ManaInfo from "./manageInfo/ManaInfo";
-import BlogForm from "./admin/blogDetail/BlogDetail";
 import Blog from './admin/blog/Blog';
 import UserList from "./login/UserList";
 import Unauthorized from "./login/Unauthorized";
 import ContactManager from "./admin/ContactManager/ContactManager";
-
+import BlogForm from "./admin/blogDetail/blogDetail";
+import CommentManage from "./admin/CommentManager/CommentManage";
 function RouterConfig() {
     return (
         <Router>
@@ -37,6 +37,7 @@ function RouterConfig() {
                     <Route path='/admin/blogDetail' element={<BlogForm/>}/>
                     <Route path='/admin/blogDetail/:blogId' element={<BlogForm/>}/>
                     <Route path='/admin/contactManager' element={<ContactManager/>}/>
+                    <Route path='/admin/commentManager' element={<CommentManage/>}/>
                 </Route>
                 {/* <Route path='/test' element={<Test/>}/> */}
                 <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>

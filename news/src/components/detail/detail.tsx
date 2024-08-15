@@ -10,6 +10,8 @@ import {FaRegMessage, FaVolumeHigh, FaVolumeOff} from 'react-icons/fa6';
 import {addReadArticle} from "../reduxStore/UserSlice";
 import podStyles from "./Podcast.module.css";
 import CommentList from "./comment/CommentList";
+import {getUserFromToken, User} from "../utils/UserUtils";
+import Swal from "sweetalert2";
 
 // Định nghĩa interface cho chi tiết bài viết
 interface DetailContent {
@@ -34,8 +36,26 @@ const Detail: React.FC = () => {
     const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
     const [commentContent, setCommentContent] = useState<string>(''); // State để lưu nội dung bình luận
     const dispatch = useDispatch();
-    const currentUser =1; // test với 1.
+    // const currentUser =1; // test với 1.
     const comments = null;
+    // Dành cho việc lấy user từ token.
+    const [currentUser, setCurrentUser] = useState<User| null>(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const userData = await getUserFromToken();
+            setCurrentUser(userData);
+
+        };
+        fetchUser();
+    }, []);
+
+
+
+
+
+
+
     // const comments = useSelector((state: RootState) =>
     //     state.user.comments.filter((comment  ) => comment.link === link)
     // ); // Lọc bình luận theo link của bài viết hiện tại
@@ -205,6 +225,61 @@ const Detail: React.FC = () => {
     const handleCommentSubmit = () => {
     };
 
+    const approveComment = async() => {
+        const result = await Swal.fire({
+            title: 'Kiểm duyệt toàn bộ bình luận?',
+            text: 'Hành động này sẽ duyệt tất cả bình luận chờ duyệt!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Đúng, duyệt tất cả!',
+            cancelButtonText: 'Hủy'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                // Gửi yêu cầu PUT đến API để duyệt tất cả bình luận
+                const response = await axios.put(`https://localhost:7125/api/Comment/reviews/2`);
+
+                await Swal.fire({
+                    title: 'Duyệt thành công',
+                    html: `
+                        <p>Đã duyệt tất cả bình luận thành công!</p>
+                        <p>Chi tiết xem tại
+                        <a href="http://localhost:3000/admin/commentManager"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         style="color: #3FA2F6; 
+                         font-weight: bold;"
+                         >
+                        Quản lý bình luận</a></p>
+                    `,
+                    icon: 'success',
+                    confirmButtonText: 'Ở lại'
+                });
+
+                // Cập nhật giao diện nếu cần (tuỳ chọn)
+                // const updatedBackendComments = backendComments.map(comment => {
+                //     if (comment.blogId === blogId) {
+                //         return { ...comment, status: 1 }; // Ví dụ cập nhật trạng thái
+                //     }
+                //     return comment;
+                // });
+                // setBackendComments(updatedBackendComments);
+
+            } catch (error) {
+                console.error("Lỗi khi duyệt bình luận", error);
+                await Swal.fire({
+                    title: 'Lỗi!',
+                    text: 'Có lỗi xảy ra khi duyệt bình luận, vui lòng thử lại',
+                    icon: 'error',
+                    confirmButtonText: 'Đóng'
+                });
+            }
+        }
+    }
+
+
+
     return (
         <div className={styles.container}>
             <div className={styles.subContainer}>
@@ -280,7 +355,15 @@ const Detail: React.FC = () => {
             </div>
             {/*Bình luận - */}
             <div className={styles.comments}>
-                <span className={styles.title}>Bình luận</span><br/>
+                <span className={styles.title}>Bình luận</span>
+                {currentUser !== null && currentUser.role===0 && (
+                    <button className="comment-form-button checked-comment"
+                           onClick={approveComment}
+
+                    >Kiểm duyệt toàn bộ bình luận!</button>
+                )}
+                
+                <br/>
                 {/*{currentUser ? (*/}
                 {/*    <>*/}
                 {/*        <textarea className={styles.inputComment} maxLength={500}*/}
@@ -296,10 +379,10 @@ const Detail: React.FC = () => {
                 {/*        <span className="comment-number vnn-comment-count-detail"></span>*/}
                 {/*    </>*/}
 
-
+                {currentUser !== null && (
                 <CommentList currentUser = {currentUser} blogId = {2}/>
 
-
+                )}
                 {/*) : (*/}
                 {/*    <span className={styles.noMess}>*/}
                 {/*        <FaRegMessage/>*/}

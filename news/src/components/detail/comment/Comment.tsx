@@ -8,6 +8,7 @@ import CommentForm from "./CommentForm";
 import {ActiveComment} from "./CommentList";
 import { GrUserAdmin } from "react-icons/gr";
 import { MdAdminPanelSettings } from "react-icons/md";
+import { User} from "../../utils/UserUtils";
 
 
 
@@ -15,7 +16,7 @@ import { MdAdminPanelSettings } from "react-icons/md";
 interface CommentProps {
     comment: CommentType;
     replies: CommentType[];
-    currentUser: number;
+    currentUser: User;
     deleteComment: (commentId: number) => void;
     activeComment: ActiveComment;
     setActiveComment: React.Dispatch<React.SetStateAction<ActiveComment>>;
@@ -45,10 +46,10 @@ const Comment: React.FC<CommentProps> = ({
     const canReply = Boolean(currentUser);
 
     // Chỉnh sửa : chỉ có ngưười viết mới có quyền chỉnh sửa, thời gian để chỉnh sửa chỉ là 5'
-    const canEdit = currentUser === comment.userId && !timePassed;
+    const canEdit = currentUser.id === comment.userId && !timePassed;
 
     // Xóa: người viết có quyền xóa comment, admin cũng vậy !!
-    const canDelete = (currentUser === comment.userId && !timePassed || currentUser === 1) || currentUser === 1;
+    const canDelete = (currentUser.id === comment.userId && !timePassed) || currentUser.role === 0;
     console.log("Co quyen xoa khong?" + canDelete);
 
     const isReplying = activeComment
@@ -62,7 +63,8 @@ const Comment: React.FC<CommentProps> = ({
 
 
     return (
-        <div className="comment">
+        <div className={`comment ${currentUser.role === 0 && comment.status===2 ? 'pending-comment-bg': ''}`}>
+           
             <div className="comment-avatar">
                 <img src="https://i.pinimg.com/564x/70/e4/ea/70e4ea4af5c79a543e3e79b1d67e1205.jpg" alt=""/>
             </div>
@@ -72,7 +74,7 @@ const Comment: React.FC<CommentProps> = ({
 
                     </div>
 
-                    {comment.userId===1 && (
+                    {comment.role===0 && (
                         <div className="comment-admin"><MdAdminPanelSettings /></div>
                     )}
 
