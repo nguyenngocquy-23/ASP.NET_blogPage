@@ -125,47 +125,6 @@ function Home() {
         const parts = url.split('/');
         return parts[parts.length - 1];
     };
-    const RSSFeed = ({ feedUrl, title }) => {
-        const [items, setItems] = useState([]);
-
-        useEffect(() => {
-            const getRSSItems = async () => {
-                const rssItems = await fetchRSSItems(feedUrl);
-                setItems(rssItems);
-            };
-            getRSSItems();
-        }, [feedUrl]);
-        function convertRssUrlToLocalUrl(rssUrl) {
-            const url = new URL(rssUrl);
-            const path = url.pathname.split('.rss')[0]; // Lấy phần đường dẫn trước '.rss'
-            return `http://localhost:3000${path}`;
-        }
-        return (
-            <div className={styles.boxCate}>
-                <div className={styles.boxCate__head}>
-                    <Link to={convertRssUrlToLocalUrl(feedUrl)}>{title}</Link>
-                </div>
-                <div className={styles.boxCate__main}>
-                    {items.map((item, index) => (
-                        index === 0 ? (
-                            <div key={index} className={styles.boxCate__topItem}>
-                                <img src={item.imageUrl} alt={item.title} />
-                                <Link to={item.link}>
-                                    {item.title}
-                                </Link>
-                            </div>
-                        ) : (
-                            <div key={index} className={styles.boxCate__item}>
-                                <a href={item.link} target="_blank" rel="noopener noreferrer">
-                                    {item.title}
-                                </a>
-                            </div>
-                        )
-                        ))}
-                </div>
-            </div>
-        );
-    };
     const feedUrl = {
         tin_noi_bat: 'https://localhost:7125/AdminBlog/tin_noi_bat',
         the_thao: 'https://localhost:7125/AdminBlog/the-thao',
@@ -256,7 +215,7 @@ function Home() {
             </div>
             <div className={styles.home__block1}>
                 <div className={styles.block1__groups}>
-                    <div className={styles.group1}>
+                    {/* <div className={styles.group1}>
                         <RSSFeed feedUrl={feedUrl.thoi_su} title="Thời Sự"/>
                         <RSSFeed feedUrl={feedUrl.the_thao} title="Thể Thao"/>
                     </div>
@@ -266,7 +225,7 @@ function Home() {
                             <RSSFeed feedUrl={feedUrl.su_kien} title="Sự Kiện"/>
                             <RSSFeed feedUrl={feedUrl.tuan_viet_nam} title="Tuần Việt Nam"/>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>

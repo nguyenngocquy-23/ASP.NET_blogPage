@@ -2,12 +2,12 @@
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .sidebar {
     width: 250px;
-    background-color: #686868;
+    background-color: #009879;
     color: white;
     padding: 20px;
     box-sizing: border-box;
@@ -15,6 +15,7 @@
 
 .sidebar h2 {
     text-align: center;
+    color: white;
 }
 
 .sidebar ul {
@@ -30,15 +31,18 @@
     color: white;
     text-decoration: none;
     display: block;
-    padding: 10px 0;
+    padding: 10px 15px;
 }
 .sidebar ul li .Click {
-    background: #008eff;
-    padding-left:5px;
+    background: #005f4c;
+    padding-left:20px;
+    border-radius: 8px;
+    font-weight: 700;
 }
 .sidebar ul li a:hover {
-    background-color: #34495e;
-    padding-left:5px;
+    background-color: #005f4c;
+    padding-left:20px;
+    border-radius: 8px;
 }
 
 .main-content {
@@ -47,15 +51,29 @@
     flex-direction: column;
 }
 
+.navbar a{
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    z-index: 100;
+    color: white;
+}
+.navbar a:hover{
+    color: #005f4c;
+}
 .navbar {
-    background-color: #34495e;
+    background-color: #1edfb8;
     color: white;
     padding: 15px;
-    display: flex;
+    /* display: flex; */
+    position: relative;
 }
 .navbar h1 {
-    color: white;
+    color: #005f4c;
     margin: auto;
+    text-align: center;
+    font-size: 25;
+    font-weight: 700;
 }
 .navbar p {
     color: white;
