@@ -13,7 +13,7 @@
         // Tên người bình luận
         public string UserName { get; set; }
 
-        // Trạng thái bình luận: 0 - Bị ẩn ; 1 - Bình Thường.
+        // Trạng thái bình luận: 0 - Bị ẩn ; 1 - Bình Thường + ĐÃ kiểm duyệt ; 2 - Bình thường + Chưa kiểm duyệt ; 3 - Đã chỉnh sửa.
         public int Status { get; set; }
         public string Content { get; set; }
 

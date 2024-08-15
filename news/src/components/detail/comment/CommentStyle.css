@@ -1,0 +1,141 @@
+.comment {
+    display: flex;
+    font-size: 16px;
+    margin-top: 15px;
+
+}
+
+.pending-comment-bg {
+    padding: 10px;
+    background-color: #FFBF78;
+    border-radius: 5px;
+}
+.form-comment .comment-form-textarea {
+    width: 100%;
+    heigth: 59px;
+    padding: 15px;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+    border-color: #cccccc;
+}
+/*textarea:is(:focus, :valid) {*/
+/*    border-color: #2d67ab;*/
+/*    border-width: 2px;*/
+/*    padding:14px;*/
+
+/*}*/
+.comment-form-textarea:focus {
+    border-color: #000000;
+
+}
+textarea::-webkit-scrollbar {
+    width: 0px;
+}
+.comment-form-button:disabled {
+    background-image: linear-gradient(rgba(198, 199, 200, 0.9), rgba(198, 199, 200, 0.9));
+    cursor: not-allowed;
+}
+
+.comment-form-button {
+    background-image: linear-gradient(#0dccea, #0d70ea);
+    border: 0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-family: Montserrat,sans-serif;
+    font-size: .9em;
+    margin: 5px;
+    padding: 8px 15px;
+    text-align: right;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.checked-comment {
+    background-image: linear-gradient(#06D001, #9BEC00);
+    float: right;
+}
+
+
+
+
+.comment .comment-avatar img {
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    background-color: #cccccc;
+    margin: 0;
+}
+
+.comment .comment-right-part {
+    margin-left: 10px;
+}
+
+.comment .comment-content{
+    display: flex;
+    flex-direction: row;
+
+
+
+}
+
+.comment .comment-content span {
+    font-size: 0.9rem;
+    justify-content: center;
+    line-height: 1.7;
+    color: #606060;
+}
+.comment .comment-author {
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.comment-admin {
+    padding-left: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #0d70ea;
+    text-align: center;
+
+}
+.comment-date {
+    margin-left: 15px;
+}
+
+.comment .comment-actions  {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.comment .comment-actions .comment-action {
+    padding: 5px;
+    margin-right: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.comment .comment-actions .comment-action:hover {
+   background-color: #EAEAEA;
+    border-radius: 10px;
+}
+
+.comment .comment-actions .edit-action {
+  font-weight: bold;
+    color: #2d67ad;
+}
+.comment .comment-actions .remove-action {
+    color: #FF0000;
+
+}
+
+.comment-note {
+    font-size: 14px;
+    font-style: italic;
+}
+.replies {
+    margin-top: 15px;
+}
