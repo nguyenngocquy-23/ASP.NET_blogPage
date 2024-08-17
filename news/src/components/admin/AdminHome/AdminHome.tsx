@@ -1,9 +1,9 @@
 import "./AdminHome.css";
-import { Link, Outlet } from "react-router-dom";
+import {Link, Outlet, useNavigate} from "react-router-dom";
 import { TfiWrite } from "react-icons/tfi";
 import { MdContactMail, MdDashboard } from "react-icons/md";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "../../reduxStore/Store";
 import {FaUserCog} from "react-icons/fa";
 
@@ -13,6 +13,14 @@ const AdminHome = () => {
   const [clickBlog, setClickBlog] = useState(false);
   const [clickContact, setClickContact] = useState(false);
   const [clickUsers, setClickUsers] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (currentUser?.role != 0) {
+      navigate('/unauthorized');
+    }
+  }, [currentUser, navigate]);
 
   const handlerDashboard = () => {
     setClickDashBoard(true);

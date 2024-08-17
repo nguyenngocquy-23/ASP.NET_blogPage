@@ -3,9 +3,20 @@ import axios from "axios";
 import './ContactManager.css';
 import Swal from "sweetalert2";
 import DataTable from 'react-data-table-component';
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 
 const ContactManager = () => {
+    const navigate = useNavigate();
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (currentUser?.role != 0) {
+            navigate('/unauthorized');
+        }
+    }, [currentUser, navigate]);
+
     const [dataContact, setDataContact] = useState([]);
     const [isFormVisible, setFormVisible] = useState(false);
     const [contentFeedback,setContentFeedback] = useState("");

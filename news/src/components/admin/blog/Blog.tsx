@@ -3,9 +3,11 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 import { format, parseISO } from "date-fns"; // hỗ trợ định dạng ngày tháng theo mẫu
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import styles from "../blog/Blog.module.css";
 import Swal from "sweetalert2";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../reduxStore/Store";
 
 interface Blog {
   id: number;
@@ -18,6 +20,15 @@ interface Blog {
 }
 
 const Blog: React.FC = () => {
+  const navigate = useNavigate();
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (currentUser?.role != 0) {
+      navigate('/unauthorized');
+    }
+  }, [currentUser, navigate]);
+
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");

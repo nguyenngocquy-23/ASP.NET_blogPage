@@ -11,14 +11,14 @@ import History from './history/history';
 import Contact from "./contact/Contact";
 import ManaInfo from "./manageInfo/ManaInfo";
 import Blog from './admin/blog/Blog';
-import UserList from "./login/UserList";
-import Unauthorized from "./login/Unauthorized";
 import ContactManager from "./admin/ContactManager/ContactManager";
 
 import BlogForm from "./admin/blogDetail/blogDetail";
 import CommentManage from "./admin/CommentManager/CommentManage";
 import AdminHome from "./admin/AdminHome/AdminHome";
 import Dashboard from "./admin/Dashboard/Dashboard";
+import Unauthorized from "./admin/users/Unauthorized";
+import UserList from "./admin/users/UserList";
 function RouterConfig() {
     return (
         <Router>
@@ -49,7 +49,7 @@ function RouterConfig() {
                     <Route path='blogDetail' element={<BlogForm/>}/>
                     <Route path='blogDetail/:blogId' element={<BlogForm/>}/>
                     <Route path='contactManager' element={<ContactManager/>}/>
-                    <Route path="/users" element={<UserList/>} />
+                    <Route path="users" element={<UserList/>} />
                 </Route>
             </Routes>
         </Router>
