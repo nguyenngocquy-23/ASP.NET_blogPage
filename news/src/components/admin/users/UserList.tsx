@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Thêm để điều hướng
 import styles from './userList.module.css';
+import { FaLock } from "react-icons/fa";
+import { FaUnlock } from "react-icons/fa";
 
 interface User {
     id: number;
+    fullName: string;
     username: string;
     email: string;
+    phoneNumber: string;
     status: number;
 }
 
@@ -95,22 +99,24 @@ function UserList() {
                     <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Tên Tài Khoản</th>
                         <th>Tên Đăng Nhập</th>
                         <th>Email</th>
-                        <th>Trạng Thái</th>
-                        <th>Hành Động</th>
+                        <th>Số điện thoại</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     {users.map((user: User) => (
                         <tr key={user.id}>
                             <td>{user.id}</td>
+                            <td>{user.fullName}</td>
                             <td>{user.username}</td>
                             <td>{user.email}</td>
-                            <td>{user.status === 1 ? 'Active' : 'Locked'}</td>
+                            <td>{user.phoneNumber}</td>
                             <td>
                                 <button onClick={() => toggleLockStatus(user.id)}>
-                                    {user.status === 1 ? 'Khóa' : 'Mở Khóa'}
+                                    {user.status === 0 ? <FaLock style={{color: 'red'}}/> : <FaUnlock/>}
                                 </button>
                             </td>
                         </tr>

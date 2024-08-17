@@ -5,28 +5,39 @@ import { MdContactMail, MdDashboard } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reduxStore/Store";
+import {FaUserCog} from "react-icons/fa";
 
 const AdminHome = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const [clickDashBoard, setClickDashBoard] = useState(true);
   const [clickBlog, setClickBlog] = useState(false);
   const [clickContact, setClickContact] = useState(false);
+  const [clickUsers, setClickUsers] = useState(false);
 
   const handlerDashboard = () => {
     setClickDashBoard(true);
     setClickContact(false);
     setClickBlog(false);
+    setClickUsers(false);
   };
   const handlerBlog = () => {
     setClickDashBoard(false);
     setClickContact(false);
     setClickBlog(true);
+    setClickUsers(false);
   };
   const handlerContact = () => {
     setClickDashBoard(false);
     setClickContact(true);
     setClickBlog(false);
+    setClickUsers(false);
   };
+  const handlerUsers = () => {
+    setClickDashBoard(false);
+    setClickContact(false);
+    setClickBlog(false);
+    setClickUsers(true);
+  }
   return (
     <div className="container">
       <div className="sidebar">
@@ -37,21 +48,24 @@ const AdminHome = () => {
         <ul>
           <li onClick={() => handlerDashboard()}>
             <Link to="/admin" className={clickDashBoard ? "Click" : ""}>
-              <MdDashboard /> Dashboard
+              <MdDashboard/> Dashboard
             </Link>
           </li>
           <li onClick={() => handlerBlog()}>
             <Link to="/admin/blogs" className={clickBlog ? "Click" : ""}>
-              <TfiWrite /> Quản Lý Bài Blog
+              <TfiWrite/> Quản Lý Bài Blog
             </Link>
           </li>
           <li onClick={() => handlerContact()}>
             <Link
-              to="/admin/ContactManager"
-              className={clickContact ? "Click" : ""}
+                to="/admin/ContactManager"
+                className={clickContact ? "Click" : ""}
             >
-              <MdContactMail /> Quản Lý Liên Hệ
+              <MdContactMail/> Quản Lý Liên Hệ
             </Link>
+          </li>
+          <li onClick={() => handlerUsers()}><Link to="/admin/users"
+                                                   className={clickUsers ? "Click" : ""}><FaUserCog/> Quản Lý Tài Khoản</Link>
           </li>
         </ul>
       </div>
@@ -60,8 +74,8 @@ const AdminHome = () => {
           <h1>
             Welcome to Admin {currentUser.fullName}
             <a href={"/login"}>
-                Đăng Xuất
-              </a>
+              Đăng Xuất
+            </a>
           </h1>
         </div>
         <div className="content">
