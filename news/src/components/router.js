@@ -32,7 +32,6 @@ function RouterConfig() {
                     <Route path='/history' element={<History/>}></Route>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/register' element={<Register/>}/>
-                    <Route path="/users" element={<UserList/>} />
                     <Route path="/unauthorized" element={<Unauthorized/>} />
                     <Route path='/contact' element={<Contact/>}/>
                     <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
@@ -50,6 +49,7 @@ function RouterConfig() {
                     <Route path='blogDetail' element={<BlogForm/>}/>
                     <Route path='blogDetail/:blogId' element={<BlogForm/>}/>
                     <Route path='contactManager' element={<ContactManager/>}/>
+                    <Route path="/users" element={<UserList/>} />
                 </Route>
             </Routes>
         </Router>
