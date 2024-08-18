@@ -15,6 +15,7 @@ const AdminHome = () => {
   const [clickContact, setClickContact] = useState(false);
   const [clickUsers, setClickUsers] = useState(false);
   const [clickCategory, setClickCategory] = useState(false);
+  const [clickCreateAdmin, setClickCreateAdmin] = useState(false);
 
   const handleLogout = () => {
     dispatch(logoutCurrentUser())
@@ -34,24 +35,28 @@ const AdminHome = () => {
     setClickContact(false);
     setClickBlog(false);
     setClickUsers(false);
+    setClickCreateAdmin(false);
   };
   const handlerBlog = () => {
     setClickDashBoard(false);
     setClickContact(false);
     setClickBlog(true);
     setClickUsers(false);
+    setClickCreateAdmin(false);
   };
   const handlerContact = () => {
     setClickDashBoard(false);
     setClickContact(true);
     setClickBlog(false);
     setClickUsers(false);
+    setClickCreateAdmin(false);
   };
   const handlerUsers = () => {
     setClickDashBoard(false);
     setClickContact(false);
     setClickBlog(false);
     setClickUsers(true);
+    setClickCreateAdmin(false);
   }
   const handlerCategory = () => {
     setClickDashBoard(false);
@@ -59,6 +64,14 @@ const AdminHome = () => {
     setClickBlog(false);
     setClickUsers(false);
     setClickCategory(true);
+    setClickCreateAdmin(false);
+  }
+  const createAdmin = () => {
+    setClickDashBoard(false);
+    setClickContact(false);
+    setClickBlog(false);
+    setClickUsers(false);
+    setClickCreateAdmin(true);
   }
   return (
     <div className="container">
@@ -89,8 +102,12 @@ const AdminHome = () => {
           <li onClick={() => handlerUsers()}><Link to="/admin/users"
                                                    className={clickUsers ? "Click" : ""}><FaUserCog/> Quản Lý Tài Khoản</Link>
           </li>
+          <li onClick={() => createAdmin()}><Link to="/admin/adminCreate"
+                                                   className={clickUsers ? "Click" : ""}><FaUserCog/> Thêm quản trị viên</Link>
+          </li>
           <li onClick={() => handlerUsers()}><Link to="/admin/category"
-                                                   className={clickCategory ? "Click" : ""}><FaUserCog/> Quản Lý danh mục</Link>
+                                                   className={clickCategory ? "Click" : ""}><FaUserCog/> Quản Lý danh
+            mục</Link>
           </li>
         </ul>
       </div>

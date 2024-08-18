@@ -20,6 +20,7 @@ import Dashboard from "./admin/Dashboard/Dashboard";
 import Unauthorized from "./admin/users/Unauthorized";
 import UserList from "./admin/users/UserList";
 import ManagerCategory from "./admin/categroryManager/CategoryManager";
+import AdminRegister from "./admin/users/AdminRegister";
 function RouterConfig() {
     return (
         <Router>
@@ -52,6 +53,7 @@ function RouterConfig() {
                     <Route path='contactManager' element={<ContactManager/>}/>
                     <Route path="users" element={<UserList/>}/>
                     <Route path="category" element={<ManagerCategory/>}/>
+                    <Route path="adminCreate" element={<AdminRegister/>}/>
                 </Route>
             </Routes>
         </Router>
