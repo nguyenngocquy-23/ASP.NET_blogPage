@@ -13,12 +13,13 @@ import ManaInfo from "./manageInfo/ManaInfo";
 import Blog from './admin/blog/Blog';
 import ContactManager from "./admin/ContactManager/ContactManager";
 
-import BlogForm from "./admin/blogDetail/blogDetail";
+import BlogForm from "./admin/blogDetail/BlogDetail";
 import CommentManage from "./admin/CommentManager/CommentManage";
 import AdminHome from "./admin/AdminHome/AdminHome";
 import Dashboard from "./admin/Dashboard/Dashboard";
 import Unauthorized from "./admin/users/Unauthorized";
 import UserList from "./admin/users/UserList";
+import ManagerCategory from "./admin/categroryManager/CategoryManager";
 function RouterConfig() {
     return (
         <Router>
@@ -46,6 +47,7 @@ function RouterConfig() {
                     <Route path='contactManager' element={<ContactManager/>}/>
                     <Route path='commentManage' element={<CommentManage/>}/>
                     <Route path="users" element={<UserList/>} />
+                    <Route path="category" element={<ManagerCategory/>}/>
                 </Route>
             </Routes>
         </Router>

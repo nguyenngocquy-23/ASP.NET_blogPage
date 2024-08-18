@@ -14,7 +14,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-    currentUser: JSON.parse(sessionStorage.getItem('currentUser')||'null'),
+    currentUser: JSON.parse(sessionStorage.getItem('currentUser') || 'null'),
     readArticles :JSON.parse(sessionStorage.getItem('readArticles') || '[]'),
 };
 
@@ -43,7 +43,7 @@ const userSlice = createSlice({
         },
         loginCurrentUser: (state, action) => {
             state.currentUser = action.payload;
-            sessionStorage.setItem('currentUser', JSON.stringify(action.payload));
+            sessionStorage.setItem('currentUser', JSON.stringify(state.currentUser))
         },
         logoutCurrentUser: (state) => {
             state.currentUser = null;
