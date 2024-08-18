@@ -33,6 +33,42 @@ namespace apiServer.Controllers
             var blogs =  await _context.Blog.Where(blog => blog.CategoryId == id).Skip(skip).Take(limit).ToListAsync();
             return Ok(blogs);
         }
+
+        [HttpGet("delete")]
+        public async Task<ActionResult<IEnumerable<Category>>> deleteCategoryById([FromQuery] int id)
+        { 
+            var category = await _context.Category.Where(category => category.Id == id).ToListAsync();
+            return Ok(category);
+        }
+
+        [HttpGet("add")]
+        public async Task<ActionResult<IEnumerable<bool>>> addCategory([FromQuery] string nameCategory)
+        {   
+            if (string.IsNullOrEmpty(nameCategory))
+            {
+                return BadRequest("nameCategory là rỗng"); 
+            } 
+            try
+            {
+                bool exists = await _context.Category.AnyAsync(category => category.Name == nameCategory);
+                if (!exists)
+                {
+                    var newCategory = new Category
+                    {
+                        Name = nameCategory
+                    };
+                    _context.Category.Add(newCategory);
+                    await _context.SaveChangesAsync();
+                    return Ok(true);
+                } else
+                {
+                    return BadRequest("NameCategory bị trùng");
+                }
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 
 }
