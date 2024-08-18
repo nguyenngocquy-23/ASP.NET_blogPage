@@ -2,10 +2,11 @@ import "./AdminHome.css";
 import {Link, Outlet, useNavigate} from "react-router-dom";
 import { TfiWrite } from "react-icons/tfi";
 import { MdContactMail, MdDashboard } from "react-icons/md";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "../../reduxStore/Store";
 import {FaUserCog} from "react-icons/fa";
+import {logoutCurrentUser} from "../../reduxStore/UserSlice";
 
 const AdminHome = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
@@ -14,6 +15,11 @@ const AdminHome = () => {
   const [clickContact, setClickContact] = useState(false);
   const [clickUsers, setClickUsers] = useState(false);
   const [clickCategory, setClickCategory] = useState(false);
+
+  const handleLogout = () => {
+    dispatch(logoutCurrentUser())
+    localStorage.removeItem('authToken');
+  };
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -92,9 +98,9 @@ const AdminHome = () => {
         <div className="navbar">
           <h1>
             Welcome to Admin {currentUser.fullName}
-            <a href={"/login"}>
-              Đăng Xuất
-            </a>
+            <Link to="/login" onClick={handleLogout}>
+              Đăng xuất
+            </Link>
           </h1>
         </div>
         <div className="content">
