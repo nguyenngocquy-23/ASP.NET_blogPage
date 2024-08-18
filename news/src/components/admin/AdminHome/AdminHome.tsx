@@ -13,6 +13,7 @@ const AdminHome = () => {
   const [clickBlog, setClickBlog] = useState(false);
   const [clickContact, setClickContact] = useState(false);
   const [clickUsers, setClickUsers] = useState(false);
+  const [clickCategory, setClickCategory] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,6 +47,13 @@ const AdminHome = () => {
     setClickBlog(false);
     setClickUsers(true);
   }
+  const handlerCategory = () => {
+    setClickDashBoard(false);
+    setClickContact(false);
+    setClickBlog(false);
+    setClickUsers(false);
+    setClickCategory(true);
+  }
   return (
     <div className="container">
       <div className="sidebar">
@@ -74,6 +82,9 @@ const AdminHome = () => {
           </li>
           <li onClick={() => handlerUsers()}><Link to="/admin/users"
                                                    className={clickUsers ? "Click" : ""}><FaUserCog/> Quản Lý Tài Khoản</Link>
+          </li>
+          <li onClick={() => handlerUsers()}><Link to="/admin/category"
+                                                   className={clickCategory ? "Click" : ""}><FaUserCog/> Quản Lý danh mục</Link>
           </li>
         </ul>
       </div>

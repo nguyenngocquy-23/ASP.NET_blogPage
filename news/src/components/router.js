@@ -19,6 +19,7 @@ import AdminHome from "./admin/AdminHome/AdminHome";
 import Dashboard from "./admin/Dashboard/Dashboard";
 import Unauthorized from "./admin/users/Unauthorized";
 import UserList from "./admin/users/UserList";
+import ManagerCategory from "./admin/categroryManager/CategoryManager";
 function RouterConfig() {
     return (
         <Router>
@@ -49,7 +50,8 @@ function RouterConfig() {
                     <Route path='blogDetail' element={<BlogForm/>}/>
                     <Route path='blogDetail/:blogId' element={<BlogForm/>}/>
                     <Route path='contactManager' element={<ContactManager/>}/>
-                    <Route path="users" element={<UserList/>} />
+                    <Route path="users" element={<UserList/>}/>
+                    <Route path="category" element={<ManagerCategory/>}/>
                 </Route>
             </Routes>
         </Router>
