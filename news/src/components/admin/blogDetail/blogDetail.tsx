@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import styles from "../blogDetail/BlogDetail.module.css";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import { url } from "inspector";
 import { data } from "cheerio/lib/api/attributes";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import {FaPlus} from "react-icons/fa";
 import {MdCancel} from "react-icons/md";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../reduxStore/Store";
 
 const BlogForm: React.FC = () => {
   const { blogId } = useParams<{ blogId?: string }>();
@@ -21,6 +23,15 @@ const BlogForm: React.FC = () => {
   const [content, setContent] = useState("");
   const [contentError, setContentError] = useState("");
   const [shortDescError, setShortDescError] = useState("");
+
+  const navigate = useNavigate();
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (currentUser?.role != 0) {
+      navigate('/unauthorized');
+    }
+  }, [currentUser, navigate]);
 
   useEffect(() => {
     const fetchAndConvertImage = async () => {

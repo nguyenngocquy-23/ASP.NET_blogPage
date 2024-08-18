@@ -7,8 +7,19 @@ import {
   FaCodeBranch,
   FaUsers,
 } from "react-icons/fa";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (currentUser?.role != 0) {
+      navigate('/unauthorized');
+    }
+  }, [currentUser, navigate]);
+
   const [salesData, setSalesData] = useState([]);
   const now = new Date();
 

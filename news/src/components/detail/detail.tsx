@@ -1,7 +1,5 @@
-// export default Detail;
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import cheerio from "cheerio";
 import styles from "../detail/Detail.module.css";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,8 +7,10 @@ import { RootState } from "../reduxStore/Store";
 import { FaRegMessage, FaVolumeHigh, FaVolumeOff } from "react-icons/fa6";
 import { addReadArticle } from "../reduxStore/UserSlice";
 import podStyles from "./Podcast.module.css";
+import Swal from "sweetalert2";
+import CommentList from "../detail/comment/CommentList";
+import { getUserFromToken, User } from "../utils/UserUtils";
 
-// Định nghĩa interface cho chi tiết bài viết
 interface Blog {
   id: string;
   auth: string;
@@ -36,8 +36,6 @@ const Detail: React.FC = () => {
   const [blogRelate, setBlogRelate] = useState<BlogRelate[]>([]);
   const [commentContent, setCommentContent] = useState<string>(""); // State để lưu nội dung bình luận
   const dispatch = useDispatch();
-  const currentUser = null;
-  const comments = null;
   // const comments = useSelector((state: RootState) =>
   //     state.user.comments.filter((comment) => comment.link === link)
   // ); // Lọc bình luận theo link của bài viết hiện tại
@@ -114,8 +112,7 @@ const Detail: React.FC = () => {
   };
 
   async function fetch() {
-      try {
-      console.log(`https://localhost:7125/Blog/getBlogById?id=${id}`)
+    try {
       const getBlogById = await axios.post(
         `https://localhost:7125/Blog/getBlogById?id=${id}`
       );
@@ -124,6 +121,17 @@ const Detail: React.FC = () => {
       console.error("Detail Error: ", error);
     }
   }
+
+  // Dành cho việc lấy user từ token.
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await getUserFromToken();
+      setCurrentUser(userData);
+    };
+    fetchUser();
+  }, []);
 
   async function fetchBlogRelate() {
     try {
@@ -139,7 +147,7 @@ const Detail: React.FC = () => {
   useEffect(() => {
     fetch();
   }, []);
-  
+
   useEffect(() => {
     if (blog) {
       dispatch(
@@ -159,6 +167,61 @@ const Detail: React.FC = () => {
     }
   }, [blog]);
   const handleCommentSubmit = () => {};
+
+  //*** Dành cho admin - Kiểm duyệt các bình luận !.
+  const approveComment = async () => {
+    const result = await Swal.fire({
+      title: "Kiểm duyệt toàn bộ bình luận?",
+      text: "Hành động này sẽ duyệt tất cả bình luận chờ duyệt!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Đúng, duyệt tất cả!",
+      cancelButtonText: "Hủy",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        // Gửi yêu cầu PUT đến API để duyệt tất cả bình luận
+        const response = await axios.put(
+          `https://localhost:7125/api/Comment/reviews/2`
+        );
+
+        await Swal.fire({
+          title: "Duyệt thành công",
+          html: `
+                        <p>Đã duyệt tất cả bình luận thành công!</p>
+                        <p>Chi tiết xem tại
+                        <a href="http://localhost:3000/admin/commentManager"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         style="color: #3FA2F6; 
+                         font-weight: bold;"
+                         >
+                        Quản lý bình luận</a></p>
+                    `,
+          icon: "success",
+          confirmButtonText: "Ở lại",
+        });
+
+        // Cập nhật giao diện nếu cần (tuỳ chọn)
+        // const updatedBackendComments = backendComments.map(comment => {
+        //     if (comment.blogId === blogId) {
+        //         return { ...comment, status: 1 }; // Ví dụ cập nhật trạng thái
+        //     }
+        //     return comment;
+        // });
+        // setBackendComments(updatedBackendComments);
+      } catch (error) {
+        console.error("Lỗi khi duyệt bình luận", error);
+        await Swal.fire({
+          title: "Lỗi!",
+          text: "Có lỗi xảy ra khi duyệt bình luận, vui lòng thử lại",
+          icon: "error",
+          confirmButtonText: "Đóng",
+        });
+      }
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -219,47 +282,22 @@ const Detail: React.FC = () => {
         </div>
       </div>
       {/*Bình luận*/}
+
       <div className={styles.comments}>
         <span className={styles.title}>Bình luận</span>
-        <br />
-        {currentUser ? (
-          <>
-            <textarea
-              className={styles.inputComment}
-              maxLength={500}
-              value={commentContent}
-              onChange={(e) => setCommentContent(e.target.value)}
-              placeholder={"Bình luận của bạn..."}
-            />
-            <br />
-            <button className={styles.btnComment} onClick={handleCommentSubmit}>
-              Bình luận
-            </button>
-            <span
-              className="comment-bg emptyComment"
-              style={{ display: "none" }}
-            >
-              <img
-                src="https://static.vnncdn.net/v1/icon/chat(1).svg"
-                alt="comment icon"
-              />
-            </span>
-            <span className="comment-number vnn-comment-count-detail"></span>
-          </>
-        ) : (
-          <span className={styles.noMess}>
-            <FaRegMessage />
-            <Link to={"/login"}> Đăng nhập </Link>
-            để tiến hành bình luận !
-          </span>
+        {currentUser !== null && currentUser.role === 0 && (
+          <button
+            className="comment-form-button checked-comment"
+            onClick={approveComment}
+          >
+            Kiểm duyệt toàn bộ bình luận!
+          </button>
         )}
-        {/* {Array.isArray(comments) && comments.map((comment, index) => (
-                        <div key={index} className={styles.commentItem}>
-                            <div className={styles.commentUser}>{comment.email}</div>
-                            <div className={styles.commentContent}>{comment.content}</div>
-                            <div className={styles.commentTime}>{comment.time}</div>
-                        </div>
-                    ))} */}
+
+        <br />
+        {currentUser !== null && (
+          <CommentList currentUser={currentUser} blogId={2} />
+        )}
       </div>
     </div>
   );

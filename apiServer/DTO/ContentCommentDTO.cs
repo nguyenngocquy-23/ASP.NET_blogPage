@@ -5,7 +5,8 @@
 {
     public class ContentCommentDTO
     {
-        public string Content { get; set; }
+        public string? Content { get; set; }
+        public int Status { get; set; }
 
     }
 }

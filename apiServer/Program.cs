@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddDbContext<AppDbContext>(option => 
+builder.Services.AddDbContext<AppDbContext>(option =>
     option.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
     ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 

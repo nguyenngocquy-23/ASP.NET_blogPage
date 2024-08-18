@@ -152,6 +152,7 @@
 .comments {
     display: block;
     margin-top: 20px;
+
 }
 
 .comments .inputComment {
@@ -167,8 +168,12 @@
 .comments .title {
     font-size: 30px;
     color: #2d67ad;
-    font-weight: 700;
+    font-weight: 500;
+    padding: 15px;
+
 }
+
+
 
 .comments .btnComment:hover {
     cursor: pointer;
