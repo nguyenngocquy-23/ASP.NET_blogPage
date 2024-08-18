@@ -10,7 +10,6 @@ import SearchPage from './searchpage/search';
 import History from './history/history';
 import Contact from "./contact/Contact";
 import ManaInfo from "./manageInfo/ManaInfo";
-import BlogForm from "./admin/blogDetail/blogDetail";
 import Blog from './admin/blog/Blog';
 import ContactManager from "./admin/ContactManager/ContactManager";
 
@@ -45,6 +44,7 @@ function RouterConfig() {
                     <Route path='blogDetail' element={<BlogForm/>}/>
                     <Route path='blogDetail/:blogId' element={<BlogForm/>}/>
                     <Route path='contactManager' element={<ContactManager/>}/>
+                    <Route path='commentManage' element={<CommentManage/>}/>
                     <Route path="users" element={<UserList/>} />
                 </Route>
             </Routes>
