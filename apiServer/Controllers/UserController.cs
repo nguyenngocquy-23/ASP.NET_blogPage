@@ -475,7 +475,7 @@ namespace apiServer.Controllers
                 try
                 {
                     var users = await _context.User
-                        .Where(u => u.Id != adminUser.Id)
+                        .Where(u => u.Role == 1)
                         .ToListAsync();
                     return Ok(users);
                 }
