@@ -15,6 +15,7 @@ namespace apiServer.Data
         public DbSet<User> User { get; set; }
         public DbSet<ActivationInfo> ActivationInfo { get; set; }
         public DbSet<ChangePwCode> ChangePwCode { get; set; }
+        public DbSet<Like> Like { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

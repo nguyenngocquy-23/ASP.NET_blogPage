@@ -19,7 +19,7 @@ interface Category{
 const BlogForm: React.FC = () => {
   const { blogId } = useParams<{ blogId?: string }>();
   const [title, setTitle] = useState("");
-  const [auth, setAuth] = useState("");
+  const [authId, setAuthId] = useState("");
   const [listCategory, setListCategory] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState("");
   const [image, setImage] = useState<File | null>(null);
@@ -70,7 +70,7 @@ const BlogForm: React.FC = () => {
             `https://localhost:7125/AdminBlog/${blogId}`
           );
           setTitle(data.title);
-          setAuth(data.auth);
+          setAuthId(data.auth);
           setCategoryId(data.categoryId);
           setShortDescription(data.shortDescription);
           setContent(data.content);
@@ -125,7 +125,7 @@ const BlogForm: React.FC = () => {
 
     if (content.length > 0 && shortDescription.length > 0) {
       try {
-        console.log('auth : ', auth)
+        console.log('auth : ', authId)
         let imageUrl = "";
         console.log("image : " + image?.text);
         if (image) {
@@ -152,7 +152,7 @@ const BlogForm: React.FC = () => {
         }
 
         const blogData = {
-          auth: currentUser.fullName,
+          authId: currentUser.id,
           title,
           image: imageUrl,
           shortDescription,
@@ -167,7 +167,7 @@ const BlogForm: React.FC = () => {
           // Update existing blog
           const blogUpdate = {
             id: blogId,
-            auth: auth,
+            auth: authId,
             title,
             image: imageUrl,
             shortDescription,

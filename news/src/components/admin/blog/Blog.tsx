@@ -11,6 +11,7 @@ import { RootState } from "../../reduxStore/Store";
 
 interface Blog {
   id: number;
+  authId: number;
   image: string;
   title: string;
   categoryId: number;
@@ -19,9 +20,9 @@ interface Blog {
   // Thêm các trường khác nếu cần thiết
 }
 
-interface Category{
-  id : number;
-  name : string;
+interface Category {
+  id: number;
+  name: string;
 }
 
 const Blog: React.FC = () => {
@@ -58,12 +59,14 @@ const Blog: React.FC = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.post('https://localhost:7125/CategoryCotroller/category');
+        const response = await axios.post(
+          "https://localhost:7125/CategoryCotroller/category"
+        );
         setListCategory(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
-    }
+    };
     fetchCategories();
   }, []);
 
@@ -104,11 +107,13 @@ const Blog: React.FC = () => {
   };
 
   const categoryName = (idCategory: any) => {
-      for (let index = 0; index < listCategory.length; index++) {
-        if (idCategory == listCategory[index].id) return listCategory[index].name
+    for (let index = 0; index < listCategory.length; index++) {
+      if (idCategory == listCategory[index].id) {
+        return listCategory[index].name;
       }
-      return "Khac";
-  }
+    }
+    return "Khác";
+  };
 
   const columns = [
     {
@@ -150,25 +155,55 @@ const Blog: React.FC = () => {
       name: "Tác vụ",
       cell: (row: Blog) => (
         <div>
-          <Link
-            to={`/admin/blogDetail/${row.id}`}
-            style={{ marginRight: "10px", fontSize: "22px" }}
-            title="Sửa bài viết"
-          >
-            <FaEdit style={{ color: "blue", marginLeft: "10px" }} />
-          </Link>
-          <button
-            onClick={() => handleDelete(row.id)}
-            style={{
-              border: "none",
-              background: "none",
-              cursor: "pointer",
-              fontSize: "22px",
-            }}
-            title="Xóa bài viết"
-          >
-            <FaTrash style={{ color: "red" }} />
-          </button>
+          {row.authId == currentUser.id ? (
+            <>
+              <Link
+                to={`/admin/blogDetail/${row.id}`}
+                style={{ marginRight: "10px", fontSize: "22px" }}
+                title="Sửa bài viết"
+              >
+                <FaEdit style={{ color: "blue", marginLeft: "10px" }} />
+              </Link>
+              <button
+                onClick={() => handleDelete(row.id)}
+                style={{
+                  border: "none",
+                  background: "none",
+                  cursor: "pointer",
+                  fontSize: "22px",
+                }}
+                title="Xóa bài viết"
+              >
+                <FaTrash style={{ color: "red" }} />
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                style={{
+                  marginRight: "10px",
+                  fontSize: "22px",
+                  opacity: "0.5",
+                  border: "none",
+                  background: "none",
+                }}
+                title="Không có quyền chỉnh sửa"
+              >
+                <FaEdit style={{ color: "blue", marginLeft: "10px" }} />
+              </button>
+              <button
+                style={{
+                  border: "none",
+                  background: "none",
+                  fontSize: "22px",
+                  opacity:'0.5'
+                }}
+                title="Không có quyền xóa"
+              >
+                <FaTrash style={{ color: "red" }} />
+              </button>
+            </>
+          )}
         </div>
       ),
       ignoreRowClick: true,

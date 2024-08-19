@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useSelector} from "react-redux";
+import Swal from "sweetalert2";
 import {hover} from "@testing-library/user-event/dist/hover";
 
 function ManagerCategory() {
@@ -71,6 +72,7 @@ function ManagerCategory() {
         } catch(error) {
             console.error("Delete error", error);
         }
+        fetch();
     }
 
     async function addCategory(nameCategory) {
@@ -102,8 +104,7 @@ function ManagerCategory() {
         setSearchData(newData)
     }
     const handleDeleteCategory = async (id) => {
-        const response = await axios.get(`https://localhost:7125/CategoryCotroller/delete?id=${id}`)
-        console.log(response.data);
+        deleteCategory(id);
     }
 
     const handleAddCategory = (name) => {
