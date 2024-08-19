@@ -11,6 +11,7 @@ namespace apiServer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
 
+
         }
 
         /// <inheritdoc />

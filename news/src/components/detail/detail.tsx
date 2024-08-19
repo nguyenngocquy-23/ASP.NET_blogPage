@@ -204,7 +204,7 @@ const Detail: React.FC = () => {
       try {
         // Gửi yêu cầu PUT đến API để duyệt tất cả bình luận
         const response = await axios.put(
-          `https://localhost:7125/api/Comment/reviews/2`
+          `https://localhost:7125/api/Comment/reviews/${blog?.id}`
         );
 
         await Swal.fire({
@@ -222,6 +222,7 @@ const Detail: React.FC = () => {
                     `,
           icon: "success",
           confirmButtonText: "Ở lại",
+
         });
 
         // Cập nhật giao diện nếu cần (tuỳ chọn)
@@ -337,9 +338,15 @@ const Detail: React.FC = () => {
         )}
 
         <br />
-        {currentUser !== null && (
-          <CommentList currentUser={currentUser} blogId={2} />
-        )}
+        {currentUser !== null && blog !==null ? (
+          <CommentList currentUser={currentUser} blogId={parseInt(blog.id, 10)} />
+        ) : (
+            <span className={styles.noMess}>
+                        <FaRegMessage/>
+                        <Link to={'/login'}> Đăng nhập </Link>
+                        để tiến hành bình luận !</span>
+        )
+        }
       </div>
     </div>
   );

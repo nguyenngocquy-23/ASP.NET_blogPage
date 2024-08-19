@@ -18,9 +18,9 @@ interface CommentListProps {
     blogId : number;
     currentUser: User;
 }
-const  blogId = 2;
 
-const CommentList : React.FC<CommentListProps> = ({currentUser}) => {
+
+const CommentList : React.FC<CommentListProps> = ({currentUser, blogId}) => {
     const [backendComments, setBackendComments] = useState<CommentType[]>([]);
 
     // Hỗ trợ phân trang.
@@ -33,10 +33,8 @@ const CommentList : React.FC<CommentListProps> = ({currentUser}) => {
    const [activeComment, setActiveComment] = useState<ActiveComment>(null);
 
     //comment
-    const rootComments = backendComments.filter((backendComment) => backendComment.parentId === null);
+    const rootComments =    backendComments.filter((backendComment) => backendComment.parentId === null);
 
-
-    console.log('backendComments', backendComments);
 
     const getReplies = (commentId : number) : CommentType[] => {
         return backendComments.filter((backendComment) => backendComment.parentId === commentId)
@@ -60,7 +58,7 @@ const CommentList : React.FC<CommentListProps> = ({currentUser}) => {
         const status = currentUser.role ===0 ? 1: 2;
         const newComment = {
             userId: currentUser.id,
-            blogId: 2,
+            blogId: blogId,
             content: text,
             status: status,
             createAt: moment().toISOString(),
