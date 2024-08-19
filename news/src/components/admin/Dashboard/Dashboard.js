@@ -11,16 +11,13 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const currentUser = useSelector((state) => state.user.currentUser);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (currentUser?.role != 0) {
-      navigate('/unauthorized');
-    }
-  }, [currentUser, navigate]);
+  const [TotalBlog , setTotalBlog] = useState(0);
+  const [BlogInMonth,setBlogInMonth] = useState(0);
+  const [UserInMonth,setUserInMonth] = useState(0);
+  const [ContactInMonth,setContactInMonth] = useState(0);
+  const [BlogInDate,setBlogInDate] = useState(0);
+  const [UserInDate,setUserInDate] = useState(0);
 
-  const [salesData, setSalesData] = useState([]);
   const now = new Date();
 
   // Format the date
@@ -31,13 +28,54 @@ const Dashboard = () => {
   useEffect(() => {
     
     axios
-      .get("https://localhost:7125/DashBoard/contact")
+      .get("https://localhost:7125/DashBoard/TotalBlog")
       .then((response) => {
-        setSalesData(response.data);
+        setTotalBlog(response.data);
       })
       .catch((error) => {
         console.error("Error: ", error);
       });
+
+    axios
+        .get("https://localhost:7125/DashBoard/BlogInMonth")
+        .then((response) => {
+          setBlogInMonth(response.data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    axios
+        .get("https://localhost:7125/DashBoard/UserInMonth")
+        .then((response) => {
+          setUserInMonth(response.data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    axios
+        .get("https://localhost:7125/DashBoard/ContactInMonth")
+        .then((response) => {
+          setContactInMonth(response.data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    axios
+        .get("https://localhost:7125/DashBoard/BlogInDay")
+        .then((response) => {
+          setBlogInDate(response.data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    axios
+        .get("https://localhost:7125/DashBoard/UserInDay")
+        .then((response) => {
+          setUserInDate(response.data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
   }, []);
 
   return (
@@ -60,7 +98,7 @@ const Dashboard = () => {
                   <div className={styles.colStats}>
                     <div className={styles.numbers}>
                       <p className={styles.cardCategory}>Tổng số bài viết</p>
-                      <h4 className={styles.cardTitle}>1294</h4>
+                      <h4 className={styles.cardTitle}>{TotalBlog}</h4>
                     </div>
                   </div>
                 </div>
@@ -84,7 +122,7 @@ const Dashboard = () => {
                       <p className={styles.cardCategory}>
                         Số bài mới đăng (tháng)
                       </p>
-                      <h4 className={styles.cardTitle}>1303</h4>
+                      <h4 className={styles.cardTitle}>{BlogInMonth}</h4>
                     </div>
                   </div>
                 </div>
@@ -105,8 +143,8 @@ const Dashboard = () => {
                   </div>
                   <div className={styles.colStats}>
                     <div className={styles.numbers}>
-                      <p className={styles.cardCategory}>Lượng người dùng</p>
-                      <h4 className={styles.cardTitle}>1345</h4>
+                      <p className={styles.cardCategory}>Tài khoản người dùng mới (tháng)</p>
+                      <h4 className={styles.cardTitle}>{UserInMonth}</h4>
                     </div>
                   </div>
                 </div>
@@ -128,9 +166,9 @@ const Dashboard = () => {
                   <div className={styles.colStats}>
                     <div className={styles.numbers}>
                       <p className={styles.cardCategory}>
-                        Số truy cập bình quân
+                        Tổng số liên hệ gửi về Admin (tháng)
                       </p>
-                      <h4 className={styles.cardTitle}>576</h4>
+                      <h4 className={styles.cardTitle}>{ContactInMonth}</h4>
                     </div>
                   </div>
                 </div>
@@ -149,13 +187,13 @@ const Dashboard = () => {
                 <h3 className={styles.cardCategory}>{formatDate(now)}</h3>
               </div>
               <div className={styles.cardBody}>
-                <h2 className={styles.num}>17</h2>
+                <h2 className={styles.num}>{BlogInDate}</h2>
               </div>
             </div>
             <div className="card card-round">
               <div className={styles.cardBody}>
-                <p className="text-muted">Người dùng đang trực tuyến</p>
-                <h2 className={styles.num}>17</h2>
+                <p className="text-muted">Tổng người dùng mới hôm nay</p>
+                <h2 className={styles.num}>{UserInDate}</h2>
               </div>
             </div>
           </div>
