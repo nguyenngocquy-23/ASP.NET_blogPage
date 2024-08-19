@@ -83,6 +83,7 @@ namespace apiServer.Controllers
                 User = user,
                 CommentCount = _context.Comment.Count(c => c.UserId == user.Id)
             })
+            .Where(b => b.User.Role == 1)
             .OrderByDescending(b => b.CommentCount)
             .Take(5)
             .Select(b => b.User)

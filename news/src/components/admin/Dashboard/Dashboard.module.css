@@ -121,6 +121,7 @@ h2 {
     gap: 20px;
     float: left;
     width: 50%;
+    margin-top: 30px;
 
 }
 .body_table .table_container_left table {
@@ -133,6 +134,7 @@ h2 {
     gap: 20px; /* Khoảng cách giữa hai bảng */
     float: right;
     width: 50%;
+    margin-top: 30px;
 }
 .body_table .table_container_right table {
     width: 93%;
