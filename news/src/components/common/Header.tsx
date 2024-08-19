@@ -64,16 +64,6 @@ function Header() {
               type="text"
               placeholder="Nhập nội dung tìm kiếm....."
             />
-            <button
-              className={styles.btnSearch}
-              type="submit"
-              title={"Tìm kiếm"}
-            >
-              <img
-                src="https://static.vnncdn.net/v1/icon/search.png"
-                alt="search icon"
-              />
-            </button>
           </form>
         </div>
         <div className={styles.socialIcons}>

@@ -166,7 +166,7 @@ const Detail: React.FC = () => {
           id: blog.id,
           img: blog.image,
           title: blog.title,
-          content: blog.content,
+          shortDes: blog.shortDescription,
         })
       );
     }

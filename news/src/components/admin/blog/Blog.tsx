@@ -232,6 +232,7 @@ const Blog: React.FC = () => {
             columns={columns}
             data={blogs}
             pagination
+            highlightOnHover
             customStyles={{
               headCells: {
                 style: {
