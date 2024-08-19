@@ -4,6 +4,7 @@ import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useSelector} from "react-redux";
 import {hover} from "@testing-library/user-event/dist/hover";
+import Swal from "sweetalert2";
 
 function ManagerCategory() {
     const Columns = [
@@ -38,7 +39,6 @@ function ManagerCategory() {
             console.log(error)
         }
     }
-
     async function deleteCategory(id) {
         try {
             Swal.fire({
@@ -54,22 +54,53 @@ function ManagerCategory() {
                 if (result.isConfirmed) {
                     const response = await  axios.get(`https://localhost:7125/CategoryCotroller/delete?id=${id}`)
                     if(response.data){
-                        Swal.fire(
-                          "Đã xóa!",
-                          "Danh mục đã được xóa.",
-                          "success"
-                        );
+                        Swal.fire({
+                            title: "Đã xóa!",
+                            toast: true,
+                            icon: "success",
+                            position: "center",
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            },
+                        });
+                        fetch();
                     }
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
-                  Swal.fire(
-                    "Đã hủy",
-                    "Danh mục không bị xóa",
-                    "error"
-                  );
+                    Swal.fire({
+                        title: "Đã Hủy!",
+                        toast: true,
+                        icon: "success",
+                        position: "center",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        },
+                    });
                 }
               });
         } catch(error) {
             console.error("Delete error", error);
+            Swal.fire({
+                title: "Lỗi!",
+                toast: true,
+                icon: "success",
+                position: "center",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                },
+            });
+
         }
     }
 
@@ -77,11 +108,48 @@ function ManagerCategory() {
         try {
             const response = await axios.get(`https://localhost:7125/CategoryCotroller/add?nameCategory=${nameCategory}`)
             if (response.data) {
-                console.log("Them thanh cong: " + nameCategory)
+                Swal.fire({
+                    icon: "success",
+                    title: "Đã thêm thành công",
+                    toast: true,
+                    position: "center",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    },
+                });
+                setTimeout(() => {
+                    setModalIsOpen(false);
+                    setNewCategoryName("");
+                }, 200);
                 fetch();
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Thêm thất bại!",
+                    content: "Tên danh mục bị trùng!",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                })
             }
         } catch (error) {
             console.error("Add category error", error);
+            Swal.fire({
+                icon: "warning",
+                title: "Thêm thất bại!",
+                content: "Tên danh mục bị trống!",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+            })
         }
     }
 
@@ -101,9 +169,8 @@ function ManagerCategory() {
         })
         setSearchData(newData)
     }
-    const handleDeleteCategory = async (id) => {
-        const response = await axios.get(`https://localhost:7125/CategoryCotroller/delete?id=${id}`)
-        console.log(response.data);
+    const handleDeleteCategory = (id) => {
+        deleteCategory(id);
     }
 
     const handleAddCategory = (name) => {

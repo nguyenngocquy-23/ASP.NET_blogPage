@@ -1,4 +1,4 @@
-﻿using apiServer.Data;
+using apiServer.Data;
 using apiServer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +36,7 @@ namespace apiServer.Controllers
             return category.Name;
         }
 
+
         [HttpGet("category")]
         public async Task<ActionResult<IEnumerable<Blog>>> getBlogByCategories([FromQuery] int id, [FromQuery] int page, int limit)
         {
@@ -62,7 +63,7 @@ namespace apiServer.Controllers
         {   
             if (string.IsNullOrEmpty(nameCategory))
             {
-                return BadRequest("nameCategory là rỗng"); 
+                return BadRequest("nameCategory l� r?ng"); 
             } 
             try
             {
@@ -78,7 +79,7 @@ namespace apiServer.Controllers
                     return Ok(true);
                 } else
                 {
-                    return BadRequest("NameCategory bị trùng");
+                    return BadRequest("NameCategory b? tr�ng");
                 }
             } catch (Exception ex)
             {

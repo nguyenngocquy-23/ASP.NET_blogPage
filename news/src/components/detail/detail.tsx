@@ -229,7 +229,7 @@ const Detail: React.FC = () => {
         <div className={styles.breadCrumbDetail}>
           <ul>
             <li>
-              <a href={"/"}></a>
+              <Link to={"/"}></Link>
             </li>
           </ul>
           <div className="bread-crumb-detail__time">{blog?.createdAt}</div>
