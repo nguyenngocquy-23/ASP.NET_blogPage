@@ -1,9 +1,7 @@
 /* DataTable.css */
 .table-container {
-    width: 95%;
     margin: 20px auto;
     padding: 10px;
-    background-color: #83cce3;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -11,7 +9,7 @@
 .table-title {
     text-align: center;
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     color: #333;
 }
 
@@ -53,6 +51,7 @@
 .styled-table tbody tr:hover {
     background-color: #f1f1f1;
 }
+
 /* FeedbackForm.css */
 .feedback-overlay {
     position: fixed;
@@ -60,18 +59,22 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Trong suốt đen */
+    background: rgba(0, 0, 0, 0.5);
+    /* Trong suốt đen */
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 999; /* Đảm bảo lớp phủ nằm trên các phần tử khác */
+    z-index: 999;
+    /* Đảm bảo lớp phủ nằm trên các phần tử khác */
 }
+
 .feedback-form-container {
     background: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 500px; /* Đặt chiều rộng tối đa cho form */
+    max-width: 500px;
+    /* Đặt chiều rộng tối đa cho form */
     width: 100%;
 }
 
@@ -114,15 +117,34 @@
 .submit-btn:hover {
     background-color: #007f67;
 }
+
 .feedback-textarea {
     width: 100%;
     padding: 5px;
 }
-.button-clicked{
-    background: red;
+
+.button-clicked {
+    background: #005f4c;
     color: white;
+    cursor: default;
+    opacity: 1;
+    font-weight: 700;
 }
-.button-normal{
+
+.button-normal {
     background: white;
     color: black;
+    cursor: pointer;
+}
+
+.button-normal:hover {
+    font-weight: 700;
+}
+
+.button-clicked,
+.button-normal {
+    width: 150px;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 10px 15px;
 }

@@ -8,17 +8,17 @@ import {hover} from "@testing-library/user-event/dist/hover";
 function ManagerCategory() {
     const Columns = [
         {
-            name: 'id',
+            name: 'Id',
             selector: row => row.id,
             sortable: true,
         },
         {
-            name: 'Name',
+            name: 'Tên danh mục',
             selector: row => row.name,
             sortable: true,
         },
         {
-            name: 'Action',
+            name: 'Tác vụ',
             cell: row => <button className="delete-button" onClick={() => handleDeleteCategory(row.id)}
                                  style={{padding: '10px 20px', borderRadius: '5px', backgroundColor: 'red', color: '#fff', border: 'none', cursor: 'pointer'}}>Xóa</button>,
         }
@@ -67,7 +67,7 @@ function ManagerCategory() {
 
     useEffect(()=> {
         fetch();
-    },[data])
+    },[])
     const handleSearch = (event) => {
         const newData = data.filter(row => {
             return row.name.toLowerCase().includes(event.target.value.toLowerCase());
@@ -85,10 +85,11 @@ function ManagerCategory() {
     const customStyle = {
         headCells: {
             style: {
-                fontSize: '16px',
-                fontWeight: 'bold',
+                fontSize: "17px",
+                background: "#009879",
+                color: "#ffffff",
+                fontWeight: "bold",
                 textAlign: 'center',
-                backgroundColor: '#f8f8f8',
                 padding: '10px',
                 display: 'flex',
                 justifyContent: 'center',
@@ -100,7 +101,6 @@ function ManagerCategory() {
                 fontSize: '14px',
                 textAlign: 'center',
                 padding: '8px',
-                borderBottom: '1px solid #ddd',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -124,15 +124,16 @@ function ManagerCategory() {
         },
     };
     return (
-        <div style={{margin:" 20px"}}>
+        <div className="table-container">
+            <h2 className="table-title" style={{fontWeight: "bold"}}>Quản lý danh mục</h2>
             <div className="search-container"
-                 style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
+                 style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', position:'absolute',top:'5px', width:'98%'}}>
                 <input type={"text"} onChange={handleSearch} placeholder={"Tìm kiếm..."} className="search-input"
-                       style={{width: '70%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc'}}/>
+                       style={{width: '20%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc'}}/>
                 <button className="add-category-button"
                         onClick={() => setModalIsOpen(true)}
                         style={{padding: '10px 20px', borderRadius: '5px', backgroundColor: 'blue', color: '#fff', border: 'none', cursor: 'pointer'}}>
-                    Thêm Category mới
+                    Thêm Danh mục
                 </button>
             </div>
             <DataTable
@@ -143,12 +144,12 @@ function ManagerCategory() {
             {modalIsOpen && (
                 <div style={modalStyles.overlay}>
                     <div style={modalStyles.content}>
-                        <h2>Thêm Category mới</h2>
+                        <h2>Thêm Danh mục</h2>
                         <input
                             type="text"
                             value={newCategoryName}
                             onChange={(e) => setNewCategoryName(e.target.value)}
-                            placeholder="Nhập tên thể loại"
+                            placeholder="Nhập tên danh mục"
                             style={modalStyles.input}
                         />
                         <button

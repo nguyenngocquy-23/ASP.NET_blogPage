@@ -20,13 +20,13 @@
     width: 100%;
   }
 
-  button:hover{
+  button.btn:hover{
       cursor: pointer;
       box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);;
   }
-  button{
+  button.btn{
       font-size: 15px;
       padding: 10px;
       border-radius: 4px;
-      margin-top: 10px;
+      /* margin-top: 10px; */
   }

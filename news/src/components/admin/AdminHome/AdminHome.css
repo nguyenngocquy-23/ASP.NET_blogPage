@@ -1,12 +1,16 @@
+body{
+    overflow-y: scroll; /* Luôn hiển thị thanh cuộn dọc */
+}
 .container {
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
     min-height: 100vh;
+    overflow: hidden; /* Ẩn thanh cuộn của toàn bộ trang */
 }
 
 .sidebar {
-    width: 250px;
+    width: 20%;
     background-color: #009879;
     color: white;
     padding: 20px;
@@ -46,26 +50,27 @@
 }
 
 .main-content {
+    width: 80%;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
-.navbar a{
+.navbar a {
     position: absolute;
     right: 20px;
     top: 15px;
     z-index: 100;
     color: white;
+    font-size: 20px;
 }
-.navbar a:hover{
+.navbar a:hover {
     color: #005f4c;
 }
 .navbar {
     background-color: #1edfb8;
     color: white;
     padding: 15px;
-    /* display: flex; */
     position: relative;
 }
 .navbar h1 {
@@ -84,10 +89,8 @@
     padding: 20px;
     box-sizing: border-box;
 }
-.solid{
+.solid {
     background: white;
     height: 2px;
     width: 100%;
-
 }
-
