@@ -74,9 +74,8 @@ function AdminRegister() {
         setConfirmPassword("");
     };
     return (
-        <div className={styles.bigContainer}>
+        <div className={styles.bigContainer} style={{margin:'0', padding:'0', transform:'translateX(0px)'}}>
             <div className={styles.authContainer}>
-                <h2>Đăng Ký</h2>
                 <form onSubmit={handleRegister}>
                     <div className={styles.formGroup}>
                         <label>Họ và Tên</label>

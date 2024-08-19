@@ -36,9 +36,9 @@ function History() {
         <div style={{margin: 0 + " " + 100 + "px"}} className={categoryStyles['topStory-15nd']}>
             <h1 className={categoryStyles.title}>CÁC BÀI ĐÃ XEM GẦN ĐÂY</h1>
             {reversedTop15Story.map((item, index) => (
-                <div className={` ${categoryStyles.horizontalPost} ${categoryStyles['version-news']} ${'mb-20'}  `}>
+                <div key={index} className={` ${categoryStyles.horizontalPost} ${categoryStyles['version-news']} ${'mb-20'}  `}>
                     <div className={` ${categoryStyles['horizontalPost__avt']} ${categoryStyles['avt-240']} `}>
-                        <a href={"/detail" + item.url} title={item.title}
+                        <Link to={"/detail/" + item.id} title={item.title}
                            data-utm-source="#vnn_source=bongdavietnam&amp;vnn_medium=listtin1">
                             <picture>
                                 <source data-srcset={item.img} media="(max-width: 767px)" srcset={item.img}/>
@@ -50,15 +50,15 @@ function History() {
                                     <FaVideo style={{fontSize: '70px', margin: '30px 85px'}}/>
                                 )}
                             </picture>
-                        </a>
+                        </Link>
                     </div>
                     <div className={categoryStyles['horizontalPost__main']}>
                         <h3 className={` ${categoryStyles['horizontalPost__main-title']} ${categoryStyles['vnn-title']} ${categoryStyles['title-bold']} `}
                             data-id="2291894" ispr="False">
-                            <a href={"/detail" + item.url} title={item.title}
+                            <Link to={"/detail/" + item.id} title={item.title}
                                data-utm-source="#vnn_source=bongdavietnam&amp;vnn_medium=listtin1" data-limit="">
                                 {item.title}
-                            </a>
+                            </Link>
                         </h3>
                         <div className={categoryStyles['horizontalPost__main-desc']} data-limit="">
                             <p>{item.content}</p>

@@ -51,6 +51,7 @@ function Home() {
         qui_dinh: 'https://localhost:7125/AdminBlog/qui-dinh',
         chinh_sach: 'https://localhost:7125/AdminBlog/chinh-sach',
     };
+
     useEffect(() => {
         fetch();
     }, []);
