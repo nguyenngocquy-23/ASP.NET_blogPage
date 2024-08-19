@@ -62,7 +62,8 @@ namespace apiServer.Controllers
                 BlogTitle = blog.Title,
                 TotalComment =  _context.Comment.Count(c => c.BlogId == blog.Id),
                 RemoveComment = _context.Comment.Count(c => c.BlogId == blog.Id && c.Status == 0),
-                PendingComment =  _context.Comment.Count(c => c.BlogId == blog.Id && c.Status == 2)
+                PendingComment =  _context.Comment.Count(c => c.BlogId == blog.Id && c.Status == 2),
+                NumLike = blog.NumLike,
 
 
             }).ToListAsync();
@@ -82,11 +83,27 @@ namespace apiServer.Controllers
             {
                 return BadRequest("Bạn không thể để trống comment!");
 
-            }        
+            }
+
+            var user = await _context.User.FindAsync(comment.UserId);
+
             await _context.Comment.AddAsync(comment); 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCommentsByBlogId), new { blogId = comment.BlogId }, comment);
+            var commentDTO = new CommentDTO
+            {
+                ID = comment.Id,
+                UserId = comment.UserId,
+                Role = user.Role,
+                UserName = user.FullName,
+                Status = comment.Status,
+                Content = comment.Content,
+                CreatedAt = comment.CreatedAt,
+                ParentId = comment.ParentId
+            };
+
+
+            return CreatedAtAction(nameof(GetCommentsByBlogId), new { blogId = comment.BlogId }, commentDTO);
 
         }
 

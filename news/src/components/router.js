@@ -21,6 +21,7 @@ import Unauthorized from "./admin/users/Unauthorized";
 import UserList from "./admin/users/UserList";
 import ManagerCategory from "./admin/categroryManager/CategoryManager";
 import AdminRegister from "./admin/users/AdminRegister";
+
 function RouterConfig() {
     return (
         <Router>
