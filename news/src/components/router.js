@@ -20,6 +20,7 @@ import Dashboard from "./admin/Dashboard/Dashboard";
 import Unauthorized from "./admin/users/Unauthorized";
 import UserList from "./admin/users/UserList";
 import ManagerCategory from "./admin/categroryManager/CategoryManager";
+import AdminRegister from "./admin/users/AdminRegister";
 function RouterConfig() {
     return (
         <Router>
@@ -38,7 +39,6 @@ function RouterConfig() {
                     <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
                 </Route>
-                {/* <Route path='/test' element={<Test/>}/> */}
                 <Route path='/admin' element={<AdminHome/>}>
                     <Route index element={<Dashboard/>}/>
                     <Route path='blogs' element={<Blog/>}/>
@@ -48,6 +48,7 @@ function RouterConfig() {
                     <Route path='commentManage' element={<CommentManage/>}/>
                     <Route path="users" element={<UserList/>} />
                     <Route path="category" element={<ManagerCategory/>}/>
+                    <Route path="adminCreate" element={<AdminRegister/>}/>
                 </Route>
             </Routes>
         </Router>

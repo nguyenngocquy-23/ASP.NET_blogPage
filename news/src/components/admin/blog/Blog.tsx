@@ -3,11 +3,11 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 import { format, parseISO } from "date-fns"; // hỗ trợ định dạng ngày tháng theo mẫu
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../blog/Blog.module.css";
 import Swal from "sweetalert2";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../reduxStore/Store";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../reduxStore/Store";
 
 interface Blog {
   id: number;
@@ -25,7 +25,7 @@ const Blog: React.FC = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (currentUser?.role != 0) {
-      navigate('/unauthorized');
+      navigate("/unauthorized");
     }
   }, [currentUser, navigate]);
 
@@ -96,14 +96,22 @@ const Blog: React.FC = () => {
       name: "Thể loại",
       selector: (row: Blog) => {
         switch (row.categoryId) {
-          case 1: return 'Tin nổi bật';
-          case 2: return 'Thể thao';
-          case 3: return 'Nhân sự';
-          case 4: return 'Qui định';
-          case 5: return 'Chính sách';
-          case 6: return 'Phòng ban';
-          case 7: return 'Lương';
-          default: return 'Khác';
+          case 1:
+            return "Tin nổi bật";
+          case 2:
+            return "Thể thao";
+          case 3:
+            return "Nhân sự";
+          case 4:
+            return "Qui định";
+          case 5:
+            return "Chính sách";
+          case 6:
+            return "Phòng ban";
+          case 7:
+            return "Lương";
+          default:
+            return "Khác";
         }
       },
       sortable: true,
@@ -123,7 +131,7 @@ const Blog: React.FC = () => {
     {
       name: "Mô tả ngắn",
       selector: (row: Blog) => row.shortDescription,
-      width: "380px",
+      width: "340px",
     },
     {
       name: "Ngày tạo",
@@ -167,7 +175,7 @@ const Blog: React.FC = () => {
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Danh sách bài viết</h2>
-      {loading && <p style={{textAlign:'center'}}>Đang tải...</p>}
+      {loading && <p style={{ textAlign: "center" }}>Đang tải...</p>}
       {error && <p className={styles.error}>{error}</p>}
       <Link
         to={"/admin/blogDetail"}
@@ -197,9 +205,9 @@ const Blog: React.FC = () => {
                 style: {
                   borderCollapse: "collapse",
                   fontSize: "15px",
-                  whiteSpace: "normal", 
+                  whiteSpace: "normal",
                   wordWrap: "break-word",
-                  height:"auto"
+                  height: "auto",
                 },
               },
             }}

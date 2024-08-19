@@ -7,15 +7,20 @@ import { url } from "inspector";
 import { data } from "cheerio/lib/api/attributes";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import {FaPlus} from "react-icons/fa";
+import {FaArrowCircleLeft, FaPlus} from "react-icons/fa";
 import {MdCancel} from "react-icons/md";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../reduxStore/Store";
 
+interface Category{
+  id : number;
+  name : string;
+}
 const BlogForm: React.FC = () => {
   const { blogId } = useParams<{ blogId?: string }>();
   const [title, setTitle] = useState("");
   const [auth, setAuth] = useState("");
+  const [listCategory, setListCategory] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -27,6 +32,8 @@ const BlogForm: React.FC = () => {
   const navigate = useNavigate();
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const dispatch = useDispatch();
+
+  
   useEffect(() => {
     if (currentUser?.role != 0) {
       navigate('/unauthorized');
@@ -80,6 +87,18 @@ const BlogForm: React.FC = () => {
     }
   }, [blogId]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.post('https://localhost:7125/CategoryCotroller/category');
+        setListCategory(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    }
+    fetchCategories();
+  }, []);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -131,7 +150,7 @@ const BlogForm: React.FC = () => {
         }
 
         const blogData = {
-          auth: "quy",
+          auth: auth,
           title,
           image: imageUrl,
           shortDescription,
@@ -146,7 +165,7 @@ const BlogForm: React.FC = () => {
           // Update existing blog
           const blogUpdate = {
             id: blogId,
-            auth: "quy",
+            auth: auth,
             title,
             image: imageUrl,
             shortDescription,
@@ -211,10 +230,10 @@ const BlogForm: React.FC = () => {
         <Link
             to={"/admin/blogs"}
             className={styles.addIcon}
-            style={{float: "right", fontWeight: "bold",fontSize: "20px", border: "none", margin: "0", padding: "0"}}
-            title="Tắt Thêm Bài Viết"
+            style={{float: "left", fontWeight: "bold",fontSize: "25px", border: "none", margin: "0", padding: "0"}}
+            title="Quay lại"
         >
-          <MdCancel/>
+          <FaArrowCircleLeft/>
         </Link>
         <h2>Chi tiết bài viết</h2>
 
@@ -241,12 +260,9 @@ const BlogForm: React.FC = () => {
                 required
             >
               <option value="">Chọn thể loại</option>
-              <option value="0">Tin nổi bật</option>
-              <option value="1">Thể thao</option>
-              <option value="2">Phòng ban</option>
-              <option value="3">Nhân sự</option>
-              <option value="4">Qui định</option>
-              <option value="5">Chính sách</option>
+              {listCategory?.map(item => (
+                <option key={item.id} value={item.id}>{item.name}</option> 
+              ))}
             </select>
           </div>
           <div className={styles.formGroup}>
