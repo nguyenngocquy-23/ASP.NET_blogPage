@@ -13,7 +13,7 @@ import ManaInfo from "./manageInfo/ManaInfo";
 import Blog from './admin/blog/Blog';
 import ContactManager from "./admin/ContactManager/ContactManager";
 
-import BlogForm from "./admin/blogDetail/blogDetail";
+import BlogForm from "./admin/blogDetail/BlogDetail";
 import CommentManage from "./admin/CommentManager/CommentManage";
 import AdminHome from "./admin/AdminHome/AdminHome";
 import Dashboard from "./admin/Dashboard/Dashboard";
@@ -27,10 +27,10 @@ function RouterConfig() {
             <Routes>
                 <Route path="/" element={<Main/>}>
                     <Route index element={<Home/>}/>
-                    <Route path='/:category' element={<Category/>}></Route>
-                    <Route path='/:category/:subcategory' element={<Category/>}></Route>
-                    <Route path='/detail/:id' element={<Detail/>}></Route>
-                    <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}></Route>
+                    <Route path='/:category' element={<Category/>}/>
+                    <Route path='/:category/:subcategory' element={<Category/>}/>
+                    <Route path='/detail/:id' element={<Detail/>}/>
+                    <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
                     <Route path='/history' element={<History/>}></Route>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/register' element={<Register/>}/>
@@ -39,14 +39,14 @@ function RouterConfig() {
                     <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
                 </Route>
-                {/* <Route path='/test' element={<Test/>}/> */}
                 <Route path='/admin' element={<AdminHome/>}>
                     <Route index element={<Dashboard/>}/>
                     <Route path='blogs' element={<Blog/>}/>
                     <Route path='blogDetail' element={<BlogForm/>}/>
                     <Route path='blogDetail/:blogId' element={<BlogForm/>}/>
                     <Route path='contactManager' element={<ContactManager/>}/>
-                    <Route path="users" element={<UserList/>}/>
+                    <Route path='commentManage' element={<CommentManage/>}/>
+                    <Route path="users" element={<UserList/>} />
                     <Route path="category" element={<ManagerCategory/>}/>
                     <Route path="adminCreate" element={<AdminRegister/>}/>
                 </Route>

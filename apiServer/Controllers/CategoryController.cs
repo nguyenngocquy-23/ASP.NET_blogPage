@@ -25,6 +25,16 @@ namespace apiServer.Controllers
             var categories = await _context.Category.ToListAsync();
             return Ok(categories);
         }
+        
+        [HttpPost("category/{id}")]
+        public async Task<ActionResult<string>> getNameCategoryById(int id)
+        {
+            var category = await _context.Category.FindAsync(id);
+            if (category == null) { 
+                return BadRequest("id khong ton tai");
+            }
+            return category.Name;
+        }
 
         [HttpGet("category")]
         public async Task<ActionResult<IEnumerable<Blog>>> getBlogByCategories([FromQuery] int id, [FromQuery] int page, int limit)

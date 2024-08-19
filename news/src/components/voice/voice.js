@@ -57,7 +57,7 @@ const SpeechRecognitionComponent = ({setQuery}) => {
                 overlayClassName={styles['modal-overlay']}
             >
                 <h2>Đang ghi âm...</h2>
-                <button onClick={stopSpeechRecognition}>
+                <button className={styles['btn']} onClick={stopSpeechRecognition}>
                     <FaStop /> Dừng ghi âm
                 </button>
             </Modal>
