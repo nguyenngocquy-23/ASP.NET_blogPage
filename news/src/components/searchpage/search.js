@@ -117,12 +117,12 @@ function Search() {
                             </div>
                             <div className={categoryStyles['horizontalPost__main']} >
                                 <h3 className={` ${categoryStyles['horizontalPost__main-title']} ${categoryStyles['vnn-title']} ${categoryStyles['title-bold']} `} data-id="2291894" ispr="False">
-                                    <a href={"/detail/" + item.id} title={item.title} data-utm-source="#vnn_source=bongdavietnam&amp;vnn_medium=listtin1" data-limit="">
+                                    <Link to={"/detail/" + item.id} title={item.title} data-utm-source="#vnn_source=bongdavietnam&amp;vnn_medium=listtin1" data-limit="">
                                         {item.title}
-                                    </a>
+                                    </Link>
                                 </h3>
                                 <div className={categoryStyles['horizontalPost__main-desc']} data-limit="">
-                                    <p>{item.content}</p>
+                                    <p>{item.shortDescription}</p>
                                 </div>
                             </div>
                         </div>

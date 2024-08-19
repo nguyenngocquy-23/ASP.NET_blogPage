@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../detail/Detail.module.css";
-import { Link, useParams } from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../reduxStore/Store";
 import { FaRegMessage, FaVolumeHigh, FaVolumeOff } from "react-icons/fa6";
@@ -32,6 +32,8 @@ interface BlogRelate {
 
 const Detail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const [isLike, setIsLike] = useState(false);
+  const [nameCategory, setNameCategory] = useState<string>("");
   const [blog, setBlog] = useState<Blog | null>(null);
   const [blogRelate, setBlogRelate] = useState<BlogRelate[]>([]);
   const [commentContent, setCommentContent] = useState<string>(""); // State để lưu nội dung bình luận
@@ -122,6 +124,15 @@ const Detail: React.FC = () => {
     }
   }
 
+  async function fetchNameCategory() {
+    try {
+      const getCategoryById = await axios.post(`https://localhost:7125/CategoryCotroller/category/${blog?.categoryId}`)
+      setNameCategory(getCategoryById.data);
+    } catch (error) {
+      console.error("name category error", error)
+    }
+  }
+
   // Dành cho việc lấy user từ token.
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
@@ -166,7 +177,17 @@ const Detail: React.FC = () => {
       fetchBlogRelate();
     }
   }, [blog]);
-  const handleCommentSubmit = () => {};
+
+  useEffect(() => {
+    if (blog && blog.categoryId) {
+      fetchNameCategory();
+    }
+  }, [blog]);
+
+  const navigate = useNavigate();
+  const handleClick = (url: any,id: any, name: any) => {
+    navigate(`/${url}?page=1`, {state:{id: id, name: name}})
+  }
 
   //*** Dành cho admin - Kiểm duyệt các bình luận !.
   const approveComment = async () => {
@@ -230,24 +251,36 @@ const Detail: React.FC = () => {
         <div className={styles.breadCrumbDetail}>
           <ul>
             <li>
-              <a href={"/"}></a>
+              <a
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "30px"
+                  }}
+                  onClick={() =>
+                      handleClick(convertToSlug(nameCategory), blog?.categoryId, nameCategory)}>
+                {nameCategory}
+              </a>
             </li>
           </ul>
           <div className="bread-crumb-detail__time">{blog?.createdAt}</div>
         </div>
         <div className={styles.audioControls}>
+          <div className={styles.inforAuth}>
+            <h2>Tác giả: {blog?.auth},</h2>
+            <p>lượt thích: {blog?.numLike}</p>
+          </div>
           {isReading ? (
-            <FaVolumeOff
-              onClick={handleStopReading}
-              className={styles.audioIcon}
-              title={"Dừng nghe"}
-            />
+              <FaVolumeOff
+                  onClick={handleStopReading}
+                  className={styles.audioIcon}
+                  title={"Dừng nghe"}
+              />
           ) : (
-            <FaVolumeHigh
-              onClick={handleReadText}
-              className={styles.audioIcon}
-              title={"Nghe"}
-            />
+              <FaVolumeHigh
+                  onClick={handleReadText}
+                  className={styles.audioIcon}
+                  title={"Nghe"}
+              />
           )}
         </div>
         <div className={styles.contentDetail}>
@@ -256,10 +289,19 @@ const Detail: React.FC = () => {
           </h1>
           <h2 className={styles.contentDetailSapo}>{blog?.shortDescription}</h2>
           <div
-            className={styles.maincontent}
-            id="maincontent"
-            dangerouslySetInnerHTML={{ __html: blog?.content || "" }}
+              className={styles.maincontent}
+              id="maincontent"
+              dangerouslySetInnerHTML={{__html: blog?.content || ""}}
           ></div>
+        </div>
+        <div className={styles.like}>
+          <p
+              style={{
+                cursor: "pointer",
+                color: "blue",
+                display: "inline-block"
+              }}
+          >{isLike ? "Bỏ thích" : "Thích"}</p>
         </div>
       </div>
       {/*Mục liên quan*/}
@@ -267,18 +309,18 @@ const Detail: React.FC = () => {
         <h2 className={styles.horizontalHeading}>CÓ THỂ BẠN QUAN TÂM</h2>
         <div>
           {blogRelate.map((item, index) => (
-            <div className={styles.horizontalItem} key={index}>
-              <div className={styles.horizontalImage}>
-                <img src={item.image || "Loading..."} alt={item.title} />
+              <div className={styles.horizontalItem} key={index}>
+                <div className={styles.horizontalImage}>
+                  <img src={item.image || "Loading..."} alt={item.title}/>
+                </div>
+                <div className={styles.horizontalTitle}>
+                  <h3>
+                    <Link to={"/detail/" + item.id} title={item.title}>
+                      {item.title}
+                    </Link>
+                  </h3>
+                </div>
               </div>
-              <div className={styles.horizontalTitle}>
-                <h3>
-                  <a href={"/detail/" + item.id} title={item.title}>
-                    {item.title}
-                  </a>
-                </h3>
-              </div>
-            </div>
           ))}
         </div>
       </div>
@@ -287,8 +329,8 @@ const Detail: React.FC = () => {
       <div className={styles.comments}>
         <span className={styles.title}>Bình luận</span>
         {currentUser !== null && currentUser.role === 0 && (
-          <button
-            className="comment-form-button checked-comment"
+            <button
+                className="comment-form-button checked-comment"
             onClick={approveComment}
           >
             Kiểm duyệt toàn bộ bình luận!

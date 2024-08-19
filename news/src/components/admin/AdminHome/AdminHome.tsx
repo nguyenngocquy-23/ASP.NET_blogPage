@@ -98,9 +98,9 @@ const AdminHome = () => {
   return (
     <div className="container">
       <div className="sidebar">
-        <a href={"/"}>
+        <Link to={"/"}>
           <h2>Blog Website</h2>
-        </a>
+        </Link>
         <div className="solid"></div>
         <ul>
           <li onClick={() => handlerDashboard()}>

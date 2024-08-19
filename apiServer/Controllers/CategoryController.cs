@@ -1,4 +1,4 @@
-﻿using apiServer.Data;
+using apiServer.Data;
 using apiServer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +36,7 @@ namespace apiServer.Controllers
             return category.Name;
         }
 
+
         [HttpGet("category")]
         public async Task<ActionResult<IEnumerable<Blog>>> getBlogByCategories([FromQuery] int id, [FromQuery] int page, int limit)
         {
@@ -45,10 +46,16 @@ namespace apiServer.Controllers
         }
 
         [HttpGet("delete")]
-        public async Task<ActionResult<IEnumerable<Category>>> deleteCategoryById([FromQuery] int id)
+        public async Task<ActionResult<IEnumerable<bool>>> deleteCategoryById([FromQuery] int id)
         { 
-            var category = await _context.Category.Where(category => category.Id == id).ToListAsync();
-            return Ok(category);
+            var category = await _context.Category.FindAsync(id);
+            if (category != null)
+            {
+                _context.Category.Remove(category);
+                await _context.SaveChangesAsync();
+                return Ok(true);
+            }
+            return Ok(false);
         }
 
         [HttpGet("add")]
@@ -56,7 +63,7 @@ namespace apiServer.Controllers
         {   
             if (string.IsNullOrEmpty(nameCategory))
             {
-                return BadRequest("nameCategory là rỗng"); 
+                return BadRequest("nameCategory l� r?ng"); 
             } 
             try
             {
@@ -72,7 +79,7 @@ namespace apiServer.Controllers
                     return Ok(true);
                 } else
                 {
-                    return BadRequest("NameCategory bị trùng");
+                    return BadRequest("NameCategory b? tr�ng");
                 }
             } catch (Exception ex)
             {
