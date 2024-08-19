@@ -8,6 +8,8 @@
         public int RemoveComment { get; set;  }
         public int PendingComment { get; set; }
 
+        public int NumLike { get; set; }
+
 
     }
 }

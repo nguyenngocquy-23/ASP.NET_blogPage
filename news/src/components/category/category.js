@@ -109,7 +109,7 @@ function Category() {
                                 </a>
                             </h3>
                             <div className={categoryStyles['horizontalPost__main-desc']} data-limit="">
-                                <p>{item.content}</p>
+                                <p>{item.shortDescription}</p>
                             </div>
                         </div>
                     </div>
