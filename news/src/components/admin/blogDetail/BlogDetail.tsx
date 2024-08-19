@@ -81,6 +81,7 @@ const BlogForm: React.FC = () => {
         } catch (error) {
           console.error("Failed to fetch blog details", error);
         }
+
       };
 
       fetchBlogDetails();
@@ -124,6 +125,7 @@ const BlogForm: React.FC = () => {
 
     if (content.length > 0 && shortDescription.length > 0) {
       try {
+        console.log('auth : ', auth)
         let imageUrl = "";
         console.log("image : " + image?.text);
         if (image) {
@@ -150,7 +152,7 @@ const BlogForm: React.FC = () => {
         }
 
         const blogData = {
-          auth: auth,
+          auth: currentUser.fullName,
           title,
           image: imageUrl,
           shortDescription,
@@ -173,13 +175,18 @@ const BlogForm: React.FC = () => {
             categoryId,
             status: 1,
           };
-          await axios.post(
-            `https://localhost:7125/AdminBlog/updateBlog`,
-            blogUpdate,
-            {
-              headers: { "Content-Type": "application/json" },
-            }
-          );
+          console.log('blogUpdate : ', blogUpdate)
+          try {
+            await axios.post(
+                `https://localhost:7125/AdminBlog/updateBlog`,
+                blogUpdate,
+                {
+                  headers: { "Content-Type": "application/json" },
+                }
+              );
+          } catch (error) {
+            console.error(error);
+          }
           console.log("blogData:", JSON.stringify(blogUpdate, null, 2));
         } else {
           await axios.post(
@@ -206,7 +213,7 @@ const BlogForm: React.FC = () => {
           },
         });
         setTimeout(() => {
-          window.location.href = "/admin/blogs";
+          navigate(`/admin/blogs`);
         }, 600);
       } catch (error) {
         Swal.fire({

@@ -39,12 +39,39 @@ function ManagerCategory() {
         }
     }
 
-    // async function deleteCategory() {
-    //     try {
-    //         const response = await  axios.get()
-    //
-    //     }
-    // }
+    async function deleteCategory(id) {
+        try {
+            Swal.fire({
+                icon: "warning",
+                title: "Bạn có muốn xóa danh mục này?",
+                text: "Thao tác này không được khôi phục!",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Có, xóa nó!",
+                cancelButtonText: "Hủy",
+              }).then( async (result) => {
+                if (result.isConfirmed) {
+                    const response = await  axios.get(`https://localhost:7125/CategoryCotroller/delete?id=${id}`)
+                    if(response.data){
+                        Swal.fire(
+                          "Đã xóa!",
+                          "Danh mục đã được xóa.",
+                          "success"
+                        );
+                    }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                  Swal.fire(
+                    "Đã hủy",
+                    "Danh mục không bị xóa",
+                    "error"
+                  );
+                }
+              });
+        } catch(error) {
+            console.error("Delete error", error);
+        }
+    }
 
     async function addCategory(nameCategory) {
         try {
