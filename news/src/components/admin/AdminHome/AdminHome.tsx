@@ -1,32 +1,78 @@
 import "./AdminHome.css";
-import { Link, Outlet } from "react-router-dom";
+import {Link, Outlet, useNavigate} from "react-router-dom";
 import { TfiWrite } from "react-icons/tfi";
 import { MdContactMail, MdDashboard } from "react-icons/md";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "../../reduxStore/Store";
+import {FaUserCog} from "react-icons/fa";
+import {logoutCurrentUser} from "../../reduxStore/UserSlice";
 
 const AdminHome = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const [clickDashBoard, setClickDashBoard] = useState(true);
   const [clickBlog, setClickBlog] = useState(false);
   const [clickContact, setClickContact] = useState(false);
+  const [clickUsers, setClickUsers] = useState(false);
+  const [clickCategory, setClickCategory] = useState(false);
+  const [clickCreateAdmin, setClickCreateAdmin] = useState(false);
+
+  const handleLogout = () => {
+    dispatch(logoutCurrentUser())
+    localStorage.removeItem('authToken');
+  };
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (currentUser?.role != 0) {
+      navigate('/unauthorized');
+    }
+  }, [currentUser, navigate]);
 
   const handlerDashboard = () => {
     setClickDashBoard(true);
     setClickContact(false);
     setClickBlog(false);
+    setClickUsers(false);
+    setClickCreateAdmin(false);
   };
   const handlerBlog = () => {
     setClickDashBoard(false);
     setClickContact(false);
     setClickBlog(true);
+    setClickUsers(false);
+    setClickCreateAdmin(false);
   };
   const handlerContact = () => {
     setClickDashBoard(false);
     setClickContact(true);
     setClickBlog(false);
+    setClickUsers(false);
+    setClickCreateAdmin(false);
   };
+  const handlerUsers = () => {
+    setClickDashBoard(false);
+    setClickContact(false);
+    setClickBlog(false);
+    setClickUsers(true);
+    setClickCreateAdmin(false);
+  }
+  const handlerCategory = () => {
+    setClickDashBoard(false);
+    setClickContact(false);
+    setClickBlog(false);
+    setClickUsers(false);
+    setClickCategory(true);
+    setClickCreateAdmin(false);
+  }
+  const createAdmin = () => {
+    setClickDashBoard(false);
+    setClickContact(false);
+    setClickBlog(false);
+    setClickUsers(false);
+    setClickCreateAdmin(true);
+  }
   return (
     <div className="container">
       <div className="sidebar">
@@ -37,21 +83,31 @@ const AdminHome = () => {
         <ul>
           <li onClick={() => handlerDashboard()}>
             <Link to="/admin" className={clickDashBoard ? "Click" : ""}>
-              <MdDashboard /> Dashboard
+              <MdDashboard/> Dashboard
             </Link>
           </li>
           <li onClick={() => handlerBlog()}>
             <Link to="/admin/blogs" className={clickBlog ? "Click" : ""}>
-              <TfiWrite /> Quản Lý Bài Blog
+              <TfiWrite/> Quản Lý Bài Blog
             </Link>
           </li>
           <li onClick={() => handlerContact()}>
             <Link
-              to="/admin/ContactManager"
-              className={clickContact ? "Click" : ""}
+                to="/admin/ContactManager"
+                className={clickContact ? "Click" : ""}
             >
-              <MdContactMail /> Quản Lý Liên Hệ
+              <MdContactMail/> Quản Lý Liên Hệ
             </Link>
+          </li>
+          <li onClick={() => handlerUsers()}><Link to="/admin/users"
+                                                   className={clickUsers ? "Click" : ""}><FaUserCog/> Quản Lý Tài Khoản</Link>
+          </li>
+          <li onClick={() => createAdmin()}><Link to="/admin/adminCreate"
+                                                   className={clickUsers ? "Click" : ""}><FaUserCog/> Thêm quản trị viên</Link>
+          </li>
+          <li onClick={() => handlerUsers()}><Link to="/admin/category"
+                                                   className={clickCategory ? "Click" : ""}><FaUserCog/> Quản Lý danh
+            mục</Link>
           </li>
         </ul>
       </div>
@@ -59,9 +115,9 @@ const AdminHome = () => {
         <div className="navbar">
           <h1>
             Welcome to Admin {currentUser.fullName}
-            <a href={"/login"}>
-                Đăng Xuất
-              </a>
+            <Link to="/login" onClick={handleLogout}>
+              Đăng xuất
+            </Link>
           </h1>
         </div>
         <div className="content">
