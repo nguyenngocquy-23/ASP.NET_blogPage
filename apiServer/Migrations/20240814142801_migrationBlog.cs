@@ -5,7 +5,6 @@
 namespace apiServer.Migrations
 {
     /// <inheritdoc />
-
     public partial class migrationBlog : Migration
     {
         /// <inheritdoc />

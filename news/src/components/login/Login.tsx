@@ -30,7 +30,7 @@ function Login() {
             if (response.data.role == 0)
                 navigate('/admin');
             else
-                navigate('/')
+                navigate('/');
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 const errorMsg = typeof err.response?.data === 'string' ? err.response.data : 'Đăng nhập không thành công. Vui lòng thử lại sau.';

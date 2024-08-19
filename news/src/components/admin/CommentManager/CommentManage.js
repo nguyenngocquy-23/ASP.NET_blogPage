@@ -6,8 +6,19 @@ import { FaEye } from "react-icons/fa";
 import { IoIosAlert } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { FiExternalLink } from "react-icons/fi";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const CommentManage = () => {
+    const navigate = useNavigate();
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (currentUser?.role != 0) {
+            navigate('/unauthorized');
+        }
+    }, [currentUser, navigate]);
+
     const [dataComment, setDataComment] = useState([]);
 
     const [checkFeedBack,setCheckFeedBack] = useState("0");

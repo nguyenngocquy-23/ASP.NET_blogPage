@@ -11,14 +11,16 @@ import History from './history/history';
 import Contact from "./contact/Contact";
 import ManaInfo from "./manageInfo/ManaInfo";
 import Blog from './admin/blog/Blog';
-import UserList from "./login/UserList";
-import Unauthorized from "./login/Unauthorized";
 import ContactManager from "./admin/ContactManager/ContactManager";
 
-import BlogForm from "./admin/blogDetail/blogDetail";
+import BlogForm from "./admin/blogDetail/BlogDetail";
 import CommentManage from "./admin/CommentManager/CommentManage";
 import AdminHome from "./admin/AdminHome/AdminHome";
 import Dashboard from "./admin/Dashboard/Dashboard";
+import Unauthorized from "./admin/users/Unauthorized";
+import UserList from "./admin/users/UserList";
+import ManagerCategory from "./admin/categroryManager/CategoryManager";
+import AdminRegister from "./admin/users/AdminRegister";
 function RouterConfig() {
     return (
         <Router>
@@ -32,7 +34,6 @@ function RouterConfig() {
                     <Route path='/history' element={<History/>}></Route>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/register' element={<Register/>}/>
-                    <Route path="/users" element={<UserList/>} />
                     <Route path="/unauthorized" element={<Unauthorized/>} />
                     <Route path='/contact' element={<Contact/>}/>
                     <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
@@ -50,6 +51,9 @@ function RouterConfig() {
                     <Route path='blogDetail' element={<BlogForm/>}/>
                     <Route path='blogDetail/:blogId' element={<BlogForm/>}/>
                     <Route path='contactManager' element={<ContactManager/>}/>
+                    <Route path="users" element={<UserList/>}/>
+                    <Route path="category" element={<ManagerCategory/>}/>
+                    <Route path="adminCreate" element={<AdminRegister/>}/>
                 </Route>
             </Routes>
         </Router>
