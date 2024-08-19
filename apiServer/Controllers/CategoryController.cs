@@ -26,6 +26,7 @@ namespace apiServer.Controllers
             return Ok(categories);
         }
 
+
         [HttpGet("category")]
         public async Task<ActionResult<IEnumerable<Blog>>> getBlogByCategories([FromQuery] int id, [FromQuery] int page, int limit)
         {
@@ -35,10 +36,18 @@ namespace apiServer.Controllers
         }
 
         [HttpGet("delete")]
-        public async Task<ActionResult<IEnumerable<Category>>> deleteCategoryById([FromQuery] int id)
-        { 
+        public async Task<ActionResult<IEnumerable<bool>>> deleteCategoryById([FromQuery] int id)
+        {
             var category = await _context.Category.Where(category => category.Id == id).ToListAsync();
-            return Ok(category);
+            if (category[0] != null)
+            {
+                _context.Category.Remove(category[0]);
+                await _context.SaveChangesAsync();
+                return Ok(true);
+            } else
+            {
+                return Ok(false);
+            }
         }
 
         [HttpGet("add")]

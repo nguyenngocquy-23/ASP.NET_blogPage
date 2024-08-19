@@ -196,15 +196,6 @@
                         confirmButtonText: 'Ở lại'
                     });
 
-                    // Cập nhật giao diện nếu cần (tuỳ chọn)
-                    // const updatedBackendComments = backendComments.map(comment => {
-                    //     if (comment.blogId === blogId) {
-                    //         return { ...comment, status: 1 }; // Ví dụ cập nhật trạng thái
-                    //     }
-                    //     return comment;
-                    // });
-                    // setBackendComments(updatedBackendComments);
-
                 } catch (error) {
                     console.error("Lỗi khi duyệt bình luận", error);
                     await Swal.fire({
@@ -239,7 +230,7 @@
                                 <h1 className={styles.contentDetailTitle}>{blog?.title || 'Loading...'}</h1>
                                 <h2 className={styles.contentDetailSapo}>{blog?.shortDescription}</h2>
                                 <div className={styles.maincontent} id="maincontent"
-                                     dangerouslySetInnerHTML={{__html: blog?.content || ''}}>
+                                    dangerouslySetInnerHTML={{__html: blog?.content || ''}}>
                                 </div>
                             </div>
                 </div>

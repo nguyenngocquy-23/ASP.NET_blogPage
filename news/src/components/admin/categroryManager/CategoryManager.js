@@ -39,12 +39,6 @@ function ManagerCategory() {
         }
     }
 
-    // async function deleteCategory() {
-    //     try {
-    //         const response = await  axios.get()
-    //
-    //     }
-    // }
 
     async function addCategory(nameCategory) {
         try {
@@ -75,8 +69,12 @@ function ManagerCategory() {
         setSearchData(newData)
     }
     const handleDeleteCategory = async (id) => {
-        const response = await axios.get(`https://localhost:7125/CategoryCotroller/delete?id=${id}`)
-        console.log(response.data);
+        const response = await axios.get(`https://localhost:7125/CategoryCotroller/delete?id=${id}}`)
+        if (response.data) {
+            fetch();
+        } else {
+
+        }
     }
 
     const handleAddCategory = (name) => {

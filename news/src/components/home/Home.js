@@ -39,18 +39,15 @@ function Home() {
             console.error("Home error: ", error)
         }
     }
-    function extractLinkPath(url){
-        const parts = url.split('/');
-        return parts[parts.length - 1];
-    };
-    const feedUrl = {
-        tin_noi_bat: 'https://localhost:7125/AdminBlog/tin_noi_bat',
-        the_thao: 'https://localhost:7125/AdminBlog/the-thao',
-        phong_ban: 'https://localhost:7125/AdminBlog/phong-ban',
-        nhan_su: 'https://localhost:7125/AdminBlog/nhan-su',
-        qui_dinh: 'https://localhost:7125/AdminBlog/qui-dinh',
-        chinh_sach: 'https://localhost:7125/AdminBlog/chinh-sach',
-    };
+    function convertToSlug(str) {
+        str = str.toLowerCase();
+        // Thay thế các ký tự đặc biệt và dấu câu bằng khoảng trắng
+        str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // Loại bỏ dấu trong các ký tự Unicode
+        str = str.replace(/\s+/g, '-'); // Thay thế các khoảng trắng liên tiếp bằng dấu gạch ngang
+        str = str.replace(/-+/g, '-'); // Thay thế các dấu gạch ngang liên tiếp bằng một dấu gạch ngang
+        return str;
+    }
+
     useEffect(() => {
         fetch();
     }, []);
@@ -61,17 +58,17 @@ function Home() {
                     {leftBlogs.map((item, index) => (
                         <div key={index} className={`${styles.horizontalPost} mb-20`}>
                             <div className={`${styles.horizontalPost__avt} avt-140`}>
-                                <a href={"/detail/" + item.id} title={item.title}>
+                                <Link to={"/detail/" + item.id} title={item.title}>
                                     <picture>
                                         <img src={item.image} alt={item.title}/>
                                     </picture>
-                                </a>
+                                </Link>
                             </div>
                             <div className={styles.horizontalPost__main}>
                                 <h3 className={styles['horizontalPost__main-title']}>
-                                    <a href={"/detail/" + item.id} title={item.title}>
+                                    <Link to={"/detail/" + item.id} title={item.title}>
                                         {item.title}
-                                    </a>
+                                    </Link>
                                 </h3>
                             </div>
                         </div>
@@ -82,20 +79,20 @@ function Home() {
                         <div className="group-reverse">
                             <div className={`${styles.verticalPost} version-news sm:lineSeparates topStory`}>
                                 <div className={styles.verticalPost__avt}>
-                                    <a href={"/detail/" + centerBlog.id} title={centerBlog.content}>
+                                    <Link to={"/detail/" + centerBlog.id} title={centerBlog.content}>
                                         <picture>
                                             <img src={centerBlog.image} alt={centerBlog.content}/>
                                         </picture>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className={styles.verticalPost__main}>
                                     <h2 className={`${styles['verticalPost__main-title']} vnn-title`}>
-                                        <a href={"/detail/" + centerBlog.id} title={centerBlog.content}>
-                                            {centerBlog.content}
-                                        </a>
+                                        <Link to={"/detail/" + centerBlog.id} title={centerBlog.title}>
+                                            {centerBlog.title}
+                                        </Link>
                                     </h2>
                                     <div className={`${styles['verticalPost__main-desc']} font-noto`}>
-                                        {centerBlog.content}
+                                        {centerBlog.shortDescription}
                                     </div>
                                 </div>
                             </div>
@@ -105,17 +102,17 @@ function Home() {
                         {topBlogs.map((item, index) => (
                             <div key={index} className={`${styles.verticalPost} version-news sm:lineSeparates`}>
                                 <div className={styles.verticalPost__avt}>
-                                    <a href={"/detail/" + item.id} title={item.content}>
+                                    <Link to={"/detail/" + item.id} title={item.title}>
                                         <picture>
-                                            <img src={item.image} alt={item.content}/>
+                                            <img src={item.image} alt={item.title}/>
                                         </picture>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className={styles.verticalPost__main}>
                                     <h3>
-                                        <a href={"/detail/" + item.id} title={item.content}>
-                                            {item.content}
-                                        </a>
+                                        <Link to={"/detail/" + item.id} title={item.title}>
+                                            {item.title}
+                                        </Link>
                                     </h3>
                                 </div>
                             </div>
@@ -128,11 +125,10 @@ function Home() {
             <div className={styles.home__block1}>
                 <div className={styles.block1__groups}>
                     <div className={styles.group1}>
-                        {console.log("Blogs by Category:", blogByCategory)}
                         {blogByCategory.slice(0, 2).map((category, index) => (
                             <div key={index} className={styles.boxCate}>
                                 <div className={styles.boxCate__head}>
-                                    <Link to={""}>{category.name}</Link>
+                                    <Link to={"/" + convertToSlug(category.name) + "?page=1"}>{category.name}</Link>
                                 </div>
                                 <div className={styles.boxCate__main}>
                                     {category.blogs.map((subItem, subIndex) => (
