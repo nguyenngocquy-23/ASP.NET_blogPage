@@ -19,8 +19,14 @@ interface Blog {
   // Thêm các trường khác nếu cần thiết
 }
 
+interface Category{
+  id : number;
+  name : string;
+}
+
 const Blog: React.FC = () => {
   const navigate = useNavigate();
+  const [listCategory, setListCategory] = useState<Category[]>([]);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -47,6 +53,18 @@ const Blog: React.FC = () => {
     };
 
     fetchBlogs();
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.post('https://localhost:7125/CategoryCotroller/category');
+        setListCategory(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    }
+    fetchCategories();
   }, []);
 
   const handleDelete = async (id: number) => {
@@ -85,6 +103,13 @@ const Blog: React.FC = () => {
     }
   };
 
+  const categoryName = (idCategory: any) => {
+      for (let index = 0; index < listCategory.length; index++) {
+        if (idCategory == listCategory[index].id) return listCategory[index].name
+      }
+      return "Khac";
+  }
+
   const columns = [
     {
       name: "Tiêu đề",
@@ -94,26 +119,7 @@ const Blog: React.FC = () => {
     },
     {
       name: "Thể loại",
-      selector: (row: Blog) => {
-        switch (row.categoryId) {
-          case 1:
-            return "Tin nổi bật";
-          case 2:
-            return "Thể thao";
-          case 3:
-            return "Nhân sự";
-          case 4:
-            return "Qui định";
-          case 5:
-            return "Chính sách";
-          case 6:
-            return "Phòng ban";
-          case 7:
-            return "Lương";
-          default:
-            return "Khác";
-        }
-      },
+      selector: (row: Blog) => categoryName(row.categoryId),
       sortable: true,
       width: "130px",
     },

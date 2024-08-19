@@ -45,10 +45,16 @@ namespace apiServer.Controllers
         }
 
         [HttpGet("delete")]
-        public async Task<ActionResult<IEnumerable<Category>>> deleteCategoryById([FromQuery] int id)
+        public async Task<ActionResult<IEnumerable<bool>>> deleteCategoryById([FromQuery] int id)
         { 
-            var category = await _context.Category.Where(category => category.Id == id).ToListAsync();
-            return Ok(category);
+            var category = await _context.Category.FindAsync(id);
+            if (category != null)
+            {
+                _context.Category.Remove(category);
+                await _context.SaveChangesAsync();
+                return Ok(true);
+            }
+            return Ok(false);
         }
 
         [HttpGet("add")]
