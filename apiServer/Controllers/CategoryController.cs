@@ -1,4 +1,4 @@
-using apiServer.Data;
+﻿using apiServer.Data;
 using apiServer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +63,7 @@ namespace apiServer.Controllers
         {   
             if (string.IsNullOrEmpty(nameCategory))
             {
-                return BadRequest("nameCategory l� r?ng"); 
+                return BadRequest("nameCategory là r?ng"); 
             } 
             try
             {
@@ -79,7 +79,7 @@ namespace apiServer.Controllers
                     return Ok(true);
                 } else
                 {
-                    return BadRequest("NameCategory b? tr�ng");
+                    return BadRequest("NameCategory bị trùng");
                 }
             } catch (Exception ex)
             {

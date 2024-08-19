@@ -5,7 +5,6 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {useSelector} from "react-redux";
 import Swal from "sweetalert2";
 import {hover} from "@testing-library/user-event/dist/hover";
-import Swal from "sweetalert2";
 
 function ManagerCategory() {
     const Columns = [
