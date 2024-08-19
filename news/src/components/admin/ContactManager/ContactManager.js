@@ -139,6 +139,7 @@ const ContactManager = () => {
         fetchDataDPH();
     }
     const columns = [
+
         {
             name: 'Họ và Tên',
             selector: row => row.name,
@@ -163,13 +164,53 @@ const ContactManager = () => {
             name: 'Phản Hồi',
             selector: row => row.feedback,
             cell: row => (
-                <button  onClick={() => handleFeedBack(row)}>
+                <button style={{padding: '10px 20px', borderRadius: '5px', backgroundColor: 'green', color: '#fff', border: 'none', cursor: 'pointer'}} onClick={() => handleFeedBack(row)} >
                     {row.feedback || 'Phản Hồi'}
                 </button>
             ),
             sortable: false,
         },
-    ];
+    ]; const customStyle = {
+        headCells: {
+            style: {
+                fontSize: "17px",
+                background: "#009879",
+                color: "#ffffff",
+                fontWeight: "bold",
+                textAlign: 'center',
+                padding: '10px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center', // Đảm bảo nội dung tiêu đề cũng được căn giữa theo chiều dọc
+            },
+        },
+        cells: {
+            style: {
+                fontSize: '14px',
+                textAlign: 'center',
+                padding: '8px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+        },
+        rows: {
+            style: {
+                minHeight: '50px',
+                '&:hover': {
+                    backgroundColor: '#f1f1f1',
+                },
+            },
+        },
+        pagination: {
+            style: {
+                border: 'none',
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '10px',
+            },
+        },
+    };
     return (
         <div className="table-container">
             <div>
@@ -184,6 +225,7 @@ const ContactManager = () => {
 
             <div>
                 <DataTable
+                    customStyles={customStyle}
                     columns={columns}
                     data={dataContact}
                     progressPending={loading}
@@ -228,4 +270,5 @@ const ContactManager = () => {
 
     )
 }
+
 export default ContactManager;
