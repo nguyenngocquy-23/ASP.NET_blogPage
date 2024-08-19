@@ -47,6 +47,7 @@ const userSlice = createSlice({
         },
         logoutCurrentUser: (state) => {
             state.currentUser = null;
+            sessionStorage.setItem('currentUser', 'null')
         },
     },
 });

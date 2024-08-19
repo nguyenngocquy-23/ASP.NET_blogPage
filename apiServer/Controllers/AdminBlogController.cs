@@ -116,7 +116,7 @@ namespace apiServer.Controllers
                .Select(b => new Blog
                {
                    Id = b.Id,
-                   Auth = b.Auth,
+                   AuthId = b.AuthId,
                    Title = b.Title,
                    Image = b.Image,
                    ShortDescription = b.ShortDescription,
@@ -134,7 +134,9 @@ namespace apiServer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Blog>>> GetBlogs()
         {
-            var blogs = await _context.Blog.ToListAsync();
+            var blogs = await _context.Blog
+                              .OrderByDescending(b => b.CreatedAt)
+                              .ToListAsync();
             return Ok(blogs);
         }
         [HttpDelete("{id}")]
