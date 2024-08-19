@@ -38,11 +38,6 @@ function RouterConfig() {
                     <Route path='/contact' element={<Contact/>}/>
                     <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
-                    <Route path='/admin/blogs' element={<Blog/>}/>
-                    <Route path='/admin/blogDetail' element={<BlogForm/>}/>
-                    <Route path='/admin/blogDetail/:blogId' element={<BlogForm/>}/>
-                    <Route path='/admin/contactManager' element={<ContactManager/>}/>
-                    <Route path='/admin/commentManager' element={<CommentManage/>}/>
                 </Route>
                 {/* <Route path='/test' element={<Test/>}/> */}
                 <Route path='/admin' element={<AdminHome/>}>
