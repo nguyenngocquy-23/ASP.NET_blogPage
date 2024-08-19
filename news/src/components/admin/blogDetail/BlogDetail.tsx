@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import styles from "../blogDetail/BlogDetail.module.css";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import { url } from "inspector";
 import { data } from "cheerio/lib/api/attributes";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import {FaArrowLeft, FaPlus} from "react-icons/fa";
 import {MdCancel} from "react-icons/md";
-import { FaRegCircleLeft } from "react-icons/fa6";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../reduxStore/Store";
 
 const BlogForm: React.FC = () => {
   const { blogId } = useParams<{ blogId?: string }>();
@@ -22,6 +22,15 @@ const BlogForm: React.FC = () => {
   const [content, setContent] = useState("");
   const [contentError, setContentError] = useState("");
   const [shortDescError, setShortDescError] = useState("");
+
+  const navigate = useNavigate();
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (currentUser?.role != 0) {
+      navigate('/unauthorized');
+    }
+  }, [currentUser, navigate]);
 
   useEffect(() => {
     const fetchAndConvertImage = async () => {
@@ -201,10 +210,10 @@ const BlogForm: React.FC = () => {
         <Link
             to={"/admin/blogs"}
             className={styles.addIcon}
-            style={{float: "left", fontWeight: "bold",fontSize: "25px", border: "none", margin: "0", padding: "2px"}}
-            title="Quay lại"
+            style={{float: "right", fontWeight: "bold",fontSize: "20px", border: "none", margin: "0", padding: "0"}}
+            title="Tắt Thêm Bài Viết"
         >
-          <FaRegCircleLeft/>
+          <MdCancel/>
         </Link>
         <h2>Chi tiết bài viết</h2>
 
@@ -231,13 +240,12 @@ const BlogForm: React.FC = () => {
                 required
             >
               <option value="">Chọn thể loại</option>
-              <option value="1">Tin nổi bật</option>
-              <option value="2">Thể thao</option>
-              <option value="3">Phòng ban</option>
-              <option value="4">Nhân sự</option>
-              <option value="5">Qui định</option>
-              <option value="6">Chính sách</option>
-              <option value="7">Lương</option>
+              <option value="0">Tin nổi bật</option>
+              <option value="1">Thể thao</option>
+              <option value="2">Phòng ban</option>
+              <option value="3">Nhân sự</option>
+              <option value="4">Qui định</option>
+              <option value="5">Chính sách</option>
             </select>
           </div>
           <div className={styles.formGroup}>
