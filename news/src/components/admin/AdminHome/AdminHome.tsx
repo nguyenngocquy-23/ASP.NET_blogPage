@@ -103,11 +103,11 @@ const AdminHome = () => {
                                                    className={clickUsers ? "Click" : ""}><FaUserCog/> Quản Lý Tài Khoản</Link>
           </li>
           <li onClick={() => createAdmin()}><Link to="/admin/adminCreate"
-                                                   className={clickUsers ? "Click" : ""}><FaUserCog/> Thêm quản trị viên</Link>
+                                                   className={clickUsers ? "Click" : ""}><FaUserCog/> Thêm Quản Trị Viên</Link>
           </li>
-          <li onClick={() => handlerUsers()}><Link to="/admin/category"
-                                                   className={clickCategory ? "Click" : ""}><FaUserCog/> Quản Lý danh
-            mục</Link>
+          <li onClick={() => handlerCategory()}><Link to="/admin/category"
+                                                   className={clickCategory ? "Click" : ""}><FaUserCog/> Quản Lý Danh
+            Mục</Link>
           </li>
         </ul>
       </div>
