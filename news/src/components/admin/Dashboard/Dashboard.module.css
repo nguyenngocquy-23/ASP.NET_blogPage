@@ -104,3 +104,80 @@
     margin: auto;
     margin-top: 10px;
 }
+/*table*/
+.body_table {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+.body_table .table_container_left {
+    /*display: flex;*/
+    justify-content: center;
+    gap: 20px;
+    float: left;
+    width: 50%;
+
+}
+.body_table .table_container_left table {
+    width: 93%;
+    margin: auto;
+}
+.body_table .table_container_right {
+    /*display: flex;*/
+    justify-content: center;
+    gap: 20px; /* Khoảng cách giữa hai bảng */
+    float: right;
+    width: 50%;
+}
+.body_table .table_container_right table {
+    width: 93%;
+    margin: auto;
+}
+
+.styled_table {
+    width: 300px;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled_table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled_table th,
+.styled_table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.styled_table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled_table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled_table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled_table tbody tr.active_row {
+    font-weight: bold;
+    color: #009879;
+}
+#left{
+    float: left;
+}
+#right{
+    float: right;
+}
