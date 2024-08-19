@@ -180,7 +180,7 @@ const ContactManager = () => {
                         onClick={() => DPH()}>Đã Phản Hồi
                 </button>
             </div>
-            <h2 className="table-title" style={{fontWeight: "bold"}}>Các Liên Hệ Từ Người Dùng</h2>
+            <h2 className="table-title" style={{fontWeight: "bold"}}>Liên Hệ Từ Người Dùng</h2>
 
             <div>
                 <DataTable
@@ -189,7 +189,7 @@ const ContactManager = () => {
                     progressPending={loading}
                     pagination
                     highlightOnHover
-                    noDataComponent={<div>No data available</div>}
+                    noDataComponent={<div>Không có dữ liệu</div>}
                 />
             </div>
 

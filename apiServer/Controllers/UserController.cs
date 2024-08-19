@@ -183,6 +183,53 @@ namespace apiServer.Controllers
             }
         }
 
+        [HttpPost("createAdmin", Name = "createAdmin")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<User>> CreateAdmin([FromBody] UserRequest userRequest)
+        {
+            if (userRequest == null)
+                return StatusCode(StatusCodes.Status400BadRequest, "Thiếu dữ liệu để tạo tài khoản!");
+
+            if (userRequest.Password != userRequest.ConfirmPassword)
+                return StatusCode(StatusCodes.Status400BadRequest, "Mật khẩu không khớp!");
+
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Username == userRequest.Username);
+            if (user != null)
+                return StatusCode(StatusCodes.Status409Conflict, "Tên đăng nhập đã tồn tại");
+            else
+            {
+                user = await _context.User.FirstOrDefaultAsync(u => u.Email == userRequest.Email);
+                if (user != null)
+                    return StatusCode(StatusCodes.Status409Conflict, "Email đăng nhập đã tồn tại");
+            }
+            user = new User()
+            {
+                Username = userRequest.Username,
+                Password = UserService.HashPw(userRequest.Password),
+                FullName = userRequest.FullName,
+                CreatedAt = DateTime.Now,
+                Email = userRequest.Email,
+                PhoneNumber = userRequest.PhoneNumber,
+                Role = 0,
+                Status = 1,
+                IsEnable = false
+            };
+
+            try
+            {
+                await _context.User.AddAsync(user);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hiện tại không thể tạo tài khoản");
+            }
+        }
+
 
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]

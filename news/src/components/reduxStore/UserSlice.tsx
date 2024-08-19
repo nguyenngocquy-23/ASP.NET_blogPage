@@ -14,16 +14,17 @@ interface UserState {
 }
 
 const initialState: UserState = {
-    currentUser: JSON.parse(sessionStorage.getItem('currentUser')||'null'),
+    currentUser: JSON.parse(sessionStorage.getItem('currentUser') || 'null'),
     readArticles :JSON.parse(sessionStorage.getItem('readArticles') || '[]'),
 };
 
 const userSlice = createSlice({
-    initialState,
     name: 'user',
+    initialState,
     reducers: {
         addReadArticle: (state, action) => {
             const newArticle = action.payload;
+            console.log('newArticle :',newArticle)
             let existingArticleIndex = -1;
             for (let index = 0; index < state.readArticles.length; index++) {
                 if (state.readArticles[index].title === newArticle.title) {
@@ -42,7 +43,7 @@ const userSlice = createSlice({
         },
         loginCurrentUser: (state, action) => {
             state.currentUser = action.payload;
-            sessionStorage.setItem('currentUser', JSON.stringify(action.payload));
+            sessionStorage.setItem('currentUser', JSON.stringify(state.currentUser))
         },
         logoutCurrentUser: (state) => {
             state.currentUser = null;

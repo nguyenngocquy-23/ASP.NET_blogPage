@@ -39,6 +39,7 @@ function Home() {
             console.error("Home error: ", error)
         }
     }
+
     function convertToSlug(str) {
         str = str.toLowerCase();
         // Thay thế các ký tự đặc biệt và dấu câu bằng khoảng trắng
@@ -79,9 +80,9 @@ function Home() {
                         <div className="group-reverse">
                             <div className={`${styles.verticalPost} version-news sm:lineSeparates topStory`}>
                                 <div className={styles.verticalPost__avt}>
-                                    <Link to={"/detail/" + centerBlog.id} title={centerBlog.content}>
+                                    <Link to={"/detail/" + centerBlog.id} title={centerBlog.title}>
                                         <picture>
-                                            <img src={centerBlog.image} alt={centerBlog.content}/>
+                                            <img src={centerBlog.image} alt={centerBlog.title}/>
                                         </picture>
                                     </Link>
                                 </div>
