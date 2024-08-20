@@ -28,9 +28,9 @@ function Category() {
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const pageCurrent = queryParams.get('page') || 1
-
     const {state} = location;
+
+
     async function fetch() {
         try {
             const response1 = await axios.get(`https://localhost:7125/CategoryCotroller/category?id=${state.id}&page=${page}&limit=${limit}`)
@@ -45,7 +45,27 @@ function Category() {
     }
 
     useEffect(() => {
+        setPage(1);
+        setPrepage(false);
+        setNextPage(false);
+    }, [state.id]);
+
+    useEffect(() => {
         fetch();
+        navigate(`${location.pathname}?page=${page}`,{state:{id: state.id, name: state.name}})
+    }, [page, state.id]);
+
+
+    const navigate = useNavigate();
+    const listItems = [];
+    for (let i = 1; i <= totalPages; i++) {
+        listItems.push(
+            <li className={`${categoryStyles['pagination__list-item']} ${i === page ? categoryStyles.active : ''}`}>
+                <a onClick={() => setPage(i)}>{i}</a>
+            </li>
+        );
+    }
+    const controlPage = (totalPages) => {
         if(page > 1) {
             setPrepage(true)
         } else {
@@ -57,18 +77,10 @@ function Category() {
         if (totalPages == 1 || page === totalPages) {
             setNextPage(false)
         }
-        navigate(`${location.pathname}?page=${page}`,{state:{id: state.id, name: state.name}})
-    }, [page]);
-
-    const navigate = useNavigate();
-    const listItems = [];
-    for (let i = 1; i <= totalPages; i++) {
-        listItems.push(
-            <li className={`${categoryStyles['pagination__list-item']} ${i === page ? categoryStyles.active : ''}`}>
-                <a onClick={() => setPage(i)}>{i}</a>
-            </li>
-        );
     }
+    useEffect(() => {
+        controlPage(totalPages)
+    }, [totalPages, page]);
     return (
         <div className={styles.main}>
             <div className={styles.breadcrumbIsPin}>
@@ -91,22 +103,22 @@ function Category() {
                 {blogs.map((item, index) => (
                     <div className={` ${categoryStyles.horizontalPost} ${categoryStyles['version-news']} ${'mb-20'}  `}>
                         <div className={` ${categoryStyles['horizontalPost__avt']} ${categoryStyles['avt-240']} `}>
-                            <a href={"/detail/" + item.id}>
+                            <Link to={"/detail/" + item.id}>
                                 <picture>
                                     <source data-srcset={item.image} media="(max-width: 767px)" srcset={item.image}/>
                                     <source data-srcset={item.image} media="(max-width: 1023px)" srcset={item.image}/>
                                     <img src={item.image} class=" lazy-loaded" data-srcset={item.image} alt={item.title}
                                          srcset={item.image}/>
                                 </picture>
-                            </a>
+                            </Link>
                         </div>
                         <div className={categoryStyles['horizontalPost__main']}>
                             <h3 className={` ${categoryStyles['horizontalPost__main-title']} ${categoryStyles['vnn-title']} ${categoryStyles['title-bold']} `}
                                 data-id="2291894" ispr="False">
-                                <a href={"/detail/" + item.id} title={item.title}
+                                <Link to={"/detail/" + item.id} title={item.title}
                                    data-utm-source="#vnn_source=bongdavietnam&amp;vnn_medium=listtin1" data-limit="">
                                     {item.title}
-                                </a>
+                                </Link>
                             </h3>
                             <div className={categoryStyles['horizontalPost__main-desc']} data-limit="">
                                 <p>{item.shortDescription}</p>
