@@ -75,7 +75,7 @@ function AdminRegister() {
     };
     return (
         <div className={styles.bigContainer} style={{margin:'0', padding:'0', transform:'translateX(0px)'}}>
-            <div className={styles.authContainer}>
+            <div className={styles.authContainer} style={{margin:'0'}}>
                 <form onSubmit={handleRegister}>
                     <div className={styles.formGroup}>
                         <label>Họ và Tên</label>

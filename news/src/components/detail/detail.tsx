@@ -10,6 +10,7 @@ import podStyles from "./Podcast.module.css";
 import Swal from "sweetalert2";
 import CommentList from "../detail/comment/CommentList";
 import { getUserFromToken, User } from "../utils/UserUtils";
+import { FaRegThumbsUp, FaThumbsUp, FaThumbtack } from "react-icons/fa";
 
 interface Blog {
   id: string;
@@ -207,9 +208,9 @@ const Detail: React.FC = () => {
             icon: "success",
             title: "Đã thích bài viết thành công",
             toast: true,
-            position: "top-end",
+            position: "center",
             showConfirmButton: false,
-            timer: 5000,
+            timer: 2000,
             timerProgressBar: true,
           });
           setIsLike(true);
@@ -219,9 +220,9 @@ const Detail: React.FC = () => {
             icon: "warning",
             title: "Lỗi",
             toast: true,
-            position: "top-end",
+            position: "center",
             showConfirmButton: false,
-            timer: 5000,
+            timer: 2000,
             timerProgressBar: true,
           });
         }
@@ -231,9 +232,9 @@ const Detail: React.FC = () => {
         icon: "warning",
         title: "Vui lòng đăng nhập để thích",
         toast: true,
-        position: "top-end",
+        position: "center",
         showConfirmButton: false,
-        timer: 5000,
+        timer: 2000,
         timerProgressBar: true,
       });
     }
@@ -291,7 +292,8 @@ const Detail: React.FC = () => {
           html: `
                         <p>Đã duyệt tất cả bình luận thành công!</p>
                         <p>Chi tiết xem tại
-                        <a href="http://localhost:3000/admin/commentManager"
+                        <a href="/admin/commentManager"
+                        // <a href="http://localhost:3000/admin/commentManager"
                          target="_blank"
                          rel="noopener noreferrer"
                          style="color: #3FA2F6; 
@@ -378,9 +380,14 @@ const Detail: React.FC = () => {
               style={{
                 cursor: "pointer",
                 color: "blue",
-                display: "inline-block"
+                display: "inline-block",
+                margin:'auto',
+                fontSize:'100px',
+                marginTop:'20px'
               }}
-          >{isLike ? "Bỏ thích" : "Thích"}</p>
+          >{isLike ? 
+            <FaThumbsUp title="Bỏ thích"/>
+          : <FaRegThumbsUp title="Thích"/>}</p>
         </div>
       </div>
       {/*Mục liên quan*/}

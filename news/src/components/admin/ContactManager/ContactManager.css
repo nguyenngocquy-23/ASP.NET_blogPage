@@ -148,3 +148,15 @@
     font-size: 15px;
     padding: 10px 15px;
 }
+.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: left;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    display: block !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}

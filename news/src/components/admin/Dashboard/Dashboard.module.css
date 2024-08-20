@@ -103,6 +103,7 @@
     text-align: center;
     margin: auto;
     margin-top: 10px;
+    color: white;
 }
 /*table*/
 .body_table {
@@ -110,9 +111,12 @@
     margin: 20px;
 }
 
-h2 {
+.container h2 {
     text-align: center;
+    font-size: 24px;
+    margin-bottom: 30px;
     color: #333;
+    font-weight: bold;
 }
 
 .body_table .table_container_left {
@@ -153,6 +157,7 @@ h2 {
     background-color: #009879;
     color: #ffffff;
     text-align: left;
+    font-weight: 700;
 }
 
 .styled_table th,
