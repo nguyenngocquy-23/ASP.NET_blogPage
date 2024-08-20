@@ -5,6 +5,9 @@ import {
   FaChalkboard,
   FaChartBar,
   FaCodeBranch,
+  FaComment,
+  FaThumbsDown,
+  FaThumbsUp,
   FaUsers,
 } from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
@@ -219,7 +222,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className={styles.body_table}>
+      <div className={styles.body_table} style={{height:'400px'}}>
 
         <div className={styles.table_container_left} >
           <h2>Top 5 Bài Viết Tương Tác Nhiều Nhất</h2>
@@ -229,7 +232,7 @@ const Dashboard = () => {
               <th>ID</th>
               <th>Tiêu Đề</th>
               {/*<th>Mô Tả Ngắn</th>*/}
-              <th>Tác Giả</th>
+              <th style={{display:'flex'}}><FaThumbsUp/><FaComment/></th>
             </tr>
             </thead>
             <tbody>

@@ -130,13 +130,12 @@ const CommentTest = () => {
     return (
         <div className="table-container">
 
-            <h2 className="table-title" style={{fontWeight: "bold"}}>Quản lý bình luận</h2>
+            <h2 className="table-title" style={{fontWeight: "bold"}}>Quản lý bình luận 1</h2>
 
-            <div>
+            <div className="dataTable">
                 <DataTable
                     columns={columns}
                     data={dataComment}
-                    // progressPending={loading}
                     pagination
                     highlightOnHover
                     noDataComponent={<div>Không có dữ liệu</div>}
