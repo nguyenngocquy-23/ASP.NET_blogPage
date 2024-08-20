@@ -95,7 +95,7 @@
 }
 .logout{
     text-align: center;
-    width: auto;
+    width: 180px;
     position: absolute;
     background-color: rgba(5, 63, 150, 0.56);
     border-top: 10px solid white;
