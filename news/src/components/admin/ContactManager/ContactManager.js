@@ -142,7 +142,7 @@ const ContactManager = () => {
 
         {
             name: 'Họ và Tên',
-            selector: row => row.name,
+            selector: row => row.fullName,
             sortable: true,
         },
         {

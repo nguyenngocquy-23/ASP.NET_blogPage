@@ -14,7 +14,7 @@ const Contact: React.FC = () => {
         return parts[parts.length - 1];
     };
     // Gửi dữ lieu ve server
-    const [FullName,setName] = useState('');
+    const [FullName,setFullName] = useState('');
     const [Email,setEmail] = useState('');
     const [Title,setTitle] = useState('');
     const [Content,setContent] = useState('');
@@ -26,35 +26,68 @@ const Contact: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const currentDateTime = new Date();
-        if(FullName == '' || Email == '' || Title == '' || Content == ''){
-            console.log("Null")
-            setStatusDanger('Chưa điền đầy đủ thông tin!');
-        }else{
-                try {
-                    const feedback = 0;
-                    const response = await fetch('https://localhost:7125/Contact', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ FullName, Email, Title,Content,currentDateTime,feedback}),
-                    });
+      if(currentUser){
+          if(Title == '' || Content == ''){
+              setStatusDanger('Chưa điền đầy đủ thông tin!');
+          }else{
+              try {
+                  const fullName = currentUser.fullName;
+                  const email = currentUser.email;
+                  const feedback = 0;
+                  const response = await fetch('https://localhost:7125/Contact', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({fullName,email, Title,Content,currentDateTime,feedback}),
+                  });
 
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    setStatusDanger('');
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Gửi Yêu Cầu Thành Công!",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                } catch (error) {
-                    setStatusDanger('Gửi yêu cầu không thành công! Có thể là do email không đúng định dạng!');
-                }
-        }
+                  if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                  }
+                  setStatusDanger('');
+                  Swal.fire({
+                      position: "center",
+                      icon: "success",
+                      title: "Gửi Yêu Cầu Thành Công!",
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              } catch (error) {
+                  setStatusDanger('Gửi yêu cầu không thành công! Có thể là do email không đúng định dạng!');
+              }
+          }
+      }else{
+          if(FullName == '' || Email == '' || Title == '' || Content == ''){
+              console.log(FullName + Email)
+              setStatusDanger('Chưa điền đầy đủ thông tin!');
+          }else{
+              try {
+                  const feedback = 0;
+                  const response = await fetch('https://localhost:7125/Contact', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ FullName, Email, Title,Content,currentDateTime,feedback}),
+                  });
+
+                  if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                  }
+                  setStatusDanger('');
+                  Swal.fire({
+                      position: "center",
+                      icon: "success",
+                      title: "Gửi Yêu Cầu Thành Công!",
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              } catch (error) {
+                  setStatusDanger('Gửi yêu cầu không thành công! Có thể là do email không đúng định dạng!');
+              }
+          }
+      }
     }
 
     return (
@@ -74,7 +107,7 @@ const Contact: React.FC = () => {
                                         <label>Họ và tên <span className={styles.required}>*</span></label>
                                         <div className={styles.field__input}>
                                             <input type="text" name="AuthorName" value={currentUser.fullName}
-                                                   onChange={(e) => setName(e.target.value)} readOnly/>
+                                                   onChange={(e) => setFullName(e.target.value)} disabled/>
                                             <span className="form-message"></span>
                                         </div>
                                     </div>
@@ -82,7 +115,7 @@ const Contact: React.FC = () => {
                                         <label>Nhập email <span className={styles.required}>*</span></label>
                                         <div className={styles.field__input}>
                                             <input type="text" name="AuthorEmail" value={currentUser.email}
-                                                   onChange={(e) => setEmail(e.target.value)} readOnly/>
+                                                   onChange={(e) => setEmail(e.target.value)} disabled/>
                                             <span className="form-message"></span>
                                         </div>
                                     </div>
@@ -93,7 +126,7 @@ const Contact: React.FC = () => {
                                         <label>Họ và tên <span className={styles.required}>*</span></label>
                                         <div className={styles.field__input}>
                                             <input type="text" name="AuthorName" value={FullName}
-                                                   onChange={(e) => setName(e.target.value)}/>
+                                                   onChange={(e) => setFullName(e.target.value)}/>
                                             <span className="form-message"></span>
                                         </div>
                                     </div>
