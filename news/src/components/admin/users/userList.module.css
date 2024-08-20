@@ -1,9 +1,16 @@
 .container {
-    padding: 20px;
-    margin: auto;
-    width: 80%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+.container h2{
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: bold;
 }
 
 .table {
@@ -20,4 +27,16 @@
 
 .table th {
     background-color: #f2f2f2;
+}
+.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: left;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    display: block !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
 }

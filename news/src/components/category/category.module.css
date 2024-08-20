@@ -4,6 +4,7 @@
     margin-right: auto;
     max-width: 1140px;
     margin-top: 20px;
+    min-height: 230px;
     
 }
 .breadcrumbIsPin .breadcrumb__title a {

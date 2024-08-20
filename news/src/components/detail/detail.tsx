@@ -292,7 +292,8 @@ const Detail: React.FC = () => {
           html: `
                         <p>Đã duyệt tất cả bình luận thành công!</p>
                         <p>Chi tiết xem tại
-                        <a href="http://localhost:3000/admin/commentManager"
+                        <a href="/admin/commentManager"
+                        // <a href="http://localhost:3000/admin/commentManager"
                          target="_blank"
                          rel="noopener noreferrer"
                          style="color: #3FA2F6; 

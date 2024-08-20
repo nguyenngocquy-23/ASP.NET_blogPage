@@ -249,6 +249,7 @@ const Blog: React.FC = () => {
             data={searchData!}
             pagination
             highlightOnHover
+            noDataComponent="Không có dữ liệu !"
             customStyles={{
               headCells: {
                 style: {

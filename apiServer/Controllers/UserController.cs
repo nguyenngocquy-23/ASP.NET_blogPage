@@ -432,7 +432,7 @@ namespace apiServer.Controllers
             return Ok("Thay đổi mật khẩu thành công!");
         }
 
-        [HttpGet("testToken")]
+        [HttpGet("getUserFromToken")]
         public async Task<User> GetUserFromTokenAsync()
         {
             var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
