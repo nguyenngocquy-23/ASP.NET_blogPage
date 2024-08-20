@@ -34,6 +34,25 @@ namespace apiServer.Controllers
 
         }
 
+        [HttpPost("updateIdCategory")]
+        public async Task<ActionResult<IEnumerable<int>>> updateIdCategory([FromQuery] int idCategory)
+        {
+            var blogs = await _context.Blog.Where(blog => blog.CategoryId == idCategory).ToListAsync();
+            if (blogs == null || blogs.Count == 0)
+            {
+                return Ok(0);
+            } else
+            {
+                foreach (var blog in blogs)
+                {
+                    blog.CategoryId = 0;
+                    _context.Blog.Update(blog);
+                }
+                await _context.SaveChangesAsync();
+                return Ok(blogs.Count);
+            }
+        }
+
     }
 
 }
