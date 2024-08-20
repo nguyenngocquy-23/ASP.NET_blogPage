@@ -4,6 +4,8 @@ import cheerio from 'cheerio';
 import styles from './Contact.module.css';
 import {Link} from 'react-router-dom';
 import Swal from "sweetalert2";
+import {useSelector} from "react-redux";
+import {RootState} from "../reduxStore/Store";
 
 const Contact: React.FC = () => {
 
@@ -18,6 +20,7 @@ const Contact: React.FC = () => {
     const [Content,setContent] = useState('');
     const [status,setStatus] = useState('');
     const [statusDanger,setStatusDanger] = useState('');
+    const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -65,25 +68,49 @@ const Contact: React.FC = () => {
                             </h1>
                         </div>
                         <form className={styles.sentForm__main} onSubmit={handleSubmit}>
-                            <div className={styles.field}>
-                                <label>Họ và tên <span className={styles.required}>*</span></label>
-                                <div className={styles.field__input}>
-                                    <input type="text" name="AuthorName" value={FullName} onChange={(e) => setName(e.target.value)}/>
-                                    <span className="form-message"></span>
-                                </div>
-                            </div>
-                            <div className={styles.field}>
-                                <label>Nhập email <span className={styles.required}>*</span></label>
-                                <div className={styles.field__input}>
-                                    <input type="text" name="AuthorEmail"  value={Email}
-                                           onChange={(e) => setEmail(e.target.value)}/>
-                                    <span className="form-message"></span>
-                                </div>
-                            </div>
+                            {currentUser ? (
+                                <>
+                                    <div className={styles.field}>
+                                        <label>Họ và tên <span className={styles.required}>*</span></label>
+                                        <div className={styles.field__input}>
+                                            <input type="text" name="AuthorName" value={currentUser.fullName}
+                                                   onChange={(e) => setName(e.target.value)} readOnly/>
+                                            <span className="form-message"></span>
+                                        </div>
+                                    </div>
+                                    <div className={styles.field}>
+                                        <label>Nhập email <span className={styles.required}>*</span></label>
+                                        <div className={styles.field__input}>
+                                            <input type="text" name="AuthorEmail" value={currentUser.email}
+                                                   onChange={(e) => setEmail(e.target.value)} readOnly/>
+                                            <span className="form-message"></span>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className={styles.field}>
+                                        <label>Họ và tên <span className={styles.required}>*</span></label>
+                                        <div className={styles.field__input}>
+                                            <input type="text" name="AuthorName" value={FullName}
+                                                   onChange={(e) => setName(e.target.value)}/>
+                                            <span className="form-message"></span>
+                                        </div>
+                                    </div>
+                                    <div className={styles.field}>
+                                        <label>Nhập email <span className={styles.required}>*</span></label>
+                                        <div className={styles.field__input}>
+                                            <input type="text" name="AuthorEmail" value={Email}
+                                                   onChange={(e) => setEmail(e.target.value)}/>
+                                            <span className="form-message"></span>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                             <div className={styles.field}>
                                 <label>Tiêu đề <span className={styles.required}>*</span></label>
                                 <div className={styles.field__input}>
-                                    <input type="text" name="Title"  value={Title}
+                                    <input type="text" name="Title" value={Title}
                                            onChange={(e) => setTitle(e.target.value)}/>
                                     <span className="form-message"></span>
                                 </div>
@@ -91,7 +118,7 @@ const Contact: React.FC = () => {
                             <div className={styles.field}>
                                 <label>Nội dung <span className={styles.required}>*</span></label>
                                 <div className={styles.field__input}>
-                                    <textarea name="Content"  value={Content}
+                                    <textarea name="Content" value={Content}
                                               onChange={(e) => setContent(e.target.value)}/>
                                     <span className="form-message"></span>
                                 </div>
