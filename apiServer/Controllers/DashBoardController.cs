@@ -61,6 +61,7 @@ namespace apiServer.Controllers
         public async Task<ActionResult<IEnumerable<Blog>>> Topblog()
         {
             var top5Blogs = _context.Blog
+                                .Where(b => b.NumLike > 0)
                                .OrderByDescending(b => b.NumLike)
                                .Take(5)
                                .ToList();
@@ -77,7 +78,7 @@ namespace apiServer.Controllers
                 User = user,
                 CommentCount = _context.Comment.Count(c => c.UserId == user.Id)
             })
-            .Where(b => b.User.Role == 1)
+            .Where(b => b.User.Role == 1 && b.CommentCount > 0)
             .OrderByDescending(b => b.CommentCount)
             .Take(5)
             .Select(b => b.User)
