@@ -12,10 +12,13 @@ function Nav() {
         try {
             const response = await axios.post("https://localhost:7125/CategoryCotroller/category")
             setCategories(response.data);
+            const category = {id:0, name:'Khác'};
+            setCategories(categories=>[...categories, category]);
         } catch (error) {
             console.error("Nav error", error)
         }
     }
+    const navigate = useNavigate();
     useEffect(() => {
         fetch();
     },[])
@@ -31,7 +34,6 @@ function Nav() {
         str = str.replace(/-+/g, '-'); // Thay thế các dấu gạch ngang liên tiếp bằng một dấu gạch ngang
         return str;
     }
-    const navigate = useNavigate();
     const handleClick = (url,id, name) => {
         navigate(`/${url}?page=1`, {state:{id: id, name: name}})
     }
@@ -40,7 +42,7 @@ function Nav() {
             <nav className={styles.mainNav} >
                 <ul className={styles.mainNav__list}>
                     <li className={styles['mainNav__list-item']}>
-                        <a class="btn-home" href="/" title="VietNamNet"
+                        <a class="btn-home" href="" title="VietNamNet"
                            data-utm-source="#vnn_source=trangchu&amp;vnn_medium=menu-top">
                             <span class="icon-home"><FaHome/></span>
                         </a>
@@ -50,11 +52,14 @@ function Nav() {
                     ) : (
                         categories.map((category, index) => (
                             index <= 5 ? (
-                                <li key={index} className={styles['mainNav__list-item']} routeractive={"/" + convertToSlug(category.name)}>
+                                <li key={index} className={styles['mainNav__list-item']}>
                                     <a
                                         title={category.name}
                                         href=""
-                                        onClick={() => handleClick(convertToSlug(category.name), category.id, category.name)}
+                                        onClick={(event) => {
+                                            event.preventDefault();
+                                            handleClick(convertToSlug(category.name), category.id, category.name)
+                                        }}
                                     >
                                         {category.name}
                                     </a>
@@ -68,11 +73,13 @@ function Nav() {
                             <ul className={styles['sub-menu']}>
                                 {categories.map((category, index) => (
                                     index > 5 ? (
-                                        <li key={index} className={styles['mainNav__list-item']} routeractive="/chinh-tri">
+                                        <li key={index} className={styles['mainNav__list-item']}>
                                             <a className={styles["sub-menu__title"]}
                                                title={category.name}
                                                href=""
-                                               onClick={() => handleClick(convertToSlug(category.name), category.id, category.name)}
+                                               onClick={(event) => {
+                                                   event.preventDefault();
+                                                   handleClick(convertToSlug(category.name), category.id, category.name)}}
                                             >
                                                 {category.name}
                                             </a>
