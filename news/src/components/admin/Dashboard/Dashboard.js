@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import {AiFillLike} from "react-icons/ai";
 
 const Dashboard = () => {
   const [TotalBlog , setTotalBlog] = useState(0);
@@ -225,14 +226,13 @@ const Dashboard = () => {
       <div className={styles.body_table} style={{height:'400px'}}>
 
         <div className={styles.table_container_left} >
-          <h2>Top 5 Bài Viết Tương Tác Nhiều Nhất</h2>
+          <h2>Top 5 Bài Viết Yêu Thích Nhất</h2>
           <table className={styles.styled_table}>
             <thead>
             <tr>
               <th>ID</th>
               <th>Tiêu Đề</th>
-              {/*<th>Mô Tả Ngắn</th>*/}
-              <th style={{display:'flex'}}><FaThumbsUp/><FaComment/></th>
+              <th><AiFillLike /></th>
             </tr>
             </thead>
             <tbody>
@@ -240,8 +240,7 @@ const Dashboard = () => {
                 <tr className={styles.active_row}>
                   <td>{blog.id}</td>
                   <td>{blog.title}</td>
-                  {/*<td>{blog.shortDescription}</td>*/}
-                  <td>{blog.auth}</td>
+                  <td>{blog.numLike}</td>
                 </tr>
             ))}
             </tbody>

@@ -4,7 +4,7 @@ import {FaHome} from "react-icons/fa";
 import axios from "axios"
 import React, {useEffect, useState} from "react";
 import category from "../category/category";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 function Nav() {
     const [categories, setCategories] = useState([]);
     const [showMore, setShowMore] = useState(false);
@@ -42,10 +42,10 @@ function Nav() {
             <nav className={styles.mainNav} >
                 <ul className={styles.mainNav__list}>
                     <li className={styles['mainNav__list-item']}>
-                        <a class="btn-home" href="" title="Trang chủ"
+                        <Link class="btn-home" href="" title="Trang chủ"
                            data-utm-source="#vnn_source=trangchu&amp;vnn_medium=menu-top">
                             <span class="icon-home"><FaHome/></span>
-                        </a>
+                        </Link>
                     </li>
                     {categories.length <= 0 ? (
                         <></>

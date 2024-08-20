@@ -1,14 +1,8 @@
 // Header.tsx
-import React from "react";
+import React, {useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  FaFacebook,
-  FaTwitter,
-  FaInstagram,
-  FaHistory,
-  FaUser,
-} from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaFacebook, FaTwitter, FaInstagram, FaHistory, FaUser } from "react-icons/fa";
+import {Link, useNavigate} from "react-router-dom";
 import styles from "./header.module.css";
 import { RootState } from "../reduxStore/Store";
 import { logoutCurrentUser } from "../reduxStore/UserSlice";
@@ -16,9 +10,19 @@ import { logoutCurrentUser } from "../reduxStore/UserSlice";
 function Header() {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const dispatch = useDispatch();
+  const [content, setContent] = useState<string>();
   const handleLogout = () => {
     dispatch(logoutCurrentUser());
     localStorage.removeItem("authToken");
+  };
+  const navigate = useNavigate();
+  const handleChange = (event: any) => {
+    const { value } = event.target;
+    setContent(value);
+  };
+  const handleSearch = () => {
+    navigate(`/searchPage/timkiem?content=${content}&page=1&filter=moi-nhat`);
+
   };
   return (
     <header className={styles.header}>
@@ -67,13 +71,18 @@ function Header() {
         </nav>
         <div className={styles.search}>
           <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSearch();
+                setContent("");
+              }}
             className={styles.formSearch}
-            action="/searchPage/timkiem"
-            method="get"
           >
             <input
               className={styles.inputSearch}
-              name="q"
+              name="content"
+              onChange={handleChange}
+              value={content}
               type="text"
               placeholder="Nhập nội dung tìm kiếm....."
             />

@@ -16,12 +16,12 @@ function useQuery() {
 }
 
 function Search() {
+    const query = useQuery();
     const navigate = useNavigate();
     const [blogs , setBlogs] = useState([])
-    const location = useLocation();
     const [page, setPage] = useState(1);
-    const [content, setContent] = useState();
-    const [filter, setFilter] = useState('moi-nhat');
+    const [content, setContent] = useState(query.get('content') || '');
+    const [filter, setFilter] = useState(query.get('filter') || 'moi-nhat');
     const [prepage, setPrepage] = useState(false);
     const [nextpage, setNextPage] = useState(false);
     const limit = 5;
@@ -41,26 +41,13 @@ function Search() {
     }
     useEffect(() => {
         fetch();
-        if(page > 1) {
-            setPrepage(true)
-        } else {
-            setPrepage(false)
-        }
-        if (page < totalPages) {
-            setNextPage(true)
-        }
-        if (totalPages == 1 || page === totalPages) {
-            setNextPage(false)
-        }
         navigate(`/searchPage/timkiem?content=${content}&page=${page}&filter=${filter}`)
     }, [content, filter, page])
-    var contentChange = content;
     const handleChange = (event) => {
         const { name, value } = event.target;
 
         if (name === 'content') {
-            contentChange = value;
-            console.log(contentChange)
+            setContent(value)
         } else if (name === 'filter') {
             setFilter(value);
         }
@@ -74,6 +61,22 @@ function Search() {
             </li>
         );
     }
+    const controlPage = (totalPages) => {
+        if(page > 1) {
+            setPrepage(true)
+        } else {
+            setPrepage(false)
+        }
+        if (page < totalPages) {
+            setNextPage(true)
+        }
+        if (totalPages == 1 || page === totalPages) {
+            setNextPage(false)
+        }
+    }
+    useEffect(() => {
+        controlPage(totalPages)
+    }, [totalPages, page]);
     return (
         <div className={styles.main}>
             <div className={`${styles.container} ${styles.typeFull}`}>
@@ -84,12 +87,7 @@ function Search() {
                     <SpeechRecognitionComponent setQuery={setContent} />
                     <div  className={styles['formSearch__main']} accept-charset="UTF-8">
                         <div className={styles.field} >
-                            <input class="keyword" type="text" onChange={handleChange} defaultValue={content} name="content" placeholder="Keyword tÃ¬m kiá»ƒm (VD: VÄƒn Mai HÆ°Æ¡ng)" />
-                            <div className={styles.inSearch}>
-                                <button onClick={() => setContent(contentChange)}>
-                                    <FaSearch/>
-                                </button>
-                            </div>
+                            <input class="keyword" type="text" onChange={handleChange} value={content} name="content" placeholder="Keyword tÃ¬m kiá»ƒm (VD: VÄƒn Mai HÆ°Æ¡ng)" />
                         </div>
                         <div className={styles.fields} >
                             <div className={styles.field}>
