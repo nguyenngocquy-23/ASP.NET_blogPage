@@ -5,6 +5,8 @@ import styles from './userList.module.css';
 import {FaLock, FaUnlock} from "react-icons/fa";
 import DataTable from 'react-data-table-component';
 import Swal from "sweetalert2";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../reduxStore/Store";
 
 interface User {
     id: number;
@@ -19,42 +21,30 @@ function UserList() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>('');
-    const [authorized, setAuthorized] = useState<boolean>(false);
     const navigate = useNavigate();
+    const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
+    const dispatch = useDispatch();
     useEffect(() => {
-        const checkAuthorization = async () => {
-            try {
-                const response = await axios.get(`https://localhost:7125/User/checkAdmin`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
-                if (response.data.isAdmin) {
-                    setAuthorized(true);
-                    fetchUsers();
-                } else {
-                    setAuthorized(false);
-                    navigate('/unauthorized');
-                }
-            } catch (err) {
-                setAuthorized(false);
-                navigate('/unauthorized');
-            }
-        };
-
-        checkAuthorization();
-    }, [navigate]);
+        if (currentUser?.role != 0) {
+            navigate("/unauthorized");
+        }else{
+            fetchUsers();
+        }
+    }, [currentUser, navigate]);
 
     const fetchUsers = async () => {
         setLoading(true);
+        console.log('dang fetch')
         try {
+            console.log("dang lay api")
             const response = await axios.get(`https://localhost:7125/User/getAll`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('authToken')}`
                 }
             });
             setUsers(response.data);
+            console.log(response.data)
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 const errorMsg = typeof err.response?.data === 'string' ? err.response.data : 'Không thể lấy danh sách user. Vui lòng thử lại sau';
@@ -75,7 +65,6 @@ function UserList() {
                     Authorization: `Bearer ${localStorage.getItem('authToken')}`
                 }
             });
-            fetchUsers();
             if (isLock)
                 Swal.fire({
                     title: "Đã khóa tài khoản!",
@@ -86,6 +75,7 @@ function UserList() {
                     title: "Đã mở tài khoản!",
                     icon: "success"
                 });
+            fetchUsers();
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 const errorMsg = typeof err.response?.data === 'string' ? err.response.data : 'Không thể cập nhật trạng thái tài khoản. Vui lòng thử lại sau';
@@ -145,17 +135,15 @@ function UserList() {
             <h2>Danh Sách Người Dùng</h2>
             {loading && <p>Đang tải...</p>}
             {error && <p style={{color: 'red'}}>{error}</p>}
-            {!authorized && <p>Không có quyền truy cập.</p>}
-            {authorized && (
-                <DataTable
-                    columns={columns}
-                    data={users}
-                    progressPending={loading}
-                    pagination
-                    highlightOnHover
-                    noDataComponent="Không có dữ liệu để hiển thị"
-                />
-            )}
+
+            <DataTable
+                columns={columns}
+                data={users}
+                progressPending={loading}
+                pagination
+                highlightOnHover
+                noDataComponent="Không có dữ liệu để hiển thị"
+            />
         </div>
     );
 }
