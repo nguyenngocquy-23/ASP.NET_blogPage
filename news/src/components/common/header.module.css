@@ -95,14 +95,20 @@
 }
 .logout{
     text-align: center;
-    width: 120px;
+    width: 180px;
     position: absolute;
-    right: -40px;
-    padding: 10px;
-    background-color: rgba(73, 70, 70, 0.56);
+    background-color: rgba(5, 63, 150, 0.56);
+    border-top: 10px solid white;
     border-radius: 10px;
-    bottom: -38px;
     z-index: 10000;
     font-weight: 700;
     display: none;
+}
+.logout ul{
+    display: block;
+}
+
+.logout ul li{
+    margin: 0;
+    padding: 7px 10px;
 }

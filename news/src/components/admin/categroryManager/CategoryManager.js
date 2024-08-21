@@ -3,8 +3,8 @@ import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useSelector} from "react-redux";
-import {hover} from "@testing-library/user-event/dist/hover";
 import Swal from "sweetalert2";
+import {hover} from "@testing-library/user-event/dist/hover";
 
 function ManagerCategory() {
     const Columns = [
@@ -52,22 +52,39 @@ function ManagerCategory() {
                 cancelButtonText: "Hủy",
               }).then( async (result) => {
                 if (result.isConfirmed) {
-                    const response = await  axios.get(`https://localhost:7125/CategoryCotroller/delete?id=${id}`)
-                    if(response.data){
-                        Swal.fire({
-                            title: "Đã xóa!",
-                            toast: true,
-                            icon: "success",
-                            position: "center",
-                            showConfirmButton: false,
-                            timer: 2000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.onmouseenter = Swal.stopTimer;
-                                toast.onmouseleave = Swal.resumeTimer;
-                            },
-                        });
-                        fetch();
+                    const updateBlogs = await axios.post(`https://localhost:7125/Blog/updateIdCategory?idCategory=${id}`);
+                    if(updateBlogs.data > 0) {
+                        const response = await  axios.get(`https://localhost:7125/CategoryCotroller/delete?id=${id}`)
+                        if(response.data){
+                            Swal.fire({
+                                title: "Đã xóa!",
+                                toast: true,
+                                icon: "success",
+                                position: "center",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                    },
+                            });
+                            fetch();
+                        } else {
+                            Swal.fire({
+                                title: "Lỗi!",
+                                toast: true,
+                                icon: "warning",
+                                position: "center",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                },
+                            });
+                        }
                     }
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire({
@@ -90,7 +107,7 @@ function ManagerCategory() {
             Swal.fire({
                 title: "Lỗi!",
                 toast: true,
-                icon: "success",
+                icon: "warning",
                 position: "center",
                 showConfirmButton: false,
                 timer: 2000,
@@ -102,6 +119,7 @@ function ManagerCategory() {
             });
 
         }
+        fetch();
     }
 
     async function addCategory(nameCategory) {

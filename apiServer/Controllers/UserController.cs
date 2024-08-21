@@ -432,7 +432,7 @@ namespace apiServer.Controllers
             return Ok("Thay đổi mật khẩu thành công!");
         }
 
-        [HttpGet("testToken")]
+        [HttpGet("getUserFromToken")]
         public async Task<User> GetUserFromTokenAsync()
         {
             var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
@@ -475,7 +475,7 @@ namespace apiServer.Controllers
                 try
                 {
                     var users = await _context.User
-                        .Where(u => u.Id != adminUser.Id)
+                        .Where(u => u.Role == 1)
                         .ToListAsync();
                     return Ok(users);
                 }

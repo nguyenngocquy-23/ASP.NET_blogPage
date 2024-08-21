@@ -12,14 +12,13 @@ namespace apiServer.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string Auth { get; set; }
+        public int AuthId { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(200)]
         public string Title { get; set; }
 
         [Required]
@@ -39,8 +38,6 @@ namespace apiServer.Models
 
         [Required]
         public byte Status { get; set; }
-
-        [Required]
         public int NumLike { get; set; }
     }
 }

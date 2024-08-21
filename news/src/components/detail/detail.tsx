@@ -10,6 +10,7 @@ import podStyles from "./Podcast.module.css";
 import Swal from "sweetalert2";
 import CommentList from "../detail/comment/CommentList";
 import { getUserFromToken, User } from "../utils/UserUtils";
+import { FaRegThumbsUp, FaThumbsUp, FaThumbtack } from "react-icons/fa";
 
 interface Blog {
   id: string;
@@ -38,6 +39,7 @@ const Detail: React.FC = () => {
   const [blogRelate, setBlogRelate] = useState<BlogRelate[]>([]);
   const [commentContent, setCommentContent] = useState<string>(""); // State để lưu nội dung bình luận
   const dispatch = useDispatch();
+  const [numLike, setNumLike] = useState(0)
   // const comments = useSelector((state: RootState) =>
   //     state.user.comments.filter((comment) => comment.link === link)
   // ); // Lọc bình luận theo link của bài viết hiện tại
@@ -48,7 +50,6 @@ const Detail: React.FC = () => {
     slug = slug.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     // Thay thế khoảng trắng bằng dấu gạch ngang
     slug = slug.replace(/\s+/g, "-");
-
     return slug;
   }
 
@@ -133,6 +134,15 @@ const Detail: React.FC = () => {
     }
   }
 
+  async function fetchNumLike() {
+    try {
+      const getNumLikeBlog = await axios.post(`https://localhost:7125/Like/countLike?idBlog=${blog?.id}`);
+      setNumLike(getNumLikeBlog.data);
+    } catch (error) {
+      console.error("Error Num Like:", error);
+    }
+  }
+
   // Dành cho việc lấy user từ token.
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
@@ -155,9 +165,91 @@ const Detail: React.FC = () => {
     }
   }
 
+  async function fetchIsLike() {
+    try {
+      const getIsLike = await axios.post(`https://localhost:7125/Like/isLike?idUser=${currentUser?.id}&idBlog=${blog?.id}`)
+      setIsLike(getIsLike.data);
+    } catch (error) {
+      console.error("Error is like:", error)
+    }
+  }
+
+  const handleLikeByUser = async (isLike: boolean) => {
+    if(currentUser) {
+      if (isLike) {
+        const response = await axios.post(`https://localhost:7125/Like/delete?idUser=${currentUser.id}&idBlog=${blog?.id}`)
+        if (response.data) {
+          Swal.fire({
+            icon: "success",
+            title: "Đã bỏ thích bài viết thành công",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+          setIsLike(false);
+          setNumLike(numLike - 1);
+        } else {
+          Swal.fire({
+            icon: "warning",
+            title: "Lỗi",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+          });
+        }
+      } else {
+        const response = await axios.post(`https://localhost:7125/Like/add?idUser=${currentUser.id}&idBlog=${blog?.id}`)
+        if (response.data) {
+          Swal.fire({
+            icon: "success",
+            title: "Đã thích bài viết thành công",
+            toast: true,
+            position: "center",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+          });
+          setIsLike(true);
+          setNumLike(numLike+1);
+        } else {
+          Swal.fire({
+            icon: "warning",
+            title: "Lỗi",
+            toast: true,
+            position: "center",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+          });
+        }
+      }
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Vui lòng đăng nhập để thích",
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+      });
+    }
+  }
+
+
   useEffect(() => {
     fetch();
-  }, []);
+    if (blog && blog.categoryId) {
+      fetchBlogRelate();
+      fetchNameCategory();
+      fetchNumLike();
+      fetchIsLike();
+    }
+  }, [blog]);
 
   useEffect(() => {
     if (blog) {
@@ -166,23 +258,11 @@ const Detail: React.FC = () => {
           id: blog.id,
           img: blog.image,
           title: blog.title,
-          content: blog.content,
+          shortDescription: blog.shortDescription,
         })
       );
     }
   }, [blog, dispatch]);
-
-  useEffect(() => {
-    if (blog && blog.categoryId) {
-      fetchBlogRelate();
-    }
-  }, [blog]);
-
-  useEffect(() => {
-    if (blog && blog.categoryId) {
-      fetchNameCategory();
-    }
-  }, [blog]);
 
   const navigate = useNavigate();
   const handleClick = (url: any,id: any, name: any) => {
@@ -212,7 +292,8 @@ const Detail: React.FC = () => {
           html: `
                         <p>Đã duyệt tất cả bình luận thành công!</p>
                         <p>Chi tiết xem tại
-                        <a href="http://localhost:3000/admin/commentManager"
+                        <a href="/admin/commentManager"
+                        // <a href="http://localhost:3000/admin/commentManager"
                          target="_blank"
                          rel="noopener noreferrer"
                          style="color: #3FA2F6; 
@@ -267,7 +348,7 @@ const Detail: React.FC = () => {
         <div className={styles.audioControls}>
           <div className={styles.inforAuth}>
             <h2>Tác giả: {blog?.auth},</h2>
-            <p>lượt thích: {blog?.numLike}</p>
+            <p>lượt thích: {numLike}</p>
           </div>
           {isReading ? (
               <FaVolumeOff
@@ -295,13 +376,18 @@ const Detail: React.FC = () => {
           ></div>
         </div>
         <div className={styles.like}>
-          <p
+          <p onClick={() => handleLikeByUser(isLike)}
               style={{
                 cursor: "pointer",
                 color: "blue",
-                display: "inline-block"
+                display: "inline-block",
+                margin:'auto',
+                fontSize:'100px',
+                marginTop:'20px'
               }}
-          >{isLike ? "Bỏ thích" : "Thích"}</p>
+          >{isLike ? 
+            <FaThumbsUp title="Bỏ thích"/>
+          : <FaRegThumbsUp title="Thích"/>}</p>
         </div>
       </div>
       {/*Mục liên quan*/}
