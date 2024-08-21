@@ -11,7 +11,7 @@ const ContactManager = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (currentUser?.role != 0) {
+    if (currentUser && currentUser.role !== 0) {
       navigate("/unauthorized");
     }
   }, [currentUser, navigate]);

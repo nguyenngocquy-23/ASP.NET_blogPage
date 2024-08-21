@@ -14,6 +14,7 @@ function App() {
     useEffect(() => {
         const checkAuthorization = async () => {
             try {
+                console.log("load session")
                 const response = await axios.get(`https://localhost:7125/User/getUserFromToken`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('authToken')}`
