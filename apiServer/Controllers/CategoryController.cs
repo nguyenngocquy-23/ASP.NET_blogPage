@@ -30,7 +30,11 @@ namespace apiServer.Controllers
         
         [HttpPost("category/{id}")]
         public async Task<ActionResult<string>> getNameCategoryById(int id)
-        {
+        {   
+            if (id == 0)
+            {
+                return "Khác";
+            }
             var category = await _context.Category.FindAsync(id);
             if (category == null) { 
                 return BadRequest("id khong ton tai");
