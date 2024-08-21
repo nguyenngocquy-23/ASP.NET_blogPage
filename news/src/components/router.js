@@ -21,6 +21,8 @@ import Unauthorized from "./admin/users/Unauthorized";
 import UserList from "./admin/users/UserList";
 import ManagerCategory from "./admin/categroryManager/CategoryManager";
 import AdminRegister from "./admin/users/AdminRegister";
+import ResetPasswordRequest from './login/ResetPasswordRequest';
+import ResetPassword from './login/ResetPassword';
 
 function RouterConfig() {
     return (
@@ -35,6 +37,9 @@ function RouterConfig() {
                     <Route path='/history' element={<History/>}></Route>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/register' element={<Register/>}/>
+                    <Route path='/accounts/password/resetRequest' element={<ResetPasswordRequest/>}/>
+                    <Route path='/accounts/password/reset' element={<ResetPassword/>}/>
+                    <Route path='/accounts/password/resetRequest' element={ResetPassword}/>
                     <Route path="/unauthorized" element={<Unauthorized/>} />
                     <Route path='/contact' element={<Contact/>}/>
                     <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>

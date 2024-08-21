@@ -67,7 +67,8 @@ const BlogForm: React.FC = () => {
       const fetchBlogDetails = async () => {
         try {
           const { data } = await axios.get(
-            `https://localhost:7125/AdminBlog/${blogId}`
+            `https://localhost:7125/AdminBlog/${blogId}`,
+            {headers:{Authorization: `Bearer ${localStorage.getItem("authToken")}`,}}
           );
           setTitle(data.title);
           setAuthId(data.auth);
@@ -181,7 +182,7 @@ const BlogForm: React.FC = () => {
                 `https://localhost:7125/AdminBlog/updateBlog`,
                 blogUpdate,
                 {
-                  headers: { "Content-Type": "application/json" },
+                  headers: { "Content-Type": "application/json" ,Authorization: `Bearer ${localStorage.getItem("authToken")}`,},
                 }
               );
           } catch (error) {
@@ -193,7 +194,7 @@ const BlogForm: React.FC = () => {
             "https://localhost:7125/AdminBlog/createBlog",
             blogData,
             {
-              headers: { "Content-Type": "application/json" },
+              headers: { "Content-Type": "application/json",Authorization: `Bearer ${localStorage.getItem("authToken")}`, },
             }
           );
           console.log("blogData:", JSON.stringify(blogData, null, 2));

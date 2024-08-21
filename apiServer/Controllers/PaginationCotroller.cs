@@ -26,7 +26,7 @@ namespace apiServer.Controllers
                 return BadRequest("Query là rỗng");
             }
             var totalCount = await _context.Blog
-                .Where(blog => blog.Content.Contains(content))
+                .Where(blog => blog.Title.Contains(content))
                 .CountAsync();
 
             var totalPages = (int)Math.Ceiling((double)totalCount / limit);

@@ -20,10 +20,10 @@ function Header() {
   const dispatch = useDispatch();
   const [content, setContent] = useState<string>();
   const [BlogInDate, setBlogInDate] = useState(0);
+  const [isNotify, setIsNotify] = useState(false);
   
   const handleNotifyNewBlogInDay = () => {
-    console.log('so bai viet moi :', BlogInDate)
-    if (currentUser?.role == 1 && BlogInDate > 0) {
+    if (currentUser?.role == 1 && BlogInDate > 0 && !isNotify) {
       console.log('show!')
       Swal.fire({
         icon: "info",
@@ -34,6 +34,7 @@ function Header() {
         timerProgressBar:true,
         toast: true,
       });
+      setIsNotify(true);
     }
   };
   useEffect(() => {
@@ -52,6 +53,7 @@ function Header() {
   const handleLogout = () => {
     dispatch(logoutCurrentUser());
     localStorage.removeItem("authToken");
+    setIsNotify(false)
   };
   const navigate = useNavigate();
   const handleChange = (event: any) => {

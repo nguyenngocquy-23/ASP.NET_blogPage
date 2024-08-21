@@ -50,7 +50,6 @@ const Comment: React.FC<CommentProps> = ({
 
     // Xóa: người viết có quyền xóa comment, admin cũng vậy !!
     const canDelete = (currentUser.id === comment.userId && !timePassed) || currentUser.role === 0;
-    console.log("Co quyen xoa khong?" + canDelete);
 
     const isReplying = activeComment
         && activeComment.type === 'replying'

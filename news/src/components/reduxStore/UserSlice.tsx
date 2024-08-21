@@ -15,6 +15,7 @@ interface UserState {
 
 const initialState: UserState = {
     currentUser: JSON.parse(sessionStorage.getItem('currentUser') || 'null'),
+    // currentUser: JSON.parse(sessionStorage.getItem('currentUser') || 'null'),
     readArticles :JSON.parse(sessionStorage.getItem('readArticles') || '[]'),
 };
 
