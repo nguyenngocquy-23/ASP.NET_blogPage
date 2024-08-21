@@ -65,6 +65,9 @@ namespace apiServer.Controllers
             if (category != null)
             {
                 _context.Category.Remove(category);
+                await _context.Blog
+                .Where(blog => blog.CategoryId == id)
+                .ExecuteUpdateAsync(blog => blog.SetProperty(b => b.CategoryId, 0));
                 await _context.SaveChangesAsync();
                 return Ok(true);
             }

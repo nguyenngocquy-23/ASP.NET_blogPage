@@ -87,10 +87,6 @@ function ManagerCategory() {
                   toast.onmouseleave = Swal.resumeTimer;
                 },
               });
-              const updateBlogs = await axios.post(
-                `https://localhost:7125/Blog/updateIdCategory?idCategory=${id}`,
-                {headers : {Authorization: `Bearer ${localStorage.getItem("authToken")}`}}
-              );
               fetch();
             } else {
               Swal.fire({
