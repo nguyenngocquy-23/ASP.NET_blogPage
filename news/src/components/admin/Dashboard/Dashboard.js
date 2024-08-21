@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [BlogInDate,setBlogInDate] = useState(0);
   const [UserInDate,setUserInDate] = useState(0);
   const [TopBlog,setTopBlog] = useState([]);
+  const [countBlog,setCountBlog] = useState([]);
   const [TopUser,setTopUser] = useState([]);
 
 
@@ -88,6 +89,7 @@ const Dashboard = () => {
         .get("https://localhost:7125/DashBoard/TopBlog")
         .then((response) => {
           setTopBlog(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.error("Error: ", error);
@@ -238,9 +240,9 @@ const Dashboard = () => {
             <tbody>
             {TopBlog.map(blog => (
                 <tr className={styles.active_row}>
-                  <td>{blog.id}</td>
-                  <td>{blog.title}</td>
-                  <td>{blog.numLike}</td>
+                  <td>{blog.blog.id}</td>
+                  <td><a href={`http://localhost:3000/detail/${blog.blog.id}`}>{blog.blog.title}</a></td>
+                  <td>{blog.likeCount}</td>
                 </tr>
             ))}
             </tbody>
