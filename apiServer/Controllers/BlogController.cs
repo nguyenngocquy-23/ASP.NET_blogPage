@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using System.Xml.Linq;
+using System.Security.Claims;
 
 namespace apiServer.Controllers
 {
@@ -37,6 +38,17 @@ namespace apiServer.Controllers
         [HttpPost("updateIdCategory")]
         public async Task<ActionResult<IEnumerable<int>>> updateIdCategory([FromQuery] int idCategory)
         {
+            var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            if (userNameClaim == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+            }
+
+            var userName = userNameClaim.Value;
+            User adminUser = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
+            if (adminUser == null || adminUser.Role == 1)
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+
             var blogs = await _context.Blog.Where(blog => blog.CategoryId == idCategory).ToListAsync();
             if (blogs == null || blogs.Count == 0)
             {

@@ -7,8 +7,7 @@ namespace apiServer.DTO
         [Required]
         public int Id { get; set; }
         [Required]
-        [StringLength(50)]
-        public string Auth { get; set; }
+        public int AuthId { get; set; }
 
         [Required]
         public int CategoryId { get; set; }

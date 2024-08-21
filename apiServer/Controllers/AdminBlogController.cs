@@ -66,7 +66,6 @@ namespace apiServer.Controllers
             User adminUser = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
             if (adminUser == null || adminUser.Role == 1)
                 return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
-
             if (blog == null)
             {
                 return BadRequest("Blog data is null.");

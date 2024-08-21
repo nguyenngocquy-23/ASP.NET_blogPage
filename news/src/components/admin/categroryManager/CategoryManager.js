@@ -47,10 +47,10 @@ function ManagerCategory() {
   async function fetch() {
     try {
       const response = await axios.post(
-        `https://localhost:7125/CategoryCotroller/category`
+        `https://localhost:7125/CategoryCotroller/category`,
+        {headers : {Authorization: `Bearer ${localStorage.getItem("authToken")}`}}
       );
       setData(response.data);
-      setSearchData(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -68,41 +68,47 @@ function ManagerCategory() {
         cancelButtonText: "Hủy",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          const response = await axios.get(
-            `https://localhost:7125/CategoryCotroller/delete?id=${id}`
-          );
-          if (response.data) {
-            Swal.fire({
-              title: "Đã xóa!",
-              toast: true,
-              icon: "success",
-              position: "center",
-              showConfirmButton: false,
-              timer: 2000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
-            });
-            const updateBlogs = await axios.post(
-              `https://localhost:7125/Blog/updateIdCategory?idCategory=${id}`
+          try {
+            const response = await axios.get(
+              `https://localhost:7125/CategoryCotroller/delete?id=${id}`,
+              {headers : {Authorization: `Bearer ${localStorage.getItem("authToken")}`}}
             );
-            fetch();
-          } else {
-            Swal.fire({
-              title: "Lỗi!",
-              toast: true,
-              icon: "warning",
-              position: "center",
-              showConfirmButton: false,
-              timer: 2000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
-            });
+            if (response.data) {
+              Swal.fire({
+                title: "Đã xóa!",
+                toast: true,
+                icon: "success",
+                position: "center",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                },
+              });
+              const updateBlogs = await axios.post(
+                `https://localhost:7125/Blog/updateIdCategory?idCategory=${id}`,
+                {headers : {Authorization: `Bearer ${localStorage.getItem("authToken")}`}}
+              );
+              fetch();
+            } else {
+              Swal.fire({
+                title: "Lỗi!",
+                toast: true,
+                icon: "warning",
+                position: "center",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                },
+              });
+            }
+          } catch (error) {
+            console.log('error  :',error)
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire({
@@ -142,7 +148,8 @@ function ManagerCategory() {
   async function addCategory(nameCategory) {
     try {
       const response = await axios.get(
-        `https://localhost:7125/CategoryCotroller/add?nameCategory=${nameCategory}`
+        `https://localhost:7125/CategoryCotroller/add?nameCategory=${nameCategory}`,
+        {headers : {Authorization: `Bearer ${localStorage.getItem("authToken")}`}}
       );
       if (response.data) {
         Swal.fire({
@@ -198,7 +205,12 @@ function ManagerCategory() {
 
   useEffect(() => {
     fetch();
+    setSearchData(data)
   }, []);
+
+  useEffect(() => {
+    setSearchData(data)
+  }, [data])
   const handleSearch = (event) => {
     const newData = data.filter((row) => {
       return row.name.toLowerCase().includes(event.target.value.toLowerCase());
