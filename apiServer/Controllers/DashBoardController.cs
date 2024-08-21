@@ -70,7 +70,6 @@ namespace apiServer.Controllers
             .OrderByDescending(b => b.LikeCount)
             .Take(5)
             .ToListAsync();
-
             return Ok(topBlog);
         }
         //Top 5 user tương tác nhiều nhất(lượt comment)

@@ -39,7 +39,8 @@ const Detail: React.FC = () => {
   const [blogRelate, setBlogRelate] = useState<BlogRelate[]>([]);
   const [commentContent, setCommentContent] = useState<string>(""); // State để lưu nội dung bình luận
   const dispatch = useDispatch();
-  const [numLike, setNumLike] = useState(0)
+  const [numLike, setNumLike] = useState(0);
+  const [hasBeenDispatched , setHasBeenDispatched ] = useState(false)
   // const comments = useSelector((state: RootState) =>
   //     state.user.comments.filter((comment) => comment.link === link)
   // ); // Lọc bình luận theo link của bài viết hiện tại
@@ -144,15 +145,7 @@ const Detail: React.FC = () => {
   }
 
   // Dành cho việc lấy user từ token.
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUserFromToken();
-      setCurrentUser(userData);
-    };
-    fetchUser();
-  }, []);
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   async function fetchBlogRelate() {
     try {
@@ -252,7 +245,7 @@ const Detail: React.FC = () => {
   }, [blog]);
 
   useEffect(() => {
-    if (blog) {
+    if (blog && !hasBeenDispatched) {
       dispatch(
         addReadArticle({
           id: blog.id,
@@ -261,7 +254,9 @@ const Detail: React.FC = () => {
           shortDescription: blog.shortDescription,
         })
       );
+      setHasBeenDispatched(true)
     }
+
   }, [blog, dispatch]);
 
   const navigate = useNavigate();
