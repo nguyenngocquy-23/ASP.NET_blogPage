@@ -106,21 +106,22 @@ function ManagerCategory() {
           } catch (error) {
             console.log('error  :',error)
           }
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire({
-            title: "Đã Hủy!",
-            toast: true,
-            icon: "success",
-            position: "center",
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-        }
+        } 
+        // else if (result.dismiss === Swal.DismissReason.cancel) {
+        //   Swal.fire({
+        //     title: "Đã Hủy!",
+        //     toast: true,
+        //     icon: "success",
+        //     position: "center",
+        //     showConfirmButton: false,
+        //     timer: 2000,
+        //     timerProgressBar: true,
+        //     didOpen: (toast) => {
+        //       toast.onmouseenter = Swal.stopTimer;
+        //       toast.onmouseleave = Swal.resumeTimer;
+        //     },
+        //   });
+        // }
       });
     } catch (error) {
       console.error("Delete error", error);

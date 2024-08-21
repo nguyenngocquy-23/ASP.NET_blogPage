@@ -119,8 +119,24 @@ const ManaInfo: React.FC = () => {
   const handlePasswordChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if(formData.newPassword.length < 6){
+      Swal.fire({
+        icon:'error',
+        title:'Mật khẩu phải tối thiểu 6 ký tự',
+        showConfirmButton:false,
+        toast:true,
+        timer:2000
+      })
+      return;
+    }
     if (formData.newPassword !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      Swal.fire({
+        icon:'warning',
+        title:'Mật khẩu không khớp!',
+        showConfirmButton:false,
+        toast:true,
+        timer:2000
+      })
       return;
     }
 
