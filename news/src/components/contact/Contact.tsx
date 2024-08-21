@@ -53,6 +53,8 @@ const Contact: React.FC = () => {
                       showConfirmButton: false,
                       timer: 1500
                   });
+                  setTitle("");
+                  setContent("");
               } catch (error) {
                   setStatusDanger('Gửi yêu cầu không thành công! Có thể là do email không đúng định dạng!');
               }
@@ -83,6 +85,10 @@ const Contact: React.FC = () => {
                       showConfirmButton: false,
                       timer: 1500
                   });
+                  setFullName("");
+                  setEmail("");
+                  setTitle("");
+                  setContent("");
               } catch (error) {
                   setStatusDanger('Gửi yêu cầu không thành công! Có thể là do email không đúng định dạng!');
               }
