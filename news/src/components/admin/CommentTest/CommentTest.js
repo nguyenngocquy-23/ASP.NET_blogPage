@@ -109,7 +109,7 @@ const CommentTest = () => {
         {
             name: 'Bị ẩn',
             selector: row => row.removeComment,
-            sortable: false,
+            sortable: true,
             maxWidth: '40px',
             center: true,
         },

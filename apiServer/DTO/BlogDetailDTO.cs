@@ -13,10 +13,10 @@ namespace apiServer.DTO
         public int CategoryId { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(200)]
         public string Title { get; set; }
         [Required]
-        [StringLength(200)]
+        [StringLength(300)]
         public string ShortDescription { get; set; }
 
         [Required]
