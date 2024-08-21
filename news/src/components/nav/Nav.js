@@ -42,7 +42,7 @@ function Nav() {
             <nav className={styles.mainNav} >
                 <ul className={styles.mainNav__list}>
                     <li className={styles['mainNav__list-item']}>
-                        <Link class="btn-home" href="" title="Trang chủ"
+                        <Link class="btn-home" to="/" title="Trang chủ"
                            data-utm-source="#vnn_source=trangchu&amp;vnn_medium=menu-top">
                             <span class="icon-home"><FaHome/></span>
                         </Link>

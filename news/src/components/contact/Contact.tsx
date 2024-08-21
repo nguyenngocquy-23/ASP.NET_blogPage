@@ -49,7 +49,7 @@ const Contact: React.FC = () => {
                   Swal.fire({
                       position: "center",
                       icon: "success",
-                      title: "Gửi Yêu Cầu Thành Công!",
+                      title: "Gửi Thành Công!",
                       showConfirmButton: false,
                       timer: 1500
                   });
@@ -79,7 +79,7 @@ const Contact: React.FC = () => {
                   Swal.fire({
                       position: "center",
                       icon: "success",
-                      title: "Gửi Yêu Cầu Thành Công!",
+                      title: "Gửi Thành Công!",
                       showConfirmButton: false,
                       timer: 1500
                   });

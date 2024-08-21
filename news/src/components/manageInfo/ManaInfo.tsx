@@ -18,26 +18,29 @@ const ManaInfo: React.FC = () => {
   const [wrongPass, setWrongPass] = useState(false);
   // Fetch user data when the component mounts
   useEffect(() => {
-    const fetchUserData = async () => {
-      const response = await axios.get(
-        "https://localhost:7125/User/testToken",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
-      );
-      console.log(response.data);
-      setFormData({
-        ...formData,
-        fullName: response.data.fullName || "",
-        email: response.data.email || "",
-        phoneNumber: response.data.phoneNumber || "",
-        currentPassword: response.data.password || "",
-      });
-      setUserInfo(response.data);
-    };
-    fetchUserData();
+    try {
+      const fetchUserData = async () => {
+        const response = await axios.get(
+          "https://localhost:7125/User/getUserFromToken",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        );
+        console.log(response.data);
+        setFormData({
+          ...formData,
+          fullName: response.data.fullName || "",
+          email: response.data.email || "",
+          phoneNumber: response.data.phoneNumber || "",
+        });
+        setUserInfo(response.data);
+      };
+      fetchUserData();
+    } catch (error) {
+      console.error('error : ' ,error)
+    }
   }, []);
 
   const handleCurrentPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,12 +133,7 @@ const ManaInfo: React.FC = () => {
 
       // Gọi API
       await axios.post(url);
-      setFormData({
-        ...formData,
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
+      
       Swal.fire({
         icon: "success",
         title: "Đổi mật khẩu thành công!",
@@ -148,6 +146,12 @@ const ManaInfo: React.FC = () => {
           toast.onmouseenter = Swal.stopTimer;
           toast.onmouseleave = Swal.resumeTimer;
         },
+      });
+      setFormData({
+        ...formData,
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
       });
     } catch (error) {
       console.error("Failed to change password", error);
@@ -215,7 +219,7 @@ const ManaInfo: React.FC = () => {
                 </div>
               </div>
               <div className={styles.field}>
-                <button type="submit">Gửi</button>
+                <button type="submit">Lưu</button>
               </div>
             </form>
           </div>
@@ -240,6 +244,7 @@ const ManaInfo: React.FC = () => {
                         <input
                           style={{ border: "1px solid red" }}
                           type="password"
+                          value={formData.currentPassword}
                           name="currentPassword"
                           onChange={handleChange}
                           onBlur={handleCurrentPassword}
@@ -254,6 +259,7 @@ const ManaInfo: React.FC = () => {
                         <input
                         style={{ border: "1px solid green" }}
                           type="password"
+                          value={formData.currentPassword}
                           name="currentPassword"
                           onChange={handleChange}
                           onBlur={handleCurrentPassword}
