@@ -59,9 +59,6 @@ textarea::-webkit-scrollbar {
     float: right;
 }
 
-
-
-
 .comment .comment-avatar img {
     height: 40px;
     width: 40px;
@@ -77,9 +74,6 @@ textarea::-webkit-scrollbar {
 .comment .comment-content{
     display: flex;
     flex-direction: row;
-
-
-
 }
 
 .comment .comment-content span {
@@ -138,4 +132,15 @@ textarea::-webkit-scrollbar {
 }
 .replies {
     margin-top: 15px;
+}
+.comment-avatar{
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 23px;
+    color: white;
 }

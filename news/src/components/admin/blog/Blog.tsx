@@ -102,6 +102,7 @@ const Blog: React.FC = () => {
 
         // Cập nhật lại danh sách bài viết sau khi xóa thành công
         setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
+        setSearchData((prevBlogs) => prevBlogs?.filter((blog) => blog.id !== id));
 
         // Hiển thị thông báo thành công
         Swal.fire({
