@@ -168,7 +168,7 @@ const BlogForm: React.FC = () => {
           // Update existing blog
           const blogUpdate = {
             id: blogId,
-            auth: authId,
+            authId: authId,
             title,
             image: imageUrl,
             shortDescription,
@@ -179,12 +179,28 @@ const BlogForm: React.FC = () => {
           console.log('blogUpdate : ', blogUpdate)
           try {
             await axios.post(
-                `https://localhost:7125/AdminBlog/updateBlog`,
+                "https://localhost:7125/AdminBlog/updateBlog",
                 blogUpdate,
                 {
-                  headers: { "Content-Type": "application/json" ,Authorization: `Bearer ${localStorage.getItem("authToken")}`,},
+                  headers: { "Content-Type": "application/json",Authorization: `Bearer ${localStorage.getItem("authToken")}`, },
                 }
               );
+              Swal.fire({
+                icon: "success",
+                title: "Đã lưu thành công",
+                toast: true,
+                position: "center",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                },
+              });
+              setTimeout(() => {
+                navigate(`/admin/blogs`);
+              }, 600);
           } catch (error) {
             console.error(error);
           }
@@ -200,22 +216,6 @@ const BlogForm: React.FC = () => {
           console.log("blogData:", JSON.stringify(blogData, null, 2));
         }
 
-        Swal.fire({
-          icon: "success",
-          title: "Đã lưu thành công",
-          toast: true,
-          position: "center",
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
-        });
-        setTimeout(() => {
-          navigate(`/admin/blogs`);
-        }, 600);
       } catch (error) {
         Swal.fire({
           icon: "warning",

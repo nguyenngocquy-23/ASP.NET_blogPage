@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using System.Xml.Linq;
+using System.Security.Claims;
 
 namespace apiServer.Controllers
 {
@@ -22,6 +23,7 @@ namespace apiServer.Controllers
         [HttpPost("category")]
         public async Task<ActionResult<IEnumerable<Category>>> getAllCategories()
         {
+        
             var categories = await _context.Category.ToListAsync();
             return Ok(categories);
         }
@@ -47,7 +49,18 @@ namespace apiServer.Controllers
 
         [HttpGet("delete")]
         public async Task<ActionResult<IEnumerable<bool>>> deleteCategoryById([FromQuery] int id)
-        { 
+        {
+            var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            if (userNameClaim == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+            }
+
+            var userName = userNameClaim.Value;
+            User adminUser = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
+            if (adminUser == null || adminUser.Role == 1)
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+
             var category = await _context.Category.FindAsync(id);
             if (category != null)
             {
@@ -60,7 +73,18 @@ namespace apiServer.Controllers
 
         [HttpGet("add")]
         public async Task<ActionResult<IEnumerable<bool>>> addCategory([FromQuery] string nameCategory)
-        {   
+        {
+            var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            if (userNameClaim == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+            }
+
+            var userName = userNameClaim.Value;
+            User adminUser = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
+            if (adminUser == null || adminUser.Role == 1)
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+
             if (string.IsNullOrEmpty(nameCategory))
             {
                 return BadRequest("nameCategory là r?ng"); 
