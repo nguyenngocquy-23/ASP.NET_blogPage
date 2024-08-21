@@ -147,6 +147,7 @@ const Detail: React.FC = () => {
   // Dành cho việc lấy user từ token.
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
+
   async function fetchBlogRelate() {
     try {
       const getBlogRelate = await axios.get(

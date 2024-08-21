@@ -44,7 +44,11 @@ const Blog: React.FC = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("https://localhost:7125/AdminBlog");
+        const response = await axios.get("https://localhost:7125/AdminBlog",{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        });
         setBlogs(response.data);
         setSearchData(response.data);
         setLoading(false);
