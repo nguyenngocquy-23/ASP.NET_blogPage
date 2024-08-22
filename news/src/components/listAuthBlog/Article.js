@@ -18,8 +18,9 @@ function truncateText(text, maxLength) {
     return text;
 }
 
-function Article({key,title, cateName,shortDes,img, date, authName,like,comment}) {
+function Article({id,title, cateName,shortDes,img, date, authName,like,comment}) {
     const maxLength = 125; // Độ dài tối đa cho shortDes
+
 
     return (
         <div>
@@ -43,8 +44,9 @@ function Article({key,title, cateName,shortDes,img, date, authName,like,comment}
                 <p>{truncateText(shortDes, maxLength)}</p>
 
                 <div className="article-footer">
-                    <Link to={`/detail/ + ${key}`} className="article-btn"
-                         data-limit="">
+
+                    <Link to={"/detail/" + id} className="article-btn"
+         data-limit="">
                        Chi tiết
                     </Link>
 
