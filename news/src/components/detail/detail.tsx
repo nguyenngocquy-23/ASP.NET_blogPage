@@ -10,7 +10,8 @@ import podStyles from "./Podcast.module.css";
 import Swal from "sweetalert2";
 import CommentList from "../detail/comment/CommentList";
 import { getUserFromToken, User } from "../utils/UserUtils";
-import { FaRegThumbsUp, FaThumbsUp, FaThumbtack } from "react-icons/fa";
+import {FaRegThumbsUp, FaThumbsUp, FaThumbtack, FaUser} from "react-icons/fa";
+import {FiExternalLink} from "react-icons/fi";
 import {formatDate} from "../utils/dateUtils";
 
 interface Blog {
@@ -141,7 +142,7 @@ const Detail: React.FC = () => {
     }
   }
 
-  // Dành cho việc lấy user từ token.
+
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   async function fetchBlogRelate() {
@@ -311,28 +312,18 @@ const Detail: React.FC = () => {
           title: "Duyệt thành công",
           html: `
                         <p>Đã duyệt tất cả bình luận thành công!</p>
-                        <p>Chi tiết xem tại
-                        <a href="/admin/commentManager"
-                        // <a href="http://localhost:3000/admin/commentManager"
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         style="color: #3FA2F6; 
-                         font-weight: bold;"
-                         >
-                        Quản lý bình luận</a></p>
-                    `,
+          //               <Link to="/admin" title="Quay về admin">
+          //   <div className={styles.info}>
+          //     <FaUser style={{ marginRight: "4px" }} />
+          //     Admin
+          //   </div>
+          // </Link>
+                   `,
           icon: "success",
           confirmButtonText: "Ở lại",
         });
 
-        // Cập nhật giao diện nếu cần (tuỳ chọn)
-        // const updatedBackendComments = backendComments.map(comment => {
-        //     if (comment.blogId === blogId) {
-        //         return { ...comment, status: 1 }; // Ví dụ cập nhật trạng thái
-        //     }
-        //     return comment;
-        // });
-        // setBackendComments(updatedBackendComments);
+
       } catch (error) {
         console.error("Lỗi khi duyệt bình luận", error);
         await Swal.fire({
@@ -444,11 +435,13 @@ const Detail: React.FC = () => {
                   </button>
               )}
 
-              <br/>
-              {currentUser !== null && blog !== null ? (
-                  <CommentList currentUser={currentUser} blogId={parseInt(blog.id, 10)}/>
-              ) : (
-                  <span className={styles.noMess}>
+
+        <br />
+        {currentUser !== null && blog !==null ? (
+            <CommentList currentUser={currentUser} blogId={parseInt(blog.id, 10)} />
+        ) : (
+            <span className={styles.noMess}>
+
                         <FaRegMessage/>
                         <Link to={'/login'}> Đăng nhập </Link>
                         để tiến hành bình luận !</span>

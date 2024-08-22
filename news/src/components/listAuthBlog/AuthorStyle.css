@@ -1,0 +1,300 @@
+/*Xử lý chung*/
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.author-profiles {
+    display: flex;
+    width: 100%;
+
+/* Chiều cao toàn màn hình */
+}
+
+.left-content {
+    flex: 3; /* Chiếm 3 phần */
+    background-color: #ffffff; /* Màu nền tùy chọn */
+    padding: 20px;
+}
+
+.right-content {
+    flex: 7; /* Chiếm 7 phần */
+    background-color: #ffffff; /* Màu nền tùy chọn */
+    padding: 20px;
+}
+
+.right-content h1 {
+    font-size: 2em;
+    position: relative;
+    padding-bottom: 10px;
+    text-align: center;
+}
+.right-content h1::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+    position: absolute; /* Vị trí tuyệt đối để đặt dưới thẻ h1 */
+    left: 50%; /* Đặt đường gạch ngang ở giữa */
+    bottom: 0; /* Đặt đường gạch ngang ngay dưới thẻ h1 */
+    transform: translateX(-50%); /* Căn giữa đường gạch ngang */
+
+}
+
+
+/*xử lý cho card profiles*/
+.card-profiles {
+    width: 400px;
+    text-align: center;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px #9ecaed;
+
+}
+
+.card-header {
+    background: #2d2f40;
+    padding: 60px 40px;
+}
+
+.pic {
+    display: inline-block;
+    padding: 8px;
+    background: linear-gradient(130deg, #74b9ff, #e66767);
+    margin: auto;
+    border-radius: 50%;
+    background-size: 200% 200%;
+    animation: animated-gradient 2s linear infinite;
+}
+
+@keyframes animated-gradient {
+    25% {
+        background-position: left bottom;
+    }
+    50% {
+        background-position: right bottom;
+    }
+    75% {
+        background-position: right top;
+    }
+    100% {
+        background-position: left top;
+    }
+}
+
+.pic img {
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.name {
+    color: #eeedf0;
+    font-size: 28px;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.desc {
+    font-size: 18px;
+    color: #ffbcd9;
+}
+
+.location {
+    margin: 10px 0;
+    color: #6c72cb;
+}
+
+.icons {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.icons a {
+    color: #f2f2f2;
+    width: 56px;
+    font-size: 22px;
+    transition: 0.3s linear;
+}
+
+.icons a:hover {
+    color: #6c72cb;
+}
+
+.contact-btn {
+    display: inline-block;
+    padding: 12px 50px;
+    color: #ffbcd9;
+    border: 2px solid #6c72cb;
+    border-radius: 6px;
+    margin-top: 16px;
+    transition: 0.3s linear;
+}
+
+.contact-btn:hover {
+    background: #6c72cb;
+    color: #f2f2f2;
+}
+
+.card-footer {
+    background: #eeedf0;
+    padding: 60px 10px;
+}
+
+.numbers {
+    display: flex;
+    align-items: center;
+}
+
+.item {
+    flex: 1;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: #cb69c1;
+    font-weight: 500;
+}
+
+.item span {
+    display: block;
+    color: #2c3a47;
+    font-size: 30px;
+}
+
+.border {
+    width: 2px;
+    height: 30px;
+    background: linear-gradient(130deg, #74b9ff, #e66767);
+}
+
+.instagram-account {
+    margin-top: 50px;
+    font-size: 15px;
+}
+
+/*xử lý cho content article*/
+
+.list-article {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép các item xuống hàng khi không đủ chỗ */
+    gap: 20px; /* Khoảng cách giữa các article */
+    justify-content: flex-start;
+    margin-top: 20px;
+    /*flex-direction: column;*/
+
+}
+
+.list-article .article {
+    background-color: #fff;
+    /*border-radius: 10px;*/
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    flex: 1 1 calc(50% - 20px);
+    /*max-width: calc(50% - 20px);*/
+    box-sizing: border-box;
+    display: flex;
+    height: 250px;
+
+}
+.article-header {
+    flex: 4;
+}
+.article-header img {
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.article-body {
+    display: flex;
+    flex: 6;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    min-height: 200px;
+    /*position: relative;*/
+}
+
+
+.tag {
+    background: #cccccc;
+    border-radius: 50px;
+    font-size: 12px;
+    margin: 5px 0px;
+    color: #fff;
+    padding: 2px 10px;
+    text-transform: uppercase;
+    cursor: pointer;
+    background-color: #47bcd4;
+}
+
+
+.article-body p {
+    font-size: 16px;
+    margin: 10px 0 10px;
+}
+
+.article-body h2 {
+    font-size: 1.5em;
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+
+}
+.article-user {
+    display: flex;
+    margin-top: auto;
+    width: 100%;
+}
+
+.article-user img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.article-user-info h5 {
+    margin: 0;
+}
+
+.article-user-info small {
+    color: #666666;
+}
+
+.article-footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width:100%;
+}
+
+.article-react-info {
+    display: flex;
+    align-items: flex-end;
+    margin-left: auto;
+
+}
+
+.article-btn {
+    display: inline-block;
+    padding: 10px 30px;
+    color: #000000;
+    border: 2px solid #6c72cb;
+    border-radius: 6px;
+    transition: 0.3s linear;
+}
+
+.article-btn:hover {
+    background: #6c72cb;
+    color: #f2f2f2;
+}
+.article-react-info .react-item{
+    margin-right: 10px;
+}
+.article-react-info .react-icon {
+    color:  #6c72cb;
+
+}
+
