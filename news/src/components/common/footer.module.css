@@ -25,16 +25,17 @@
 }
 
 .category {
-    display: flex;
-    gap: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 items per row */
+    gap: 1%;
+    padding: 0;
     list-style: none;
-    padding-bottom: 10px;
-    margin: 0;
     border-bottom: solid black 1px;
 }
 
 .category li {
-    /* flex: 0 1 calc(20% - 10px); Mỗi ô chiếm 20% trừ khoảng cách */
+    margin-bottom: 20px;
     box-sizing: border-box;
     padding: 10px 35px;
     text-align: center;

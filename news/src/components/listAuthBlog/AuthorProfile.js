@@ -33,10 +33,11 @@ function AuthorProfile({authorId}) {
         <div className="card-profiles">
             <div className="card-header">
                 <div className="pic">
-                    <img
+                    {/* <img
                         src="https://i.pinimg.com/564x/70/e4/ea/70e4ea4af5c79a543e3e79b1d67e1205.jpg"
                         alt="Profile"
-                    />
+                    /> */}
+                    {authProfile.fullName.charAt(0).toUpperCase()}
                 </div>
                 <div className="name">{authProfile.fullName}</div>
                 <div className="desc">Người viết bài</div>

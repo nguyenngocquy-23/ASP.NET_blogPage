@@ -35,7 +35,8 @@ function Article({id,title, cateName,shortDes,img, date, authName,like,comment})
 
                 <h2>{title}</h2>
                 <div className="article-user">
-                    <img src="https://i.pinimg.com/564x/70/e4/ea/70e4ea4af5c79a543e3e79b1d67e1205.jpg" alt="user"/>
+                    {/* <img src="https://i.pinimg.com/564x/70/e4/ea/70e4ea4af5c79a543e3e79b1d67e1205.jpg" alt="user"/> */}
+                    <div className="img">{authName.charAt(0).toUpperCase()}</div> 
                     <div className="article-user-info">
                         <h5>{authName}</h5>
                         <small >{date}</small>
