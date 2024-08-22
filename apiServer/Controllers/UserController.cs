@@ -443,7 +443,7 @@ namespace apiServer.Controllers
             await _context.SaveChangesAsync();
 
             var link = $"{Request.Scheme}://{Request.Host}/";
-            var successHtml = $"<html><head><meta charset=\"UTF-8\"></head><body><h1>Tài khoản đã được kích hoạt thành công.</h1><p>Vui lòng đăng nhập để sử dụng dịch vụ.</p><br/><a href=\"{link}\">Trở về trang chính</a></body></html>";
+            var successHtml = $"<html><head><meta charset=\"UTF-8\"></head><body><h1>Tài khoản đã được kích hoạt thành công.</h1><p>Vui lòng đăng nhập để sử dụng dịch vụ.</p><br/><a href=\"{"http://localhost:3000/"}\">Trở về trang chính</a></body></html>";
             return Content(successHtml, "text/html; charset=utf-8");
         }
 
