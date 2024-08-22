@@ -81,14 +81,14 @@ namespace apiServer.Controllers
         [HttpPost("getAllBlogs")]
         public async Task<ActionResult<IEnumerable<Blog>>> getBlogsDisplayHome()
         {
-            var blogs = await _context.Blog.OrderByDescending(blog => blog.CreatedAt).Take(9).ToListAsync();
+            var blogs = await _context.Blog.Where(blog => blog.Status == 1).OrderByDescending(blog => blog.CreatedAt).Take(9).ToListAsync();
             return Ok(blogs);
         }
 
         [HttpPost("getBlogById")]
         public async Task<ActionResult<IEnumerable<Blog>>> getBlogById([FromQuery] int id) 
         {
-            var blog = await _context.Blog.Where(blog => blog.Id == id).ToListAsync();
+            var blog = await _context.Blog.Where(blog => blog.Id == id && blog.Status == 1).ToListAsync();
             return Ok(blog);
 
         }
@@ -123,6 +123,12 @@ namespace apiServer.Controllers
             }
         }
 
+        [HttpPost("getBlogByAuthId")]
+        public async Task<ActionResult<IEnumerable<Blog>>> getBlogByAuthId([FromQuery] int authId, int blogId) 
+        {
+            var blogs = await _context.Blog.Where(blog => blog.AuthId == authId && blog.Id != blogId && blog.Status == 1).OrderBy(blog => Guid.NewGuid()).Take(5).ToListAsync();
+            return Ok(blogs);
+        }
     }
 
 }

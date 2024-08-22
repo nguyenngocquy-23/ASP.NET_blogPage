@@ -44,8 +44,9 @@ function Article({id,title, cateName,shortDes,img, date, authName,like,comment})
                 <p>{truncateText(shortDes, maxLength)}</p>
 
                 <div className="article-footer">
+
                     <Link to={"/detail/" + id} className="article-btn"
-                         data-limit="">
+         data-limit="">
                        Chi tiết
                     </Link>
 

@@ -47,7 +47,7 @@ namespace apiServer.Controllers
         public async Task<ActionResult<IEnumerable<Blog>>> getBlogByCategories([FromQuery] int id, [FromQuery] int page, int limit)
         {
             var skip = (page - 1) * limit;
-            var blogs =  await _context.Blog.Where(blog => blog.CategoryId == id).Skip(skip).Take(limit).ToListAsync();
+            var blogs =  await _context.Blog.Where(blog => blog.CategoryId == id && blog.Status == 1).Skip(skip).Take(limit).ToListAsync();
             return Ok(blogs);
         }
 

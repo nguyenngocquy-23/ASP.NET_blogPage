@@ -18,8 +18,6 @@ function ListAuthBlog(props) {
 
     // Danh sách các bài viết của Article.
     const [articles, setArticles] = useState([]);
-
-
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const pageSize = 3;
@@ -48,6 +46,7 @@ function ListAuthBlog(props) {
     }, [currentPage, id, sortOrder]);
         const handleShowMore = () => {
         setCurrentPage(prevPage => prevPage + 1);
+        setArticles(preArticles => [...preArticles,articleMore]);
     };
         function handleSortChange(e) {
             setSortOrder(e.target.value);
@@ -86,10 +85,10 @@ function ListAuthBlog(props) {
                 </div>
                 {hasMore && (
 
-
                     <div onClick={handleShowMore} className="show-more-button">
                        <p> Xem thêm ... </p>
                     </div>
+
                 )}
 
             </div>

@@ -26,7 +26,7 @@ namespace apiServer.Controllers
                 return BadRequest("Query là rỗng");
             }
             var totalCount = await _context.Blog
-                .Where(blog => blog.Title.Contains(content))
+                .Where(blog => blog.Title.Contains(content) && blog.Status == 1)
                 .CountAsync();
 
             var totalPages = (int)Math.Ceiling((double)totalCount / limit);
@@ -39,7 +39,7 @@ namespace apiServer.Controllers
         public async Task<ActionResult<IEnumerable<int>>> totalPageBlogsByCategory([FromQuery] int id, int limit)
         {
             var totalCount = await _context.Blog
-                .Where(blog => blog.CategoryId == id)
+                .Where(blog => blog.CategoryId == id && blog.Status == 1)
                 .CountAsync();
 
             var totalPages = (int)Math.Ceiling((double)totalCount / limit);

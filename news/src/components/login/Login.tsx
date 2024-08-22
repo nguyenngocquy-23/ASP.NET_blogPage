@@ -15,6 +15,7 @@ function Login() {
     const dispatch = useDispatch();
 
     const handleLogin = async (e: React.FormEvent) => {
+        setError('')
         e.preventDefault();
         setLoading(true);
         try {
@@ -99,7 +100,7 @@ function Login() {
                             textWrap:'wrap',
                             width:'100%'
                         }}>{error}</p>}
-                    {error && typeof error === 'string' && error.includes("kiểm tra hộp thư email") &&
+                    {error && typeof error === 'string' && error.includes("email") &&
                         <div className={styles.linkContainer} style={{float: "right", cursor: "pointer"}}>
                             <p onClick={handleResendActivationLink} style={{color:'blue', fontStyle:'italic'}} title='Gửi mã'>Yêu cầu gửi lại</p>
                         </div>
