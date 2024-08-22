@@ -28,13 +28,15 @@ interface Category {
 const Blog: React.FC = () => {
   const navigate = useNavigate();
   const [listCategory, setListCategory] = useState<Category[]>([]);
+  const [searchData, setSearchData] = useState<Blog[]>();
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (currentUser?.role != 0) {
+    if (currentUser && currentUser.role !== 0) {
       navigate("/unauthorized");
     }
   }, [currentUser, navigate]);
+
 
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -43,9 +45,13 @@ const Blog: React.FC = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("https://localhost:7125/AdminBlog");
+        const response = await axios.get("https://localhost:7125/AdminBlog",{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        });
         setBlogs(response.data);
-        console.log(response.data);
+        setSearchData(response.data);
         setLoading(false);
       } catch (error) {
         setError("Lỗi khi tải danh sách bài viết.");
@@ -70,6 +76,13 @@ const Blog: React.FC = () => {
     fetchCategories();
   }, []);
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newData = blogs.filter(row => {
+      return row.title.toLowerCase().includes(event.target.value.toLowerCase()) || row.shortDescription.toLowerCase().includes(event.target.value.toLowerCase());
+    });
+    setSearchData(newData);
+  };
+
   const handleDelete = async (id: number) => {
     try {
       // Hiển thị thông báo xác nhận trước khi xóa
@@ -90,6 +103,7 @@ const Blog: React.FC = () => {
 
         // Cập nhật lại danh sách bài viết sau khi xóa thành công
         setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
+        setSearchData((prevBlogs) => prevBlogs?.filter((blog) => blog.id !== id));
 
         // Hiển thị thông báo thành công
         Swal.fire({
@@ -196,7 +210,7 @@ const Blog: React.FC = () => {
                   border: "none",
                   background: "none",
                   fontSize: "22px",
-                  opacity:'0.5'
+                  opacity: "0.5",
                 }}
                 title="Không có quyền xóa"
               >
@@ -215,6 +229,14 @@ const Blog: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <input 
+        type="text" 
+        title="Keyword trong tiêu đề và mô tả ngắn"
+        onChange={handleSearch} 
+        placeholder="Tìm kiếm..." 
+        className="search-input"
+        style={{position:'absolute',top:'5px', left:'10px',width: '20%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc'}}
+      />
       <h2 className={styles.heading}>Danh sách bài viết</h2>
       {loading && <p style={{ textAlign: "center" }}>Đang tải...</p>}
       {error && <p className={styles.error}>{error}</p>}
@@ -230,8 +252,10 @@ const Blog: React.FC = () => {
           {/* <DataTable columns={columns} data={blogs} pagination /> */}
           <DataTable
             columns={columns}
-            data={blogs}
+            data={searchData!}
             pagination
+            highlightOnHover
+            noDataComponent="Không có dữ liệu !"
             customStyles={{
               headCells: {
                 style: {

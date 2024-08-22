@@ -13,7 +13,7 @@
     position: relative;
 }
 
-h2 {
+.container h2 {
     text-align: center;
     font-size: 24px;
     margin-bottom: 30px;
@@ -70,7 +70,11 @@ h2 {
     margin-top: 5px;
 }
 
+.buttonSubmit:hover {
+    opacity: 0.8;
+}
 .buttonSubmit {
+    margin-top: 10px ;
     background: #447ec5;
     border: none;
     border-radius: 3px;

@@ -15,7 +15,7 @@ const CommentTest = () => {
     const currentUser = useSelector((state) => state.user.currentUser);
     const dispatch = useDispatch();
     useEffect(() => {
-        if (currentUser?.role != 0) {
+        if (currentUser && currentUser.role !== 0) {
             navigate('/unauthorized');
         }
     }, [currentUser, navigate]);
@@ -109,7 +109,7 @@ const CommentTest = () => {
         {
             name: 'Bị ẩn',
             selector: row => row.removeComment,
-            sortable: false,
+            sortable: true,
             maxWidth: '40px',
             center: true,
         },
@@ -130,13 +130,12 @@ const CommentTest = () => {
     return (
         <div className="table-container">
 
-            <h2 className="table-title" style={{fontWeight: "bold"}}>Quản lý bình luận</h2>
+            <h2 className="table-title" style={{fontWeight: "bold"}}>Quản lý bình luận 1</h2>
 
-            <div>
+            <div className="dataTable">
                 <DataTable
                     columns={columns}
                     data={dataComment}
-                    // progressPending={loading}
                     pagination
                     highlightOnHover
                     noDataComponent={<div>Không có dữ liệu</div>}

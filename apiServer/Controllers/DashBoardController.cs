@@ -56,5 +56,39 @@ namespace apiServer.Controllers
             int countBlog = await _context.User.Where(p => p.CreatedAt.Year == DateTime.Now.Year && p.CreatedAt.Month == DateTime.Now.Month && p.CreatedAt.Date == DateTime.Now.Date && p.Role == 1).CountAsync();
             return Ok(countBlog);
         }
+        //Top 5 bài viết yêu thích  nhất(lượt like)
+        [HttpGet("TopBlog")]
+        public async Task<ActionResult<IEnumerable<Blog>>> Topblog()
+        {
+            var topBlog = await _context.Blog
+            .Select(blog => new
+            {
+                Blog = blog,
+                LikeCount = _context.Like.Count(c => c.BlogId == blog.Id)
+            })
+            .Where(b => b.LikeCount > 0)
+            .OrderByDescending(b => b.LikeCount)
+            .Take(5)
+            .ToListAsync();
+            return Ok(topBlog);
+        }
+        //Top 5 user tương tác nhiều nhất(lượt comment)
+        [HttpGet("TopUser")]
+        public async Task<ActionResult<IEnumerable<Blog>>> TopUser()
+        {
+            var topUser = await _context.User
+            .Select(user => new
+            {
+                User = user,
+                CommentCount = _context.Comment.Count(c => c.UserId == user.Id)
+            })
+            .Where(b => b.User.Role == 1 && b.CommentCount > 0)
+            .OrderByDescending(b => b.CommentCount)
+            .Take(5)
+            .Select(b => b.User)
+            .ToListAsync();
+
+            return Ok(topUser);
+        }
     }
 }

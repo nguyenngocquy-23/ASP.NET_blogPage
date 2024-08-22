@@ -15,39 +15,48 @@ const ManaInfo: React.FC = () => {
   });
 
   const [userInfo, setUserInfo] = useState<any>(null);
-
+  const [wrongPass, setWrongPass] = useState(false);
   // Fetch user data when the component mounts
   useEffect(() => {
-    const fetchUserData = async () => {
-      const response = await axios.get(
-        "https://localhost:7125/User/testToken",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
-      );
-      console.log(response.data);
-      setFormData({
-        ...formData,
-        fullName: response.data.fullName || "",
-        email: response.data.email || "",
-        phoneNumber: response.data.phoneNumber || "",
-        currentPassword: response.data.password || "",
-      });
-      setUserInfo(response.data);
-    };
-    fetchUserData();
+    try {
+      const fetchUserData = async () => {
+        const response = await axios.get(
+          "https://localhost:7125/User/getUserFromToken",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        );
+        console.log(response.data);
+        setFormData({
+          ...formData,
+          fullName: response.data.fullName || "",
+          email: response.data.email || "",
+          phoneNumber: response.data.phoneNumber || "",
+        });
+        setUserInfo(response.data);
+      };
+      fetchUserData();
+    } catch (error) {
+      console.error('error : ' ,error)
+    }
   }, []);
 
   const handleCurrentPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("in form:" + formData.currentPassword);
     console.log("in db:" + userInfo.password);
     const fetchPassword = async () => {
-      const response = await axios.post("https://localhost:7125/User/checkPass?userId="+userInfo.id+"&input="+formData.currentPassword)
-      if (response.data == false) {
-        alert("password wrong!");
-        return;
+      const response = await axios.post(
+        "https://localhost:7125/User/checkPass?userId=" +
+          userInfo.id +
+          "&input=" +
+          formData.currentPassword
+      );
+      if (!response.data) {
+        setWrongPass(true);
+      }else{
+        setWrongPass(false);
       }
     };
     fetchPassword();
@@ -63,17 +72,26 @@ const ManaInfo: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log("currentUser", userInfo);
     try {
-      await axios.post("https://localhost:7125/User/updateInf?userId="+userInfo.id+"&fullName="+formData.fullName+"&email="+formData.email+"&phoneNumber="+formData.phoneNumber);
+      await axios.post(
+        "https://localhost:7125/User/updateInf?userId=" +
+          userInfo.id +
+          "&fullName=" +
+          formData.fullName +
+          "&email=" +
+          formData.email +
+          "&phoneNumber=" +
+          formData.phoneNumber
+      );
 
       Swal.fire({
-        icon:"success",
-        title:"Thay đổi thông tin thành công!",
-        toast:true,
-        showConfirmButton:false,
-        position:"center",
-        timer:2000,
+        icon: "success",
+        title: "Thay đổi thông tin thành công!",
+        toast: true,
+        showConfirmButton: false,
+        position: "center",
+        timer: 2000,
         timerProgressBar: true,
         didOpen: (toast) => {
           toast.onmouseenter = Swal.stopTimer;
@@ -101,23 +119,37 @@ const ManaInfo: React.FC = () => {
   const handlePasswordChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if(formData.newPassword.length < 6){
+      Swal.fire({
+        icon:'error',
+        title:'Mật khẩu phải tối thiểu 6 ký tự',
+        showConfirmButton:false,
+        toast:true,
+        timer:2000
+      })
+      return;
+    }
     if (formData.newPassword !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      Swal.fire({
+        icon:'warning',
+        title:'Mật khẩu không khớp!',
+        showConfirmButton:false,
+        toast:true,
+        timer:2000
+      })
       return;
     }
 
     try {
       // Tạo URL với tham số query string
-      const url = `https://localhost:7125/User/updatePass?id=`+userInfo.id+`&newPassword=${formData.newPassword}`;
+      const url =
+        `https://localhost:7125/User/updatePass?id=` +
+        userInfo.id +
+        `&newPassword=${formData.newPassword}`;
 
       // Gọi API
       await axios.post(url);
-      setFormData({
-        ...formData,
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
+      
       Swal.fire({
         icon: "success",
         title: "Đổi mật khẩu thành công!",
@@ -130,6 +162,12 @@ const ManaInfo: React.FC = () => {
           toast.onmouseenter = Swal.stopTimer;
           toast.onmouseleave = Swal.resumeTimer;
         },
+      });
+      setFormData({
+        ...formData,
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
       });
     } catch (error) {
       console.error("Failed to change password", error);
@@ -197,7 +235,7 @@ const ManaInfo: React.FC = () => {
                 </div>
               </div>
               <div className={styles.field}>
-                <button type="submit">Gửi</button>
+                <button type="submit">Lưu</button>
               </div>
             </form>
           </div>
@@ -213,16 +251,39 @@ const ManaInfo: React.FC = () => {
                 onSubmit={handlePasswordChange}
               >
                 <div className={styles.field}>
-                  <label>Mật khẩu hiện tại</label>
-                  <div className={styles.field__input}>
-                    <input
-                      type="password"
-                      name="currentPassword"
-                      onChange={handleChange}
-                      onBlur={handleCurrentPassword}
-                    />
-                    <span className="form-message"></span>
-                  </div>
+                  {wrongPass ? (
+                    <>
+                      <label style={{ color: "red" }}>
+                        Mật khẩu sai
+                      </label>
+                      <div className={styles.field__input}>
+                        <input
+                          style={{ border: "1px solid red" }}
+                          type="password"
+                          value={formData.currentPassword}
+                          name="currentPassword"
+                          onChange={handleChange}
+                          onBlur={handleCurrentPassword}
+                        />
+                        <span className="form-message"></span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <label>Mật khẩu hiện tại</label>
+                      <div className={styles.field__input}>
+                        <input
+                        style={{ border: "1px solid green" }}
+                          type="password"
+                          value={formData.currentPassword}
+                          name="currentPassword"
+                          onChange={handleChange}
+                          onBlur={handleCurrentPassword}
+                        />
+                        <span className="form-message"></span>
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className={styles.field}>
                   <label>Mật khẩu mới</label>

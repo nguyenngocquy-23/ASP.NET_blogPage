@@ -31,11 +31,22 @@ const ResetPasswordRequest: React.FC = () => {
     };
 
     return (
-        <div>
-            {error &&
-                <p style={{color: 'red', fontWeight: 600, fontStyle: 'italic', textAlign: 'center'}}>{error}</p>}
+        <div style={{
+            marginLeft: "auto",
+            marginRight: "auto",
+            maxWidth: "1140px",
+            marginTop: "20px",
+            minHeight: "230px",
+          }}>
+        
             <div className={styles.container}>
-                <h2>Quên Mật Khẩu</h2>
+                <h2 style={{
+                    textAlign: 'center',
+                    fontSize: '24px',
+                    marginBottom: '30px',
+                    color: '#333',
+                    fontWeight: 'bold',
+                }}>Quên Mật Khẩu</h2>
                 <form onSubmit={handleRequest}>
                     <div className={styles.formGroup}>
                         <label>Email</label>
@@ -46,6 +57,8 @@ const ResetPasswordRequest: React.FC = () => {
                             required
                         />
                     </div>
+                    {error &&
+                <p style={{color: 'red', fontWeight: 600, fontStyle: 'italic', textAlign: 'center'}}>{error}</p>}
                     <button type="submit" className={styles.btn} disabled={loading}>
                         {loading ? 'Đang Xử Lý...' : 'Gửi Mã Xác Nhận'}
                     </button>

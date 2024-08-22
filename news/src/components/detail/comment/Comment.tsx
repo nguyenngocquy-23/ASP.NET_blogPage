@@ -50,7 +50,6 @@ const Comment: React.FC<CommentProps> = ({
 
     // Xóa: người viết có quyền xóa comment, admin cũng vậy !!
     const canDelete = (currentUser.id === comment.userId && !timePassed) || currentUser.role === 0;
-    console.log("Co quyen xoa khong?" + canDelete);
 
     const isReplying = activeComment
         && activeComment.type === 'replying'
@@ -61,12 +60,19 @@ const Comment: React.FC<CommentProps> = ({
         && activeComment.id === comment.id;
     const replyId = parentId ?parentId : comment.id;
 
+    const colors = ["gray","purple", "green", "blue","orange"];
+
+    const randomColor = (): string => {
+      const randomIndex = Math.floor(Math.random() * colors.length);
+      return colors[randomIndex];
+    };
 
     return (
         <div className={`comment ${currentUser.role === 0 && comment.status===2 ? 'pending-comment-bg': ''}`}>
            
-            <div className="comment-avatar">
-                <img src="https://i.pinimg.com/564x/70/e4/ea/70e4ea4af5c79a543e3e79b1d67e1205.jpg" alt=""/>
+            <div className="comment-avatar" style={{backgroundColor:randomColor()}}>
+                {/* <img src="https://i.pinimg.com/564x/70/e4/ea/70e4ea4af5c79a543e3e79b1d67e1205.jpg" alt=""/> */}
+                {comment.userName.charAt(0).toUpperCase()}
             </div>
             <div className="comment-right-part">
                 <div className="comment-content">

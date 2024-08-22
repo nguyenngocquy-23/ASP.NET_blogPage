@@ -5,10 +5,14 @@ import {
   FaChalkboard,
   FaChartBar,
   FaCodeBranch,
+  FaComment,
+  FaThumbsDown,
+  FaThumbsUp,
   FaUsers,
 } from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import {AiFillLike} from "react-icons/ai";
 
 const Dashboard = () => {
   const [TotalBlog , setTotalBlog] = useState(0);
@@ -17,6 +21,11 @@ const Dashboard = () => {
   const [ContactInMonth,setContactInMonth] = useState(0);
   const [BlogInDate,setBlogInDate] = useState(0);
   const [UserInDate,setUserInDate] = useState(0);
+  const [TopBlog,setTopBlog] = useState([]);
+  const [countBlog,setCountBlog] = useState([]);
+  const [TopUser,setTopUser] = useState([]);
+
+
 
   const now = new Date();
 
@@ -72,6 +81,23 @@ const Dashboard = () => {
         .get("https://localhost:7125/DashBoard/UserInDay")
         .then((response) => {
           setUserInDate(response.data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    axios
+        .get("https://localhost:7125/DashBoard/TopBlog")
+        .then((response) => {
+          setTopBlog(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    axios
+        .get("https://localhost:7125/DashBoard/TopUser")
+        .then((response) => {
+          setTopUser(response.data);
         })
         .catch((error) => {
           console.error("Error: ", error);
@@ -197,6 +223,53 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className={styles.body_table} style={{height:'400px'}}>
+
+        <div className={styles.table_container_left} >
+          <h2>Top 5 Bài Viết Yêu Thích Nhất</h2>
+          <table className={styles.styled_table}>
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tiêu Đề</th>
+              <th><AiFillLike /></th>
+            </tr>
+            </thead>
+            <tbody>
+            {TopBlog.map(blog => (
+                <tr className={styles.active_row}>
+                  <td>{blog.blog.id}</td>
+                  <td><a href={`http://localhost:3000/detail/${blog.blog.id}`}>{blog.blog.title}</a></td>
+                  <td>{blog.likeCount}</td>
+                </tr>
+            ))}
+            </tbody>
+          </table>
+        </div>
+        <div className={styles.table_container_right}>
+        <h2>Top 5 Người Dùng Tương Tác Nhiều Nhất</h2>
+          <table className={styles.styled_table}>
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Họ và Tên</th>
+              <th>Email</th>
+              {/*<th>Số Điện Thoại</th>*/}
+            </tr>
+            </thead>
+            <tbody>
+            {TopUser.map(user => (
+                <tr className={styles.active_row}>
+                  <td>{user.id}</td>
+                  <td>{user.fullName}</td>
+                  <td>{user.email}</td>
+                  {/*<td>{user.phoneNumber}</td>*/}
+                </tr>
+            ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

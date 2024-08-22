@@ -27,10 +27,11 @@ const AdminHome = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
-    if (currentUser?.role != 0) {
+    if (currentUser && currentUser.role !== 0) {
       navigate("/unauthorized");
     }
   }, [currentUser, navigate]);
+
 
   const handlerDashboard = () => {
     setClickDashBoard(true);
@@ -143,13 +144,14 @@ const AdminHome = () => {
             >
               <FaComment /> Quản Lý bình luận
             </Link>
+
           </li>
         </ul>
       </div>
       <div className="main-content">
         <div className="navbar">
           <h1>
-            Welcome to Admin {currentUser.fullName}
+            Welcome to Admin  {currentUser ? currentUser.fullName : ""}
             <Link to="/login" onClick={handleLogout}>
               Đăng xuất
             </Link>

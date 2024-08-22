@@ -1,12 +1,12 @@
 .bigContainer {
-    margin: 50px auto;
+    margin: 0 auto;
     padding: 20px;
     display: flex;
     justify-content: center;
 }
 
 .authContainer {
-    min-width: 400px;
+    width: 400px;
     margin: 50px;
     padding: 20px;
     border: 1px solid #ddd;
@@ -55,7 +55,7 @@
 }
 
 .imageContainer {
-    width: 400px;
+    width: 420px;
     height: 400px; /* Fixed typo here */
     margin: 50px;
     padding: 20px;

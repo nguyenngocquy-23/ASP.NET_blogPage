@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../detail/Detail.module.css";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../reduxStore/Store";
 import { FaRegMessage, FaVolumeHigh, FaVolumeOff } from "react-icons/fa6";
@@ -10,10 +10,13 @@ import podStyles from "./Podcast.module.css";
 import Swal from "sweetalert2";
 import CommentList from "../detail/comment/CommentList";
 import { getUserFromToken, User } from "../utils/UserUtils";
+import { FaRegThumbsUp, FaThumbsUp, FaThumbtack } from "react-icons/fa";
+import {formatDate} from "../utils/dateUtils";
 
 interface Blog {
   id: string;
-  auth: string;
+  authId: string;
+  authName:"";
   categoryId: string;
   title: string;
   image: string;
@@ -38,7 +41,11 @@ const Detail: React.FC = () => {
   const [blogRelate, setBlogRelate] = useState<BlogRelate[]>([]);
   const [commentContent, setCommentContent] = useState<string>(""); // State để lưu nội dung bình luận
   const dispatch = useDispatch();
-  const [numLike, setNumLike] = useState(0)
+  const [numLike, setNumLike] = useState(0);
+  // const [authName, setAuthName] = useState("");
+  const [hasBeenDispatched, setHasBeenDispatched] = useState(false);
+
+  const [isGetData, setIsGetData] = useState(false)
   // const comments = useSelector((state: RootState) =>
   //     state.user.comments.filter((comment) => comment.link === link)
   // ); // Lọc bình luận theo link của bài viết hiện tại
@@ -118,40 +125,24 @@ const Detail: React.FC = () => {
       const getBlogById = await axios.post(
         `https://localhost:7125/Blog/getBlogById?id=${id}`
       );
-      setBlog(getBlogById.data[0]);
+      if (getBlogById.data[0]) {
+        let blogData = getBlogById.data[0];
+        
+        const getUserForAuthName = await axios.get(
+          `https://localhost:7125/auth/${blogData.authId}`
+        );
+        
+        blogData.authName = getUserForAuthName.data;
+        
+        setBlog(blogData);
+      }
     } catch (error) {
       console.error("Detail Error: ", error);
     }
   }
 
-  async function fetchNameCategory() {
-    try {
-      const getCategoryById = await axios.post(`https://localhost:7125/CategoryCotroller/category/${blog?.categoryId}`)
-      setNameCategory(getCategoryById.data);
-    } catch (error) {
-      console.error("name category error", error)
-    }
-  }
-
-  async function fetchNumLike() {
-    try {
-      const getNumLikeBlog = await axios.post(`https://localhost:7125/Like/countLike?idBlog=${blog?.id}`);
-      setNumLike(getNumLikeBlog.data);
-    } catch (error) {
-      console.error("Error Num Like:", error);
-    }
-  }
-
   // Dành cho việc lấy user từ token.
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUserFromToken();
-      setCurrentUser(userData);
-    };
-    fetchUser();
-  }, []);
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   async function fetchBlogRelate() {
     try {
@@ -166,23 +157,27 @@ const Detail: React.FC = () => {
 
   async function fetchIsLike() {
     try {
-      const getIsLike = await axios.post(`https://localhost:7125/Like/isLike?idUser=${currentUser?.id}&idBlog=${blog?.id}`)
+      const getIsLike = await axios.post(
+        `https://localhost:7125/Like/isLike?idUser=${currentUser?.id}&idBlog=${blog?.id}`
+      );
       setIsLike(getIsLike.data);
     } catch (error) {
-      console.error("Error is like:", error)
+      console.error("Error is like:", error);
     }
   }
 
   const handleLikeByUser = async (isLike: boolean) => {
-    if(currentUser) {
+    if (currentUser && currentUser.id != undefined) {
       if (isLike) {
-        const response = await axios.post(`https://localhost:7125/Like/delete?idUser=${currentUser.id}&idBlog=${blog?.id}`)
+        const response = await axios.post(
+          `https://localhost:7125/Like/delete?idUser=${currentUser.id}&idBlog=${blog?.id}`
+        );
         if (response.data) {
           Swal.fire({
             icon: "success",
             title: "Đã bỏ thích bài viết thành công",
             toast: true,
-            position: "top-end",
+            position: "bottom-left",
             showConfirmButton: false,
             timer: 5000,
             timerProgressBar: true,
@@ -196,32 +191,34 @@ const Detail: React.FC = () => {
             toast: true,
             position: "top-end",
             showConfirmButton: false,
-            timer: 5000,
+            timer: 2000,
             timerProgressBar: true,
           });
         }
       } else {
-        const response = await axios.post(`https://localhost:7125/Like/add?idUser=${currentUser.id}&idBlog=${blog?.id}`)
+        const response = await axios.post(
+          `https://localhost:7125/Like/add?idUser=${currentUser.id}&idBlog=${blog?.id}`
+        );
         if (response.data) {
           Swal.fire({
             icon: "success",
             title: "Đã thích bài viết thành công",
             toast: true,
-            position: "top-end",
+            position: "bottom-left",
             showConfirmButton: false,
-            timer: 5000,
+            timer: 2000,
             timerProgressBar: true,
           });
           setIsLike(true);
-          setNumLike(numLike+1);
+          setNumLike(numLike + 1);
         } else {
           Swal.fire({
             icon: "warning",
             title: "Lỗi",
             toast: true,
-            position: "top-end",
+            position: "bottom-left",
             showConfirmButton: false,
-            timer: 5000,
+            timer: 2000,
             timerProgressBar: true,
           });
         }
@@ -231,27 +228,48 @@ const Detail: React.FC = () => {
         icon: "warning",
         title: "Vui lòng đăng nhập để thích",
         toast: true,
-        position: "top-end",
+        position: "bottom-left",
         showConfirmButton: false,
-        timer: 5000,
+        timer: 2000,
         timerProgressBar: true,
       });
     }
-  }
-
+  };
 
   useEffect(() => {
     fetch();
-    if (blog && blog.categoryId) {
-      fetchBlogRelate();
-      fetchNameCategory();
-      fetchNumLike();
-      fetchIsLike();
-    }
-  }, [blog]);
+    setIsGetData(false);
+  }, [id]);
+
+  useEffect( () => {
+    const fetchData = async () => {
+      if (blog && blog?.id && !isGetData) {
+        try {
+          const getCategoryById = await axios.post(`https://localhost:7125/CategoryCotroller/category/${blog?.categoryId}`);
+          setNameCategory(getCategoryById.data);
+
+          const getNumLikeBlog = await axios.post(`https://localhost:7125/Like/countLike?idBlog=${blog?.id}`);
+          setNumLike(getNumLikeBlog.data);
+
+          const getBlogRelate = await axios.get(`https://localhost:7125/CategoryCotroller/category?id=${blog?.categoryId}&page=1&limit=5`);
+          setBlogRelate(getBlogRelate.data);
+          if(currentUser && currentUser.id != undefined) {
+            const getIsLike = await axios.post(`https://localhost:7125/Like/isLike?idUser=${currentUser?.id}&idBlog=${blog?.id}`);
+            setIsLike(getIsLike.data);
+          }
+
+          setIsGetData(true);
+        } catch (error) {
+          console.error("Fetch data error: ", error);
+        }
+      }
+      }
+
+    fetchData();
+  }, [blog, id, currentUser]);
 
   useEffect(() => {
-    if (blog) {
+    if (blog && !hasBeenDispatched) {
       dispatch(
         addReadArticle({
           id: blog.id,
@@ -260,13 +278,14 @@ const Detail: React.FC = () => {
           shortDescription: blog.shortDescription,
         })
       );
+      setHasBeenDispatched(true);
     }
   }, [blog, dispatch]);
 
   const navigate = useNavigate();
-  const handleClick = (url: any,id: any, name: any) => {
-    navigate(`/${url}?page=1`, {state:{id: id, name: name}})
-  }
+  const handleClick = (url: any, id: any, name: any) => {
+    navigate(`/${url}?page=1`, { state: { id: id, name: name } });
+  };
 
   //*** Dành cho admin - Kiểm duyệt các bình luận !.
   const approveComment = async () => {
@@ -291,7 +310,8 @@ const Detail: React.FC = () => {
           html: `
                         <p>Đã duyệt tất cả bình luận thành công!</p>
                         <p>Chi tiết xem tại
-                        <a href="http://localhost:3000/admin/commentManager"
+                        <a href="/admin/commentManager"
+                        // <a href="http://localhost:3000/admin/commentManager"
                          target="_blank"
                          rel="noopener noreferrer"
                          style="color: #3FA2F6; 
@@ -301,7 +321,6 @@ const Detail: React.FC = () => {
                     `,
           icon: "success",
           confirmButtonText: "Ở lại",
-
         });
 
         // Cập nhật giao diện nếu cần (tuỳ chọn)
@@ -326,107 +345,116 @@ const Detail: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.subContainer}>
-        <div className={styles.breadCrumbDetail}>
-          <ul>
-            <li>
-              <a
-                  style={{
-                    cursor: "pointer",
-                    fontSize: "30px"
-                  }}
-                  onClick={() =>
-                      handleClick(convertToSlug(nameCategory), blog?.categoryId, nameCategory)}>
-                {nameCategory}
-              </a>
-            </li>
-          </ul>
-          <div className="bread-crumb-detail__time">{blog?.createdAt}</div>
-        </div>
-        <div className={styles.audioControls}>
-          <div className={styles.inforAuth}>
-            <h2>Tác giả: {blog?.auth},</h2>
-            <p>lượt thích: {numLike}</p>
-          </div>
-          {isReading ? (
-              <FaVolumeOff
-                  onClick={handleStopReading}
-                  className={styles.audioIcon}
-                  title={"Dừng nghe"}
-              />
-          ) : (
-              <FaVolumeHigh
-                  onClick={handleReadText}
-                  className={styles.audioIcon}
-                  title={"Nghe"}
-              />
-          )}
-        </div>
-        <div className={styles.contentDetail}>
-          <h1 className={styles.contentDetailTitle}>
-            {blog?.title || "Loading..."}
-          </h1>
-          <h2 className={styles.contentDetailSapo}>{blog?.shortDescription}</h2>
-          <div
-              className={styles.maincontent}
-              id="maincontent"
-              dangerouslySetInnerHTML={{__html: blog?.content || ""}}
-          ></div>
-        </div>
-        <div className={styles.like}>
-          <p onClick={() => handleLikeByUser(isLike)}
-              style={{
-                cursor: "pointer",
-                color: "blue",
-                display: "inline-block"
-              }}
-          >{isLike ? "Bỏ thích" : "Thích"}</p>
-        </div>
-      </div>
-      {/*Mục liên quan*/}
-      <div className="vnn-news-ai-suggest horizontal-box-wrapper sticky top-65 pb-15">
-        <h2 className={styles.horizontalHeading}>CÓ THỂ BẠN QUAN TÂM</h2>
-        <div>
-          {blogRelate.map((item, index) => (
-              <div className={styles.horizontalItem} key={index}>
-                <div className={styles.horizontalImage}>
-                  <img src={item.image || "Loading..."} alt={item.title}/>
-                </div>
-                <div className={styles.horizontalTitle}>
-                  <h3>
-                    <Link to={"/detail/" + item.id} title={item.title}>
-                      {item.title}
-                    </Link>
-                  </h3>
-                </div>
+      {isGetData ? (
+          <>
+            <div className={styles.subContainer}>
+              <div className={styles.breadCrumbDetail}>
+                <ul>
+                  <li>
+                    <a
+                        style={{
+                          cursor: "pointer",
+                          fontSize: "30px"
+                        }}
+                        onClick={() =>
+                            handleClick(convertToSlug(nameCategory), blog?.categoryId, nameCategory)}>
+                      {nameCategory}
+                    </a>
+                  </li>
+                </ul>
+                <div className="bread-crumb-detail__time">{blog?.createdAt}</div>
               </div>
-          ))}
-        </div>
-      </div>
-      {/*Bình luận*/}
+              <div className={styles.audioControls}>
+                <div className={styles.inforAuth}>
+                  <h2>Tác giả: {blog?.authId},</h2>
+                  <p>lượt thích: {numLike}</p>
+                </div>
+                {isReading ? (
+                    <FaVolumeOff
+                        onClick={handleStopReading}
+                        className={styles.audioIcon}
+                        title={"Dừng nghe"}
+                    />
+                ) : (
+                    <FaVolumeHigh
+                        onClick={handleReadText}
+                        className={styles.audioIcon}
+                        title={"Nghe"}
+                    />
+                )}
+              </div>
+              <div className={styles.contentDetail}>
+                <h1 className={styles.contentDetailTitle}>
+                  {blog?.title || "Loading..."}
+                </h1>
+                <h2 className={styles.contentDetailSapo}>{blog?.shortDescription}</h2>
+                <div
+                    className={styles.maincontent}
+                    id="maincontent"
+                    dangerouslySetInnerHTML={{__html: blog?.content || ""}}
+                ></div>
+              </div>
+              <div className={styles.like}>
+                <p onClick={() => handleLikeByUser(isLike)}
+                   style={{
+                     cursor: "pointer",
+                     color: "blue",
+                     display: "inline-block",
+                     margin: 'auto',
+                     fontSize: '100px',
+                     marginTop: '20px'
+                   }}
+                >{isLike ?
+                    <FaThumbsUp title="Bỏ thích"/>
+                    : <FaRegThumbsUp title="Thích"/>}</p>
+              </div>
+            </div>
+            {/*Mục liên quan*/}
+            <div className="vnn-news-ai-suggest horizontal-box-wrapper sticky top-65 pb-15">
+              <h2 className={styles.horizontalHeading}>CÓ THỂ BẠN QUAN TÂM</h2>
+              <div>
+                {blogRelate.map((item, index) => (
+                    <div className={styles.horizontalItem} key={index}>
+                      <div className={styles.horizontalImage}>
+                        <img src={item.image || "Loading..."} alt={item.title}/>
+                      </div>
+                      <div className={styles.horizontalTitle}>
+                        <h3>
+                          <Link to={"/detail/" + item.id} title={item.title}>
+                            {item.title}
+                          </Link>
+                        </h3>
+                      </div>
+                    </div>
+                ))}
+              </div>
+            </div>
+            {/*Bình luận*/}
 
-      <div className={styles.comments}>
-        <span className={styles.title}>Bình luận</span>
-        {currentUser !== null && currentUser.role === 0 && (
-            <button
-                className="comment-form-button checked-comment"
-            onClick={approveComment}
-          >
-            Kiểm duyệt toàn bộ bình luận!
-          </button>
-        )}
+            <div className={styles.comments}>
+              <span className={styles.title}>Bình luận</span>
+              {currentUser !== null && currentUser.role === 0 && (
+                  <button
+                      className="comment-form-button checked-comment"
+                      onClick={approveComment}
+                  >
+                    Kiểm duyệt toàn bộ bình luận!
+                  </button>
+              )}
 
-        <br />
-        {currentUser !== null && blog !==null ? (
-          <CommentList currentUser={currentUser} blogId={parseInt(blog.id, 10)} />
-        ) : (
-            <span className={styles.noMess}>
+              <br/>
+              {currentUser !== null && blog !== null ? (
+                  <CommentList currentUser={currentUser} blogId={parseInt(blog.id, 10)}/>
+              ) : (
+                  <span className={styles.noMess}>
                         <FaRegMessage/>
                         <Link to={'/login'}> Đăng nhập </Link>
                         để tiến hành bình luận !</span>
-        )
-        }
-      </div>
+              )
+              }
+            </div>
+          </>
+      ) : <></>}
     </div>
   );
 };
