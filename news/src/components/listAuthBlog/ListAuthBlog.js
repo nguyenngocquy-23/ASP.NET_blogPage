@@ -19,13 +19,6 @@ function ListAuthBlog(props) {
     // Danh sách các bài viết của Article.
     const [articles, setArticles] = useState([]);
 
-    // useEffect(() => {
-    //     axios.get(`https://localhost:7125/Blog/profile/${id}?page=1&pageSize=3`)
-    //         .then(response => setArticles(response.data))
-    //         .catch(error => console.error("[ListAuthBlog - lấy dữ liệu Article]", error));
-    // }, [id]);
-    // if(articles.length ===0) return <div>Chưa có bài viết nào.</div>
-
 
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
@@ -34,15 +27,24 @@ function ListAuthBlog(props) {
     const [sortOrder, setSortOrder] = useState('oldest'); // sort bài viết
 
     useEffect(() => {
+        console.log("useEffect is running", { currentPage, id, sortOrder });
+        let isCancelled = false;
         axios.get(`https://localhost:7125/Blog/profile/${id}?page=${currentPage}&pageSize=${pageSize}&sortOrder=${sortOrder}`)
             .then(response => {
+                if (!isCancelled) {
                 if (response.data.length > 0) {
                     setArticles(prevArticles => [...prevArticles, ...response.data]);
                 } else {
                     setHasMore(false);
                 }
+                }
             })
             .catch(error => console.error("[ListAuthBlog - lấy dữ liệu Article]", error));
+
+
+        return () => {
+            isCancelled = true; // Hủy bỏ việc cập nhật state nếu component đã unmount hoặc đang trong quá trình mount lại
+        };
     }, [currentPage, id, sortOrder]);
         const handleShowMore = () => {
         setCurrentPage(prevPage => prevPage + 1);
@@ -70,7 +72,7 @@ function ListAuthBlog(props) {
                 <div className="list-article">
                     {articles.map(article => (
                         <Article
-                            key={article.id}
+                            id={article.id}
                             title={article.title}
                             cateName={article.categoryName}
                             shortDes={article.shortDescription}
