@@ -43,7 +43,7 @@ function Article({key,title, cateName,shortDes,img, date, authName,like,comment}
                 <p>{truncateText(shortDes, maxLength)}</p>
 
                 <div className="article-footer">
-                    <Link to={`"/detail/ + ${key}`} className="article-btn"
+                    <Link to={`/detail/ + ${key}`} className="article-btn"
                          data-limit="">
                        Chi tiết
                     </Link>
