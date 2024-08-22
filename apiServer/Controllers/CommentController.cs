@@ -65,7 +65,7 @@ namespace apiServer.Controllers
                 TotalComment =  _context.Comment.Count(c => c.BlogId == blog.Id),
                 RemoveComment = _context.Comment.Count(c => c.BlogId == blog.Id && c.Status == 0),
                 PendingComment =  _context.Comment.Count(c => c.BlogId == blog.Id && c.Status == 2),
-                NumLike = blog.NumLike,
+                NumLike = _context.Like.Count(c => c.BlogId == blog.Id),
 
             }).ToListAsync();
             return Ok(blogList);

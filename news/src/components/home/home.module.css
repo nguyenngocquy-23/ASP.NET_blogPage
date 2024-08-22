@@ -248,9 +248,16 @@
 }
 
 .newBlog {
+    width: 60px;
     position: absolute;
-    background-color: #fff;
-    right: 0;
-    padding: 3px;
-    color: red;
+    height: 50px;
+    right: -10px;
+    top: -20px;
+    color: black;
+    font-weight: 700;
+    background-image: url('../../../public/newBlog.png');
+    background-position: center;
+    background-size: 83px;
+    text-align: center;
+    padding: 15px 0;
 }
