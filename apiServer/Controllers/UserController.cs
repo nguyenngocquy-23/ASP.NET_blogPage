@@ -69,7 +69,7 @@ namespace apiServer.Controllers
             // Kiểm tra định dạng số điện thoại
             if (!(new Regex(@"^\d{10}$").IsMatch(phoneNumber)))
             {
-                return BadRequest("PhoneNumber không đúng định dạng.");
+                return BadRequest("Số điện thoại không đúng định dạng.");
             }
 
             existingUser.FullName = fullName;
@@ -221,7 +221,7 @@ namespace apiServer.Controllers
             // Kiểm tra định dạng số điện thoại
             if (!(new Regex(@"^\d{10}$").IsMatch(userRequest.PhoneNumber)))
             {
-                return StatusCode(StatusCodes.Status400BadRequest, "PhoneNumber không đúng định dạng.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Số điện thoại không đúng định dạng.");
             }
 
             var user = await _context.User.FirstOrDefaultAsync(u => u.Username == userRequest.Username);
@@ -283,7 +283,7 @@ namespace apiServer.Controllers
             // Kiểm tra định dạng số điện thoại
             if (!(new Regex(@"^\d{10}$").IsMatch(userRequest.PhoneNumber)))
             {
-                return StatusCode(StatusCodes.Status400BadRequest, "PhoneNumber không đúng định dạng.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Số điện thoại không đúng định dạng.");
             }
 
             var user = await _context.User.FirstOrDefaultAsync(u => u.Username == userRequest.Username);
