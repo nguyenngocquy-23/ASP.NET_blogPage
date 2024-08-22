@@ -21,6 +21,11 @@ function AuthorProfile({authorId}) {
             .catch(error => console.error("Error fetching author profile:", error));
     }, [authorId]);
 
+    const [isVisible, setIsVisible] = useState(false);
+
+    const handleClick = () => {
+        setIsVisible(!isVisible);
+    };
 
         if(!authProfile) return <div>Loading...</div>
 
@@ -38,19 +43,28 @@ function AuthorProfile({authorId}) {
                 <div className="location">
                     <IoFootstepsSharp/> {formatRelativeTime(authProfile.createdAt)}
                 </div>
-                <div className="icons">
-                    <a href="#" className="fab fa-instagram"></a>
-                    <a href="#" className="fab fa-linkedin"></a>
-                    <a href="#" className="fab fa-github"></a>
-                </div>
-                <a href="#" className="contact-btn">
-                   Ủng hộ tác giả !
+                <a href="#" className="contact-btn" onClick={handleClick}>
+                    {isVisible ? 'Thu gọn' : 'Ủng hộ tác giả'}
                 </a>
+                {isVisible && (
+                    <div className="icons"
+                    >
+                        <h3>VIETCOMBANK - Trụ sở TP.HCM</h3>
+                        <div className="icons-img">
+                            <img id="icons-qr"
+                                 src="https://firebasestorage.googleapis.com/v0/b/webblog-6eee4.appspot.com/o/qr.png?alt=media&token=ce628c0f-406a-48e7-b9d2-3349f5460125"
+                                 alt=""/>
+                        </div>
+                        <p>"Ít thì 5 quả trứng, nhiều thì 1 tên lửa"</p>
+                    </div>
+                )}
+
+
             </div>
             <div className="card-footer">
                 <div className="numbers">
                     <div className="item">
-                        <span>{authProfile.totalArticles}</span>
+                    <span>{authProfile.totalArticles}</span>
                         Bài viết
                     </div>
                     <div className="border"></div>

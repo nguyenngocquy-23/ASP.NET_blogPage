@@ -24,7 +24,7 @@ function ListAuthBlog(props) {
     const [hasMore, setHasMore] = useState(true);
     const pageSize = 3;
 
-    const [sortOrder, setSortOrder] = useState('oldest'); // sort bài viết
+    const [sortOrder, setSortOrder] = useState('newest'); // sort bài viết
 
     useEffect(() => {
         console.log("useEffect is running", { currentPage, id, sortOrder });
@@ -87,9 +87,9 @@ function ListAuthBlog(props) {
                 {hasMore && (
 
 
-                    <button onClick={handleShowMore} className="show-more-button">
-                        Xem thêm ...
-                    </button>
+                    <div onClick={handleShowMore} className="show-more-button">
+                       <p> Xem thêm ... </p>
+                    </div>
                 )}
 
             </div>

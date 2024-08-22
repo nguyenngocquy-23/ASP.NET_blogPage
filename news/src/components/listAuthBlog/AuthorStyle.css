@@ -39,6 +39,18 @@
 
 }
 
+.right-content .sort-options {
+    display: flex;
+    justify-content: flex-end;
+}
+.sort-options select {
+    /*border: none;*/
+    padding: 10px;
+    border: none;
+    outline: none;
+
+}
+
 
 /*xử lý cho card profiles*/
 .card-profiles {
@@ -108,13 +120,29 @@
     display: flex;
     justify-content: center;
     margin: 20px 0;
+    flex-direction: column;
 }
 
-.icons a {
+.icons h3 {
     color: #f2f2f2;
-    width: 56px;
-    font-size: 22px;
+    font-size: 20px;
     transition: 0.3s linear;
+}
+.icons .icons-img {
+    width: 100%;
+    margin-top: 10px;
+}
+#icons-qr {
+    width: 150px;
+    height: 150px;
+    border: 2px solid rgba(13, 112, 234, 0.55);
+    box-shadow: 4px 4px #ffbcd9;
+}
+
+.icons p {
+    font-style: italic;
+    margin-top: 10px;
+    color: white;
 }
 
 .icons a:hover {
@@ -135,6 +163,11 @@
     background: #6c72cb;
     color: #f2f2f2;
 }
+
+
+
+
+
 
 .card-footer {
     background: #eeedf0;
@@ -297,4 +330,14 @@
     color:  #6c72cb;
 
 }
-
+.show-more-button p {
+    background-color: #f2f2f2 ;
+    margin-top: 10px;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+}
+.show-more-button p:hover {
+    color:  #fff;
+    background-color:  #6c72cb;
+}
