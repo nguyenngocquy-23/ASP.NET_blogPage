@@ -26,26 +26,44 @@ function ListAuthBlog(props) {
     // }, [id]);
     // if(articles.length ===0) return <div>Chưa có bài viết nào.</div>
 
-
+    const [articleMore, setActicleMore] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const pageSize = 3;
 
     const [sortOrder, setSortOrder] = useState('oldest'); // sort bài viết
 
-    useEffect(() => {
-        axios.get(`https://localhost:7125/Blog/profile/${id}?page=${currentPage}&pageSize=${pageSize}&sortOrder=${sortOrder}`)
-            .then(response => {
-                if (response.data.length > 0) {
-                    setArticles(prevArticles => [...prevArticles, ...response.data]);
-                } else {
-                    setHasMore(false);
-                }
-            })
-            .catch(error => console.error("[ListAuthBlog - lấy dữ liệu Article]", error));
-    }, [currentPage, id, sortOrder]);
-        const handleShowMore = () => {
+    async function fetch() {
+        try {
+            const getData = await axios.get(`https://localhost:7125/Blog/profile/${id}?page=${currentPage}&pageSize=${pageSize}&sortOrder=${sortOrder}`);
+            setArticles(getData.data);
+        } catch (error) {
+            console.error("Articles error: ", error);
+        }
+    }
+    useEffect( () => {
+        fetch();
+    }, [])
+
+    // useEffect(() => {
+    //     const fetchDataMore = async () => {
+    //         try {
+    //             const getDataMore =  await axios.get(`https://localhost:7125/Blog/profile/${id}?page=${currentPage+1}&pageSize=${pageSize}&sortOrder=${sortOrder}`);
+    //             setActicleMore(getDataMore.data);
+    //
+    //             if (articleMore != unde articleMore.length > 0) {
+    //                 setHasMore(true)
+    //             } else {
+    //                 setHasMore(false);
+    //             }
+    //         } catch (error) {
+    //             console.error("Error article more: ", error)
+    //         }
+    //     }
+    // }, [currentPage, id, sortOrder]);
+    const handleShowMore = () => {
         setCurrentPage(prevPage => prevPage + 1);
+        setArticles(preArticles => [...preArticles,articleMore]);
     };
         function handleSortChange(e) {
             setSortOrder(e.target.value);
@@ -83,8 +101,6 @@ function ListAuthBlog(props) {
                     ))}
                 </div>
                 {hasMore && (
-
-
                     <button onClick={handleShowMore} className="show-more-button">
                         Xem thêm ...
                     </button>
