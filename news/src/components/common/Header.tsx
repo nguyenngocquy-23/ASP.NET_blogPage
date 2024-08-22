@@ -172,18 +172,18 @@ function Header() {
           </form>
         </div>
         <div className={styles.socialIcons}>
-          <a href={"/history"} title={"History"}>
+          <Link to={"/history"} title={"History"}>
             <FaHistory />
-          </a>
-          <a href={"#"} title={"Facebook"}>
+          </Link>
+          <Link to={""} title={"Facebook"}>
             <FaFacebook />
-          </a>
-          <a href={"#"} title={"Twitter"}>
+          </Link>
+          <Link to={""} title={"Twitter"}>
             <FaTwitter />
-          </a>
-          <a href={"#"} title={"Instagram"}>
+          </Link>
+          <Link to={""} title={"Instagram"}>
             <FaInstagram />
-          </a>
+          </Link>
         </div>
       </div>
     </header>

@@ -32,7 +32,7 @@ const Blog: React.FC = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (currentUser && currentUser.role !== 0) {
+    if (currentUser == undefined || currentUser ==null || (currentUser && currentUser.role !== 0)) {
       navigate("/unauthorized");
     }
   }, [currentUser, navigate]);
@@ -163,7 +163,6 @@ const Blog: React.FC = () => {
       selector: (row: Blog) =>
         format(parseISO(row.createdAt), "dd/MM/yyyy HH:mm:ss"),
       sortable: true,
-      width: "180px",
     },
     {
       name: "Tác vụ",

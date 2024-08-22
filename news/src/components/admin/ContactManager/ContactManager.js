@@ -11,7 +11,7 @@ const ContactManager = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (currentUser && currentUser.role !== 0) {
+    if (currentUser == undefined || currentUser ==null || (currentUser && currentUser.role !== 0)) {
       navigate("/unauthorized");
     }
   }, [currentUser, navigate]);
@@ -101,40 +101,46 @@ const ContactManager = () => {
     let Id = id;
     try {
       const response = await fetch(
-        "https://localhost:7125/Contact/send?Id=" + Id,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ To, Subject, Body, Id }), // Đảm bảo biến đúng tên
-        }
+          "https://localhost:7125/Contact/send?Id=" + Id,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({To, Subject, Body, Id}), // Đảm bảo biến đúng tên
+          }
       );
+
+
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
       if (checkFeedBack == 0) {
-        fetchDataCPH();
-      } else {
-        fetchDataDPH();
+          fetchDataCPH();
+        } else {
+          fetchDataDPH();
+        }
+        setMessage("");
+        setEmail("");
+        setFeedbackAdmin("");
+        setContentFeedback("");
+        setFormVisible(false);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Gửi Phản Hồi Thành Công!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
-      setMessage("");
-      setEmail("");
-      setFeedbackAdmin("");
-      setContentFeedback("");
-      setFormVisible(false);
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Gửi Phản Hồi Thành Công!",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } catch (error) {
-      console.error("Error:", error); // Thêm log lỗi để debug
-      setMessage("Đã xảy ra lỗi khi gửi phản hồi!");
-    }
+    catch
+      (error)
+      {
+        console.error("Error:", error); // Thêm log lỗi để debug
+        setMessage("Đã xảy ra lỗi khi gửi phản hồi!");
+      }
   };
   const CPH = () => {
     setCheckFeedBack(0);

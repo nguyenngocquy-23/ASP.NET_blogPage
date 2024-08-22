@@ -15,6 +15,7 @@ using System.Security.Claims;
 using apiServer.Dto;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.RegularExpressions;
+using apiServer.DTO;
 
 namespace apiServer.Controllers
 {
@@ -68,7 +69,7 @@ namespace apiServer.Controllers
             // Kiểm tra định dạng số điện thoại
             if (!(new Regex(@"^\d{10}$").IsMatch(phoneNumber)))
             {
-                return BadRequest("PhoneNumber không đúng định dạng.");
+                return BadRequest("Số điện thoại không đúng định dạng.");
             }
 
             existingUser.FullName = fullName;
@@ -143,6 +144,44 @@ namespace apiServer.Controllers
             return user.FullName;
         }
 
+        [HttpGet("profile/{id}")]
+        public async Task<ActionResult<AuthorDTO>> GetAuthorProfile(int id)
+        {
+            // Lấy thông tin người dùng.
+            var user = await _context.User.FindAsync(id);
+
+            if(user == null ) return NotFound();
+
+            // Tính tổng số bài đăng của user với status =1.
+            var totalPosts = await _context.Blog.Where(b => b.AuthId == id && b.Status == 1).CountAsync();
+
+            // Tính tổng số lượt thích toàn bộ bài viết của user. (Lấy cả dù ẩn hay không).
+            var totalLikes = await _context.Like
+                 .Where(l => _context.Blog.Any(b => b.Id == l.BlogId && b.AuthId == id))
+                 .CountAsync();
+
+            //Tính tổng số bình luận/ phản hồi của ADmin với status = 1.
+            var totalComments = await _context.Comment.Where(c => c.UserId == id && c.Status==1).CountAsync();
+
+            //Tạo DTO để trả về kết quả.
+            var authorDTO = new AuthorDTO
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                CreatedAt = user.CreatedAt,
+                TotalArticles = totalPosts,
+                TotalLikes = totalLikes,
+                CountComments = totalComments
+
+            };
+            return Ok(authorDTO);
+
+
+        }
+
+
+
         [HttpGet("Filter")]
         public async Task<ActionResult<IEnumerable<User>>> FilterStudents(int status)
         {
@@ -182,7 +221,7 @@ namespace apiServer.Controllers
             // Kiểm tra định dạng số điện thoại
             if (!(new Regex(@"^\d{10}$").IsMatch(userRequest.PhoneNumber)))
             {
-                return StatusCode(StatusCodes.Status400BadRequest, "PhoneNumber không đúng định dạng.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Số điện thoại không đúng định dạng.");
             }
 
             var user = await _context.User.FirstOrDefaultAsync(u => u.Username == userRequest.Username);
@@ -244,7 +283,7 @@ namespace apiServer.Controllers
             // Kiểm tra định dạng số điện thoại
             if (!(new Regex(@"^\d{10}$").IsMatch(userRequest.PhoneNumber)))
             {
-                return StatusCode(StatusCodes.Status400BadRequest, "PhoneNumber không đúng định dạng.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Số điện thoại không đúng định dạng.");
             }
 
             var user = await _context.User.FirstOrDefaultAsync(u => u.Username == userRequest.Username);
@@ -404,7 +443,7 @@ namespace apiServer.Controllers
             await _context.SaveChangesAsync();
 
             var link = $"{Request.Scheme}://{Request.Host}/";
-            var successHtml = $"<html><head><meta charset=\"UTF-8\"></head><body><h1>Tài khoản đã được kích hoạt thành công.</h1><p>Vui lòng đăng nhập để sử dụng dịch vụ.</p><br/><a href=\"{link}\">Trở về trang chính</a></body></html>";
+            var successHtml = $"<html><head><meta charset=\"UTF-8\"></head><body><h1>Tài khoản đã được kích hoạt thành công.</h1><p>Vui lòng đăng nhập để sử dụng dịch vụ.</p><br/><a href=\"{"http://localhost:3000/"}\">Trở về trang chính</a></body></html>";
             return Content(successHtml, "text/html; charset=utf-8");
         }
 
@@ -571,5 +610,6 @@ namespace apiServer.Controllers
             }
             return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
         }
+
     }
 }

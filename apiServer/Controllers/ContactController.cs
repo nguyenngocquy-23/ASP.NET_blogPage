@@ -51,7 +51,7 @@ namespace apiServer.Controllers
         public async Task<ActionResult<IEnumerable<Contact>>> GetContactAllCPH()
         {
             return await _context.Contact
-                            .Where(c => c.FeedBack == 0)
+                            .Where(c => c.FeedBack == 0).OrderByDescending(c => c.CreatedAt)
                             .ToListAsync();
         }
         //Lấy tất cả các contact da phan hoi

@@ -60,6 +60,12 @@ function Home() {
   useEffect(() => {
     fetch();
   }, []);
+
+  const checkBlogNew = (blog) => {
+    var createDate = new Date(blog.createdAt);
+    var now = new Date()
+    return createDate.toDateString() === now.toDateString() ? true : false;
+  }
   return (
     <>
       <div className={styles.sectionTopstory}>
@@ -70,6 +76,7 @@ function Home() {
                 <Link to={"/detail/" + item.id} title={item.title}>
                   <picture>
                     <img src={item.image} alt={item.title} />
+                    {checkBlogNew(item) ? <p className={`${styles.newBlog}`}>Mới</p> : ""}
                   </picture>
                 </Link>
               </div>

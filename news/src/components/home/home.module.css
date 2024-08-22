@@ -246,3 +246,18 @@
 .group1, .group2{
     display: flex;
 }
+
+.newBlog {
+    width: 60px;
+    position: absolute;
+    height: 50px;
+    right: -10px;
+    top: -20px;
+    color: black;
+    font-weight: 700;
+    background-image: url('../../../public/newBlog.png');
+    background-position: center;
+    background-size: 83px;
+    text-align: center;
+    padding: 15px 0;
+}

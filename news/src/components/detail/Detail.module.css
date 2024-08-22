@@ -14,8 +14,9 @@
 }
 
 .subContainer {
-    max-width: 760px;
+    /*padding-right: 10px;*/
     padding-top: 20px;
+    max-width: 90%;
 }
 
 .breadCrumbDetail {
@@ -63,6 +64,13 @@
     font-weight: 700;
     line-height: 1.625rem;
     margin: 1.25rem 0;
+}
+.imgDetail img {
+    width: 80%;
+}
+
+.imgDetail {
+    text-align: center;
 }
 
 .maincontent p {
@@ -372,4 +380,8 @@
 .like {
     display: flex;
     justify-content: end;
+}
+
+.detailAuth:hover {
+    text-decoration: underline;
 }

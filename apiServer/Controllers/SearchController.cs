@@ -27,7 +27,7 @@ namespace apiServer.Controllers
                 return BadRequest("Query là rỗng");
             }
             var skip = (page - 1) * limit;
-            var query = _context.Blog.Where(blog => blog.Title.Contains(content));
+            var query = _context.Blog.Where(blog => blog.Title.Contains(content) && blog.Status == 1);
 
             if (!string.IsNullOrEmpty(filter))
             {

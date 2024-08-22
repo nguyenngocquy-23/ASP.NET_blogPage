@@ -19,7 +19,7 @@ const CommentManage = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (currentUser && currentUser.role !== 0) {
+    if (currentUser == undefined || currentUser ==null || (currentUser && currentUser.role !== 0)) {
       navigate("/unauthorized");
     }
   }, [currentUser, navigate]);
@@ -29,7 +29,6 @@ const CommentManage = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [searchData, setSearchData] = useState([]);
-
   useEffect(() => {
     const fetchCommentData = async () => {
       axios

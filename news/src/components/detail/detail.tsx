@@ -10,13 +10,14 @@ import podStyles from "./Podcast.module.css";
 import Swal from "sweetalert2";
 import CommentList from "../detail/comment/CommentList";
 import { getUserFromToken, User } from "../utils/UserUtils";
-import { FaRegThumbsUp, FaThumbsUp, FaThumbtack } from "react-icons/fa";
+import {FaRegThumbsUp, FaThumbsUp, FaThumbtack, FaUser} from "react-icons/fa";
+import {FiExternalLink} from "react-icons/fi";
 import {formatDate} from "../utils/dateUtils";
 
 interface Blog {
   id: string;
   authId: string;
-  authName:"";
+  authName: string;
   categoryId: string;
   title: string;
   image: string;
@@ -44,6 +45,8 @@ const Detail: React.FC = () => {
   const [numLike, setNumLike] = useState(0);
   // const [authName, setAuthName] = useState("");
   const [hasBeenDispatched, setHasBeenDispatched] = useState(false);
+
+  const [isGetData, setIsGetData] = useState(false)
   // const comments = useSelector((state: RootState) =>
   //     state.user.comments.filter((comment) => comment.link === link)
   // ); // Lọc bình luận theo link của bài viết hiện tại
@@ -139,52 +142,8 @@ const Detail: React.FC = () => {
     }
   }
 
-  async function fetchNameCategory() {
-    try {
-      const getCategoryById = await axios.post(
-        `https://localhost:7125/CategoryCotroller/category/${blog?.categoryId}`
-      );
-      setNameCategory(getCategoryById.data);
-    } catch (error) {
-      console.error("name category error", error);
-    }
-  }
 
-  async function fetchNumLike() {
-    try {
-      const getNumLikeBlog = await axios.post(
-        `https://localhost:7125/Like/countLike?idBlog=${blog?.id}`
-      );
-      setNumLike(getNumLikeBlog.data);
-    } catch (error) {
-      console.error("Error Num Like:", error);
-    }
-  }
-
-  // Dành cho việc lấy user từ token.
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
-
-  async function fetchBlogRelate() {
-    try {
-      const getBlogRelate = await axios.get(
-        `https://localhost:7125/CategoryCotroller/category?id=${blog?.categoryId}&page=1&limit=5`
-      );
-      setBlogRelate(getBlogRelate.data);
-    } catch (error) {
-      console.error("Detail Error: ", error);
-    }
-  }
-
-  async function fetchIsLike() {
-    try {
-      const getIsLike = await axios.post(
-        `https://localhost:7125/Like/isLike?idUser=${currentUser?.id}&idBlog=${blog?.id}`
-      );
-      setIsLike(getIsLike.data);
-    } catch (error) {
-      console.error("Error is like:", error);
-    }
-  }
 
   const handleLikeByUser = async (isLike: boolean) => {
     if (currentUser && currentUser.id != undefined) {
@@ -258,15 +217,37 @@ const Detail: React.FC = () => {
 
   useEffect(() => {
     fetch();
-    if (blog && blog.categoryId) {
-      fetchBlogRelate();
-      fetchNameCategory();
-      fetchNumLike();
-      if (currentUser.id != undefined) {
-        fetchIsLike();
+    setIsGetData(false);
+  }, [id]);
+
+
+  useEffect( () => {
+    const fetchData = async () => {
+      if (blog && blog?.id && !isGetData) {
+        try {
+          const getCategoryById = await axios.post(`https://localhost:7125/CategoryCotroller/category/${blog?.categoryId}`);
+          setNameCategory(getCategoryById.data);
+
+          const getNumLikeBlog = await axios.post(`https://localhost:7125/Like/countLike?idBlog=${blog?.id}`);
+          setNumLike(getNumLikeBlog.data);
+
+          const getBlogRelate = await axios.post(`https://localhost:7125/Blog/getBlogRelate?categoryId=${blog?.categoryId}&blogId=${blog?.id}`);
+          setBlogRelate(getBlogRelate.data);
+          if(currentUser && currentUser.id != undefined) {
+            const getIsLike = await axios.post(`https://localhost:7125/Like/isLike?idUser=${currentUser?.id}&idBlog=${blog?.id}`);
+            setIsLike(getIsLike.data);
+          }
+
+          setIsGetData(true);
+        } catch (error) {
+          console.error("Fetch data error: ", error);
+        }
       }
-    }
-  }, []);
+      }
+
+    fetchData();
+  }, [blog, id, currentUser]);
+
 
   useEffect(() => {
     if (blog && !hasBeenDispatched) {
@@ -309,28 +290,12 @@ const Detail: React.FC = () => {
           title: "Duyệt thành công",
           html: `
                         <p>Đã duyệt tất cả bình luận thành công!</p>
-                        <p>Chi tiết xem tại
-                        <a href="/admin/commentManager"
-                        // <a href="http://localhost:3000/admin/commentManager"
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         style="color: #3FA2F6; 
-                         font-weight: bold;"
-                         >
-                        Quản lý bình luận</a></p>
-                    `,
+                   `,
           icon: "success",
           confirmButtonText: "Ở lại",
         });
 
-        // Cập nhật giao diện nếu cần (tuỳ chọn)
-        // const updatedBackendComments = backendComments.map(comment => {
-        //     if (comment.blogId === blogId) {
-        //         return { ...comment, status: 1 }; // Ví dụ cập nhật trạng thái
-        //     }
-        //     return comment;
-        // });
-        // setBackendComments(updatedBackendComments);
+
       } catch (error) {
         console.error("Lỗi khi duyệt bình luận", error);
         await Swal.fire({
@@ -345,126 +310,127 @@ const Detail: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.subContainer}>
-        <div className={styles.breadCrumbDetail}>
-          <ul>
-            <li>
-              <a
-                style={{
-                  cursor: "pointer",
-                  fontSize: "30px",
-                }}
-                onClick={() =>
-                  handleClick(
-                    convertToSlug(nameCategory),
-                    blog?.categoryId,
-                    nameCategory
-                  )
-                }
-              >
-                {nameCategory}
-              </a>
-            </li>
-          </ul>
-          <div className="bread-crumb-detail__time">{blog?formatDate(blog?.createdAt):(<></>)}</div>
-        </div>
-        <div className={styles.audioControls}>
-          <div className={styles.inforAuth}>
-            <h2>Tác giả: <Link style={{color:'black', fontSize:'17px', fontWeight:'bold'}} to={`/profile/${blog?.authId}`}>{blog?.authName}</Link></h2>
-            <p>Lượt thích: {numLike}</p>
-          </div>
-          {isReading ? (
-            <FaVolumeOff
-              onClick={handleStopReading}
-              className={styles.audioIcon}
-              title={"Dừng nghe"}
-            />
-          ) : (
-            <FaVolumeHigh
-              onClick={handleReadText}
-              className={styles.audioIcon}
-              title={"Nghe"}
-            />
-          )}
-        </div>
-        <div className={styles.contentDetail}>
-          <h1 className={styles.contentDetailTitle}>
-            {blog?.title || "Loading..."}
-          </h1>
-          <h2 className={styles.contentDetailSapo}>{blog?.shortDescription}</h2>
-          <div
-            className={styles.maincontent}
-            id="maincontent"
-            dangerouslySetInnerHTML={{ __html: blog?.content || "" }}
-          ></div>
-        </div>
-        <div className={styles.like}>
-          <p
-            onClick={() => handleLikeByUser(isLike)}
-            style={{
-              cursor: "pointer",
-              color: "blue",
-              display: "inline-block",
-              margin: "auto",
-              fontSize: "100px",
-              marginTop: "20px",
-            }}
-          >
-            {isLike ? (
-              <FaThumbsUp title="Bỏ thích" />
-            ) : (
-              <FaRegThumbsUp title="Thích" />
-            )}
-          </p>
-        </div>
-      </div>
-      {/*Mục liên quan*/}
-      <div className="vnn-news-ai-suggest horizontal-box-wrapper sticky top-65 pb-15">
-        <h2 className={styles.horizontalHeading}>CÓ THỂ BẠN QUAN TÂM</h2>
-        <div>
-          {blogRelate.map((item, index) => (
-            <div className={styles.horizontalItem} key={index}>
-              <div className={styles.horizontalImage}>
-                <img src={item.image || "Loading..."} alt={item.title} />
+      {isGetData ? (
+          <>
+            <div className={styles.subContainer}>
+              <div className={styles.breadCrumbDetail}>
+                <ul>
+                  <li>
+                    <a
+                        style={{
+                          cursor: "pointer",
+                          fontSize: "30px"
+                        }}
+                        onClick={() =>
+                            handleClick(convertToSlug(nameCategory), blog?.categoryId, nameCategory)}>
+                      {nameCategory}
+                    </a>
+                  </li>
+                </ul>
+                <div className="bread-crumb-detail__time">{blog?formatDate(blog?.createdAt):""}</div>
               </div>
-              <div className={styles.horizontalTitle}>
-                <h3>
-                  <Link to={"/detail/" + item.id} title={item.title}>
-                    {item.title}
-                  </Link>
-                </h3>
+              <div className={styles.audioControls}>
+                <div className={styles.inforAuth}>
+                  Tác giả:<Link to={`/profile/${blog?.authId}`} className={styles.detailAuth} style={{
+                  marginLeft: "8px",
+                  fontWeight: "bold",
+                  color: "blue",
+                  cursor: "pointer",
+                  marginRight: "100px"
+                }} > {blog?.authName}</Link>
+                  <p>lượt thích: {numLike}</p>
+                </div>
+                {isReading ? (
+                    <FaVolumeOff
+                        onClick={handleStopReading}
+                        className={styles.audioIcon}
+                        title={"Dừng nghe"}
+                    />
+                ) : (
+                    <FaVolumeHigh
+                        onClick={handleReadText}
+                        className={styles.audioIcon}
+                        title={"Nghe"}
+                    />
+                )}
+              </div>
+              <div className={styles.contentDetail}>
+                <h1 className={styles.contentDetailTitle}>
+                  {blog?.title || "Loading..."}
+                </h1>
+                <h2 className={styles.contentDetailSapo}>{blog?.shortDescription}</h2>
+                <div className={styles.imgDetail}>
+                  <img src={blog?.image} alt=""/>
+                </div>
+                <div
+                    className={styles.maincontent}
+                    id="maincontent"
+                    dangerouslySetInnerHTML={{__html: blog?.content || ""}}
+                ></div>
+              </div>
+              <div className={styles.like}>
+                <p onClick={() => handleLikeByUser(isLike)}
+                   style={{
+                     cursor: "pointer",
+                     color: "blue",
+                     display: "inline-block",
+                     margin: 'auto',
+                     fontSize: '100px',
+                     marginTop: '20px'
+                   }}
+                >{isLike ?
+                    <FaThumbsUp title="Bỏ thích"/>
+                    : <FaRegThumbsUp title="Thích"/>}</p>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-      {/*Bình luận*/}
+            {/*Mục liên quan*/}
+            <div className="vnn-news-ai-suggest horizontal-box-wrapper sticky top-65 pb-15">
+              <h2 className={styles.horizontalHeading}>CÓ THỂ BẠN QUAN TÂM</h2>
+              <div>
+                {blogRelate.map((item, index) => (
+                    <div className={styles.horizontalItem} key={index}>
+                      <div className={styles.horizontalImage}>
+                        <img src={item.image || "Loading..."} alt={item.title}/>
+                      </div>
+                      <div className={styles.horizontalTitle}>
+                        <h3>
+                          <Link to={"/detail/" + item.id} title={item.title}>
+                            {item.title}
+                          </Link>
+                        </h3>
+                      </div>
+                    </div>
+                ))}
+              </div>
+            </div>
+            {/*Bình luận*/}
 
-      <div className={styles.comments}>
-        <span className={styles.title}>Bình luận</span>
-        {currentUser !== null && currentUser.role === 0 && (
-          <button
-            className="comment-form-button checked-comment"
-            onClick={approveComment}
-          >
-            Kiểm duyệt toàn bộ bình luận!
-          </button>
-        )}
+            <div className={styles.comments}>
+              <span className={styles.title}>Bình luận</span>
+              {currentUser !== null && currentUser.role === 0 && (
+                  <button
+                      className="comment-form-button checked-comment"
+                      onClick={approveComment}
+                  >
+                    Kiểm duyệt toàn bộ bình luận!
+                  </button>
+              )}
+
 
         <br />
-        {currentUser !== null && blog !== null ? (
-          <CommentList
-            currentUser={currentUser}
-            blogId={parseInt(blog.id, 10)}
-          />
+        { currentUser.id != undefined && currentUser !== null && blog !==null ? (
+            <CommentList currentUser={currentUser} blogId={parseInt(blog.id, 10)} />
         ) : (
-          <span className={styles.noMess}>
-            <FaRegMessage />
-            <Link to={"/login"}> Đăng nhập </Link>
-            để tiến hành bình luận !
-          </span>
-        )}
-      </div>
+            <span className={styles.noMess}>
+
+                        <FaRegMessage/>
+                        <Link to={'/login'}> Đăng nhập </Link>
+                        để tiến hành bình luận !</span>
+              )
+              }
+            </div>
+          </>
+      ) : <></>}
     </div>
   );
 };
