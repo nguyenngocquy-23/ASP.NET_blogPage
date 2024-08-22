@@ -163,7 +163,6 @@ const Blog: React.FC = () => {
       selector: (row: Blog) =>
         format(parseISO(row.createdAt), "dd/MM/yyyy HH:mm:ss"),
       sortable: true,
-      width: "180px",
     },
     {
       name: "Tác vụ",

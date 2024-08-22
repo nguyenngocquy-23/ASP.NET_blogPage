@@ -29,7 +29,6 @@ const CommentManage = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [searchData, setSearchData] = useState([]);
-
   useEffect(() => {
     const fetchCommentData = async () => {
       axios

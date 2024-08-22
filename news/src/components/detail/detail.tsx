@@ -312,12 +312,6 @@ const Detail: React.FC = () => {
           title: "Duyệt thành công",
           html: `
                         <p>Đã duyệt tất cả bình luận thành công!</p>
-          //               <Link to="/admin" title="Quay về admin">
-          //   <div className={styles.info}>
-          //     <FaUser style={{ marginRight: "4px" }} />
-          //     Admin
-          //   </div>
-          // </Link>
                    `,
           icon: "success",
           confirmButtonText: "Ở lại",
@@ -355,7 +349,7 @@ const Detail: React.FC = () => {
                     </a>
                   </li>
                 </ul>
-                <div className="bread-crumb-detail__time">{blog?.createdAt}</div>
+                <div className="bread-crumb-detail__time">{blog?formatDate(blog?.createdAt):""}</div>
               </div>
               <div className={styles.audioControls}>
                 <div className={styles.inforAuth}>
@@ -387,6 +381,9 @@ const Detail: React.FC = () => {
                   {blog?.title || "Loading..."}
                 </h1>
                 <h2 className={styles.contentDetailSapo}>{blog?.shortDescription}</h2>
+                <div className={styles.imgDetail}>
+                  <img src={blog?.image} alt=""/>
+                </div>
                 <div
                     className={styles.maincontent}
                     id="maincontent"
