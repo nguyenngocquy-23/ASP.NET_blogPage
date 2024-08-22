@@ -16,6 +16,7 @@ function Register() {
     const navigate = useNavigate();
 
     const handleRegister = async (e: React.FormEvent) => {
+        setError('')
         e.preventDefault();
         if (password !== confirmPassword) {
             setError('Mật khẩu không khớp');
@@ -44,7 +45,7 @@ function Register() {
             }
         } catch (err) {
             if (axios.isAxiosError(err)) {
-                const errorMsg = err.response?.data?.title || 'Đăng ký không thành công. Vui lòng thử lại sau.';
+                const errorMsg = err.response?.data || 'Đăng ký không thành công. Vui lòng thử lại sau.';
                 setError(errorMsg);
             } else {
                 setError('Đã xảy ra lỗi. Vui lòng thử lại sau.');
