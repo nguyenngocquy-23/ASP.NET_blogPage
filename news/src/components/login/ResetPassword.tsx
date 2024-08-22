@@ -26,6 +26,7 @@ const ResetPassword: React.FC = () => {
   }, [query]);
 
   const handleReset = async (e: React.FormEvent) => {
+    setError('')
     e.preventDefault();
     if (newPassword !== confirmPassword) {
       setError("Mật khẩu không khớp");

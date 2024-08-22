@@ -61,7 +61,7 @@ function Category() {
     for (let i = 1; i <= totalPages; i++) {
         listItems.push(
             <li className={`${categoryStyles['pagination__list-item']} ${i === page ? categoryStyles.active : ''}`}>
-                <a onClick={() => setPage(i)}>{i}</a>
+                <a onClick={() => setPage(i)} style={{cursor: "pointer"}}>{i}</a>
             </li>
         );
     }
@@ -131,13 +131,13 @@ function Category() {
             <ul className={categoryStyles['pagination__list']}>
                 {prepage && (
                     <li className={`${categoryStyles['pagination__list-item']} ${categoryStyles['pre-page']}`}>
-                        <a  onClick={() =>setPage(page-1)}>
+                        <a  onClick={() =>setPage(page-1)} style={{cursor: "pointer"}}>
                             <img src="https://static.vnncdn.net/v1/icon/icon-pagination.svg" alt="icon prev"/>
                         </a>
                     </li>)}
                 {listItems}
                 {nextpage && <li className={`${categoryStyles['pagination__list-item']}`}>
-                    <a onClick={() => setPage(page+1)}>
+                    <a onClick={() => setPage(page+1)} style={{cursor: "pointer"}}>
                         <img src="https://static.vnncdn.net/v1/icon/icon-pagination.svg" alt="icon next"/>
                     </a>
                 </li>}

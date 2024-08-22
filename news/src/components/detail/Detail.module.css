@@ -373,3 +373,7 @@
     display: flex;
     justify-content: end;
 }
+
+.detailAuth:hover {
+    text-decoration: underline;
+}
