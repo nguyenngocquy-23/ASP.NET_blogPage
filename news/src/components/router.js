@@ -12,6 +12,7 @@ import Contact from "./contact/Contact";
 import ManaInfo from "./manageInfo/ManaInfo";
 import Blog from './admin/blog/Blog';
 import ContactManager from "./admin/ContactManager/ContactManager";
+import ListAuthBlog from "./listAuthBlog/ListAuthBlog";
 
 import BlogForm from "./admin/blogDetail/BlogDetail";
 import CommentManage from "./admin/CommentManager/CommentManage";
@@ -39,6 +40,7 @@ function RouterConfig() {
                     <Route path='/contact' element={<Contact/>}/>
                     <Route path='/searchPage/:tim-kiem' element={<SearchPage/>}/>
                     <Route path='/manaInfo' element={<ManaInfo/>}/>
+                    <Route  path='/profile/:id' element={<ListAuthBlog/>}/>
                 </Route>
                 <Route path='/admin' element={<AdminHome/>}>
                     <Route index element={<Dashboard/>}/>

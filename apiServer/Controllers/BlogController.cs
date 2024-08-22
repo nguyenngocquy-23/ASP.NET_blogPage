@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using System.Xml.Linq;
+using apiServer.DTO;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace apiServer.Controllers
 {
@@ -19,6 +21,118 @@ namespace apiServer.Controllers
             _context = context;
         }
 
+        //Lấy bài viết của user - Phân trang 6 bài viết/ 1 lần gọi.
+        //[HttpGet("profile/{userId}")]
+        //public async Task<ActionResult<IEnumerable<AuthBlogDTO>>> GetBlogsByUserId(int userId, int page = 1, int pageSize = 3, string sortOrder = "newest")
+        //{
+        //    var blogs =  _context.Blog
+        //           .Where(b => b.AuthId == userId && b.Status == 1) // Lọc bài viết của người dùng với status = 1
+        //           .Join(_context.Category,
+        //               blog => blog.CategoryId,
+        //               category => category.Id,
+        //               (blog, category) => new
+        //               {
+        //                   Blog = blog,
+        //                   CategoryName = category.Name // Lấy tên danh mục từ bảng Category
+        //               })
+        //           .Join(_context.User,
+        //               blogCategory => blogCategory.Blog.AuthId,
+        //               user => user.Id,
+        //               (blogCategory, user) => new AuthBlogDTO
+        //               {
+        //                   Id = blogCategory.Blog.Id,
+        //                   Title = blogCategory.Blog.Title,
+        //                   ShortDescription = blogCategory.Blog.ShortDescription,
+        //                   Image = blogCategory.Blog.Image,
+        //                   CreatedAt = blogCategory.Blog.UpdatedAt ?? blogCategory.Blog.CreatedAt, // Nếu UpdatedAt là null thì lấy CreatedAt
+        //                   AuthName = user.FullName, // Lấy tên tác giả từ bảng User
+        //                   CategoryName = blogCategory.CategoryName, // Lấy tên danh mục từ bảng Category
+        //                   TotalLike = _context.Like.Count(l => l.BlogId == blogCategory.Blog.Id), // Tính tổng số lượt like
+        //                   TotalComment = _context.Comment.Count(c => c.BlogId == blogCategory.Blog.Id && c.Status != 0) // Tính tổng số comment (trừ đã xóa đi)
+        //               }
+        //           );
+
+        //    // Sắp xếp : mới nhất, cũ nhất, nhiều lượt react (like + comment).
+        //    switch (sortOrder.ToLower())
+        //    {
+        //        case "newest":
+        //            blogs = blogs.OrderByDescending(b => b.CreatedAt);
+        //            break;
+        //        case "oldest":
+        //            blogs = blogs.OrderBy(b => b.CreatedAt);
+        //            break;
+        //        case "mostReact":
+        //            blogs = blogs.OrderByDescending(b => b.TotalLike + b.TotalComment);
+        //            break;
+        //        default:
+        //            blogs = blogs.OrderByDescending(b => b.CreatedAt);
+        //            break;
+        //    }
+
+        //    var res = await blogs
+        //           .Skip((page - 1) * pageSize) // Bỏ qua các bài viết của các trang trước
+        //           .Take(pageSize) // Lấy số lượng bài viết của trang hiện tại
+        //           .ToListAsync();
+
+        //    return Ok(blogs);
+
+        //}
+
+        [HttpGet("profile/{userId}")]
+        public async Task<ActionResult<IEnumerable<AuthBlogDTO>>> GetBlogsByUserId(int userId, int page = 1, int pageSize = 3, string sortOrder = "newest")
+        {
+            var blogsQuery = _context.Blog
+                .Where(b => b.AuthId == userId && b.Status == 1) // Lọc bài viết của người dùng với status = 1
+                .Join(_context.Category,
+                    blog => blog.CategoryId,
+                    category => category.Id,
+                    (blog, category) => new
+                    {
+                        Blog = blog,
+                        CategoryName = category.Name // Lấy tên danh mục từ bảng Category
+                    })
+                .Join(_context.User,
+                    blogCategory => blogCategory.Blog.AuthId,
+                    user => user.Id,
+                    (blogCategory, user) => new AuthBlogDTO
+                    {
+                        Id = blogCategory.Blog.Id,
+                        Title = blogCategory.Blog.Title,
+                        ShortDescription = blogCategory.Blog.ShortDescription,
+                        Image = blogCategory.Blog.Image,
+                        CreatedAt = blogCategory.Blog.UpdatedAt ?? blogCategory.Blog.CreatedAt, // Nếu UpdatedAt là null thì lấy CreatedAt
+                        AuthName = user.FullName, // Lấy tên tác giả từ bảng User
+                        CategoryName = blogCategory.CategoryName, // Lấy tên danh mục từ bảng Category
+                        TotalLike = _context.Like.Count(l => l.BlogId == blogCategory.Blog.Id), // Tính tổng số lượt like
+                        TotalComment = _context.Comment.Count(c => c.BlogId == blogCategory.Blog.Id && c.Status != 0) // Tính tổng số comment (trừ đã xóa đi)
+                    }
+                );
+
+            // Sắp xếp : mới nhất, cũ nhất, nhiều lượt react (like + comment).
+            switch (sortOrder.ToLower())
+            {
+                case "newest":
+                    blogsQuery = blogsQuery.OrderByDescending(b => b.CreatedAt);
+                    break;
+                case "oldest":
+                    blogsQuery = blogsQuery.OrderBy(b => b.CreatedAt);
+                    break;
+                case "mostreact":
+                    blogsQuery = blogsQuery.OrderByDescending(b => b.TotalLike + b.TotalComment);
+                    break;
+                default:
+                    blogsQuery = blogsQuery.OrderByDescending(b => b.CreatedAt);
+                    break;
+            }
+
+            // Phân trang: chỉ lấy số lượng bài viết của trang hiện tại
+            var res = await blogsQuery
+                .Skip((page - 1) * pageSize) // Bỏ qua các bài viết của các trang trước
+                .Take(pageSize) // Lấy số lượng bài viết của trang hiện tại
+                .ToListAsync();
+
+            return Ok(res); // Trả về danh sách đã phân trang
+        }
         [HttpPost("getAllBlogs")]
         public async Task<ActionResult<IEnumerable<Blog>>> getBlogsDisplayHome()
         {
