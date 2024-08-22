@@ -66,7 +66,6 @@ function Home() {
     var now = new Date()
     return createDate.toDateString() === now.toDateString() ? true : false;
   }
-
   return (
     <>
       <div className={styles.sectionTopstory}>

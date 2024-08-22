@@ -241,6 +241,7 @@ const Detail: React.FC = () => {
     setIsGetData(false);
   }, [id]);
 
+
   useEffect( () => {
     const fetchData = async () => {
       if (blog && blog?.id && !isGetData) {
@@ -267,6 +268,7 @@ const Detail: React.FC = () => {
 
     fetchData();
   }, [blog, id, currentUser]);
+
 
   useEffect(() => {
     if (blog && !hasBeenDispatched) {
