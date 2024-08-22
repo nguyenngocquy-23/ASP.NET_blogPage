@@ -16,7 +16,7 @@ import {formatDate} from "../utils/dateUtils";
 interface Blog {
   id: string;
   authId: string;
-  authName:"";
+  authName: string;
   categoryId: string;
   title: string;
   image: string;
@@ -368,7 +368,13 @@ const Detail: React.FC = () => {
               </div>
               <div className={styles.audioControls}>
                 <div className={styles.inforAuth}>
-                  <h2>Tác giả: {blog?.authId},</h2>
+                  Tác giả:<Link to={`/profile/${blog?.authId}`} className={styles.detailAuth} style={{
+                  marginLeft: "8px",
+                  fontWeight: "bold",
+                  color: "blue",
+                  cursor: "pointer",
+                  marginRight: "100px"
+                }} > {blog?.authName}</Link>
                   <p>lượt thích: {numLike}</p>
                 </div>
                 {isReading ? (
