@@ -238,7 +238,9 @@ const Detail: React.FC = () => {
 
   useEffect(() => {
     fetch();
-  }, []);
+    setIsGetData(false);
+  }, [id]);
+
 
   useEffect( () => {
     const fetchData = async () => {
@@ -265,7 +267,8 @@ const Detail: React.FC = () => {
       }
 
     fetchData();
-  }, [blog, currentUser]);
+  }, [blog, id, currentUser]);
+
 
   useEffect(() => {
     if (blog && !hasBeenDispatched) {
@@ -365,7 +368,7 @@ const Detail: React.FC = () => {
               </div>
               <div className={styles.audioControls}>
                 <div className={styles.inforAuth}>
-                  <h2>Tác giả: {blog?.auth},</h2>
+                  <h2>Tác giả: {blog?.authId},</h2>
                   <p>lượt thích: {numLike}</p>
                 </div>
                 {isReading ? (

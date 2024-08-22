@@ -23,7 +23,7 @@ namespace apiServer.Controllers
         [HttpPost("getAllBlogs")]
         public async Task<ActionResult<IEnumerable<Blog>>> getBlogsDisplayHome()
         {
-            var blogs = await _context.Blog.OrderByDescending(blog => blog.UpdatedAt).Take(9).ToListAsync();
+            var blogs = await _context.Blog.OrderByDescending(blog => blog.CreatedAt).Take(9).ToListAsync();
             return Ok(blogs);
         }
 
