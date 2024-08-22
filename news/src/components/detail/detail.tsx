@@ -287,22 +287,25 @@ const Detail: React.FC = () => {
         );
 
         await Swal.fire({
-          title: "Duyệt thành công",
-          html: `
-                        <p>Đã duyệt tất cả bình luận thành công!</p>
-                   `,
           icon: "success",
-          confirmButtonText: "Ở lại",
+          title: "Duyệt tất cả bài viết thành công !",
+          toast: true,
+          position: "bottom-left",
+          showConfirmButton: false,
+          timer: 5000,
+          timerProgressBar: true,
         });
 
 
       } catch (error) {
-        console.error("Lỗi khi duyệt bình luận", error);
         await Swal.fire({
-          title: "Lỗi!",
-          text: "Có lỗi xảy ra khi duyệt bình luận, vui lòng thử lại",
-          icon: "error",
-          confirmButtonText: "Đóng",
+          icon: "warning",
+          title: "Lỗi khi duyệt bình luận",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
         });
       }
     }
