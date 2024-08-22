@@ -120,7 +120,3 @@ function History() {
 }
 
 export default History;
-
-<a style={{ width: "120px", height: "100px" }}>
-  <img></img>
-</a>;

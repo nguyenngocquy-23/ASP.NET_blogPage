@@ -57,7 +57,7 @@ function Search() {
     for (let i = 1; i <= totalPages; i++) {
         listItems.push(
             <li className={`${categoryStyles['pagination__list-item']} ${i === page ? categoryStyles.active : ''}`}>
-                <a href={"#"} onClick={() => setPage(i)}>{i}</a>
+                <a onClick={() => setPage(i)} style={{cursor: "pointer"}}>{i}</a>
             </li>
         );
     }
@@ -105,13 +105,13 @@ function Search() {
                     {blogs.map((item, index) => (
                         <div className={` ${categoryStyles.horizontalPost} ${categoryStyles['version-news']} ${'mb-20'}  `}  >
                             <div className={` ${categoryStyles['horizontalPost__avt']} ${categoryStyles['avt-240']} `} >
-                                <a href={"/detail/" + item.id}>
+                                <Link to={"/detail/" + item.id}>
                                     <picture>
                                         <source data-srcset={item.image} media="(max-width: 767px)" srcset={item.image} />
                                         <source data-srcset={item.image} media="(max-width: 1023px)" srcset={item.image} />
                                         <img src={item.image} class=" lazy-loaded" data-srcset={item.image} alt={item.title} srcset={item.image} />
                                     </picture>
-                                </a>
+                                </Link>
                             </div>
                             <div className={categoryStyles['horizontalPost__main']} >
                                 <h3 className={` ${categoryStyles['horizontalPost__main-title']} ${categoryStyles['vnn-title']} ${categoryStyles['title-bold']} `} data-id="2291894" ispr="False">
@@ -127,17 +127,17 @@ function Search() {
                     ))}
                 </div>
             </div>
-            <div className={categoryStyles.pagination} >
+            <div className={categoryStyles.pagination}>
                 <ul className={categoryStyles['pagination__list']}>
                     {prepage && (
                         <li className={`${categoryStyles['pagination__list-item']} ${categoryStyles['pre-page']}`}>
-                            <a href={"#"} onClick={() => setPage(page-1)}>
+                            <a onClick={() => setPage(page - 1)} style={{cursor: "pointer"}}>
                                 <img src="https://static.vnncdn.net/v1/icon/icon-pagination.svg" alt="icon prev"/>
                             </a>
                         </li>)}
                     {listItems}
                     {nextpage && <li className={`${categoryStyles['pagination__list-item']}`}>
-                        <a href={"#"} onClick={() => setPage(page+1)}>
+                        <a onClick={() => setPage(page + 1)} style={{cursor: "pointer"}}>
                             <img src="https://static.vnncdn.net/v1/icon/icon-pagination.svg" alt="icon next"/>
                         </a>
                     </li>}

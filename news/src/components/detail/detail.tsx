@@ -145,28 +145,6 @@ const Detail: React.FC = () => {
 
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
-  async function fetchBlogRelate() {
-    try {
-      const getBlogRelate = await axios.get(
-        `https://localhost:7125/CategoryCotroller/category?id=${blog?.categoryId}&page=1&limit=5`
-      );
-      setBlogRelate(getBlogRelate.data);
-    } catch (error) {
-      console.error("Detail Error: ", error);
-    }
-  }
-
-  async function fetchIsLike() {
-    try {
-      const getIsLike = await axios.post(
-        `https://localhost:7125/Like/isLike?idUser=${currentUser?.id}&idBlog=${blog?.id}`
-      );
-      setIsLike(getIsLike.data);
-    } catch (error) {
-      console.error("Error is like:", error);
-    }
-  }
-
   const handleLikeByUser = async (isLike: boolean) => {
     if (currentUser && currentUser.id != undefined) {
       if (isLike) {
@@ -253,7 +231,7 @@ const Detail: React.FC = () => {
           const getNumLikeBlog = await axios.post(`https://localhost:7125/Like/countLike?idBlog=${blog?.id}`);
           setNumLike(getNumLikeBlog.data);
 
-          const getBlogRelate = await axios.get(`https://localhost:7125/CategoryCotroller/category?id=${blog?.categoryId}&page=1&limit=5`);
+          const getBlogRelate = await axios.post(`https://localhost:7125/Blog/getBlogRelate?categoryId=${blog?.categoryId}&blogId=${blog?.id}`);
           setBlogRelate(getBlogRelate.data);
           if(currentUser && currentUser.id != undefined) {
             const getIsLike = await axios.post(`https://localhost:7125/Like/isLike?idUser=${currentUser?.id}&idBlog=${blog?.id}`);
@@ -443,7 +421,7 @@ const Detail: React.FC = () => {
 
 
         <br />
-        {currentUser !== null && blog !==null ? (
+        { currentUser.id != undefined && currentUser !== null && blog !==null ? (
             <CommentList currentUser={currentUser} blogId={parseInt(blog.id, 10)} />
         ) : (
             <span className={styles.noMess}>
