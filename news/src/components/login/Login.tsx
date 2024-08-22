@@ -15,6 +15,7 @@ function Login() {
     const dispatch = useDispatch();
 
     const handleLogin = async (e: React.FormEvent) => {
+        setError('')
         e.preventDefault();
         setLoading(true);
         try {

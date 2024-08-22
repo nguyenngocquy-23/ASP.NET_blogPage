@@ -15,6 +15,7 @@ using System.Security.Claims;
 using apiServer.Dto;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.RegularExpressions;
+using apiServer.DTO;
 
 namespace apiServer.Controllers
 {
@@ -142,6 +143,44 @@ namespace apiServer.Controllers
             }
             return user.FullName;
         }
+
+        [HttpGet("profile/{id}")]
+        public async Task<ActionResult<AuthorDTO>> GetAuthorProfile(int id)
+        {
+            // Lấy thông tin người dùng.
+            var user = await _context.User.FindAsync(id);
+
+            if(user == null ) return NotFound();
+
+            // Tính tổng số bài đăng của user với status =1.
+            var totalPosts = await _context.Blog.Where(b => b.AuthId == id && b.Status == 1).CountAsync();
+
+            // Tính tổng số lượt thích toàn bộ bài viết của user. (Lấy cả dù ẩn hay không).
+            var totalLikes = await _context.Like
+                 .Where(l => _context.Blog.Any(b => b.Id == l.BlogId && b.AuthId == id))
+                 .CountAsync();
+
+            //Tính tổng số bình luận/ phản hồi của ADmin với status = 1.
+            var totalComments = await _context.Comment.Where(c => c.UserId == id && c.Status==1).CountAsync();
+
+            //Tạo DTO để trả về kết quả.
+            var authorDTO = new AuthorDTO
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                CreatedAt = user.CreatedAt,
+                TotalArticles = totalPosts,
+                TotalLikes = totalLikes,
+                CountComments = totalComments
+
+            };
+            return Ok(authorDTO);
+
+
+        }
+
+
 
         [HttpGet("Filter")]
         public async Task<ActionResult<IEnumerable<User>>> FilterStudents(int status)
