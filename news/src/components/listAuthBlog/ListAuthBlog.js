@@ -46,7 +46,6 @@ function ListAuthBlog(props) {
     }, [currentPage, id, sortOrder]);
         const handleShowMore = () => {
         setCurrentPage(prevPage => prevPage + 1);
-        setArticles(preArticles => [...preArticles,articleMore]);
     };
         function handleSortChange(e) {
             setSortOrder(e.target.value);
