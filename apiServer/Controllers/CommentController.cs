@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System.Reflection.Metadata;
 
 namespace apiServer.Controllers
 {
@@ -56,6 +57,7 @@ namespace apiServer.Controllers
         [HttpGet("manager")]
         public async Task<ActionResult<CommentManageDTO>> getCommentManage()
         {
+
             var blogList = await _context.Blog.Select(blog => new CommentManageDTO
             {
                 BlogId = blog.Id,
@@ -65,9 +67,7 @@ namespace apiServer.Controllers
                 PendingComment =  _context.Comment.Count(c => c.BlogId == blog.Id && c.Status == 2),
                 NumLike = blog.NumLike,
 
-
             }).ToListAsync();
-            
             return Ok(blogList);
 
         }

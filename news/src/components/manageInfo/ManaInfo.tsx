@@ -118,7 +118,16 @@ const ManaInfo: React.FC = () => {
 
   const handlePasswordChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if(wrongPass){
+      Swal.fire({
+        icon:'error',
+        title:'Mật khẩu sai',
+        showConfirmButton:false,
+        toast:true,
+        timer:2000
+      })
+      return;
+    }
     if(formData.newPassword.length < 6){
       Swal.fire({
         icon:'error',
