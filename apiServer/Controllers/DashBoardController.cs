@@ -60,13 +60,17 @@ namespace apiServer.Controllers
         [HttpGet("TopBlog")]
         public async Task<ActionResult<IEnumerable<Blog>>> Topblog()
         {
-            var top5Blogs = _context.Blog
-                                .Where(b => b.NumLike > 0)
-                               .OrderByDescending(b => b.NumLike)
-                               .Take(5)
-                               .ToList();
-
-            return Ok(top5Blogs);
+            var topBlog = await _context.Blog
+            .Select(blog => new
+            {
+                Blog = blog,
+                LikeCount = _context.Like.Count(c => c.BlogId == blog.Id)
+            })
+            .Where(b => b.LikeCount > 0)
+            .OrderByDescending(b => b.LikeCount)
+            .Take(5)
+            .ToListAsync();
+            return Ok(topBlog);
         }
         //Top 5 user tương tác nhiều nhất(lượt comment)
         [HttpGet("TopUser")]

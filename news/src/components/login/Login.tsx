@@ -67,18 +67,7 @@ function Login() {
             <div className={styles.imageContainer}></div>
             <div>
                 <div>
-                    {error &&
-                        <p style={{
-                            color: 'red',
-                            fontWeight: 600,
-                            fontStyle: 'italic',
-                            textAlign: 'center'
-                        }}>{error}</p>}
-                    {error && typeof error === 'string' && error.includes("kiểm tra hộp thư email") &&
-                        <div className={styles.linkContainer} style={{float: "right", cursor: "pointer"}}>
-                            <p onClick={handleResendActivationLink}>Yêu cầu gửi lại</p>
-                        </div>
-                    }
+                    
                 </div>
                 <div className={styles.authContainer}>
                     <h2>Đăng Nhập</h2>
@@ -101,7 +90,20 @@ function Login() {
                                 required
                             />
                         </div>
-
+                        {error &&
+                        <p style={{
+                            color: 'red',
+                            fontWeight: 600,
+                            fontStyle: 'italic',
+                            textAlign: 'center',
+                            textWrap:'wrap',
+                            width:'100%'
+                        }}>{error}</p>}
+                    {error && typeof error === 'string' && error.includes("kiểm tra hộp thư email") &&
+                        <div className={styles.linkContainer} style={{float: "right", cursor: "pointer"}}>
+                            <p onClick={handleResendActivationLink} style={{color:'blue', fontStyle:'italic'}} title='Gửi mã'>Yêu cầu gửi lại</p>
+                        </div>
+                    }
                         <button type="submit" className={styles.btn} disabled={loading}>
                             {loading ? 'Đang Xử Lý...' : 'Đăng Nhập'}
                         </button>

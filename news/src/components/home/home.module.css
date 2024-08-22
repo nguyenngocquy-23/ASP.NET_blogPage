@@ -246,3 +246,11 @@
 .group1, .group2{
     display: flex;
 }
+
+.newBlog {
+    position: absolute;
+    background-color: #fff;
+    right: 0;
+    padding: 3px;
+    color: red;
+}

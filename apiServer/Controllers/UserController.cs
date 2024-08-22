@@ -114,12 +114,34 @@ namespace apiServer.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> Get(int id)
         {
+            var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            if (userNameClaim == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+            }
+
+            var userName = userNameClaim.Value;
+            User adminUser = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
+            if (adminUser == null || adminUser.Role == 1)
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+
             var forecast = await _context.User.FindAsync(id);
             if (forecast == null)
             {
                 return NotFound();
             }
             return forecast;
+        }
+        
+        [HttpGet("/auth/{id}")]
+        public async Task<ActionResult<string>> GetAuthName(int id)
+        {
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return user.FullName;
         }
 
         [HttpGet("profile/{id}")]
@@ -184,8 +206,23 @@ namespace apiServer.Controllers
             if (userRequest == null)
                 return StatusCode(StatusCodes.Status400BadRequest, "Thiếu dữ liệu để tạo tài khoản!");
 
+            if (userRequest.Password.Length < 6)
+                return StatusCode(StatusCodes.Status400BadRequest, "Mật khẩu tối thiểu 6 ký tự");
+
             if (userRequest.Password != userRequest.ConfirmPassword)
                 return StatusCode(StatusCodes.Status400BadRequest, "Mật khẩu không khớp!");
+
+            // Kiểm tra định dạng email
+            if (!(new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$").IsMatch(userRequest.Email)))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Email không đúng định dạng.");
+            }
+
+            // Kiểm tra định dạng số điện thoại
+            if (!(new Regex(@"^\d{10}$").IsMatch(userRequest.PhoneNumber)))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "PhoneNumber không đúng định dạng.");
+            }
 
             var user = await _context.User.FirstOrDefaultAsync(u => u.Username == userRequest.Username);
             if (user != null)
@@ -231,8 +268,23 @@ namespace apiServer.Controllers
             if (userRequest == null)
                 return StatusCode(StatusCodes.Status400BadRequest, "Thiếu dữ liệu để tạo tài khoản!");
 
+            if (userRequest.Password.Length < 6)
+                return StatusCode(StatusCodes.Status400BadRequest, "Mật khẩu tối thiểu 6 ký tự");
+
+
             if (userRequest.Password != userRequest.ConfirmPassword)
                 return StatusCode(StatusCodes.Status400BadRequest, "Mật khẩu không khớp!");
+
+            if (!(new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$").IsMatch(userRequest.Email)))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Email không đúng định dạng.");
+            }
+
+            // Kiểm tra định dạng số điện thoại
+            if (!(new Regex(@"^\d{10}$").IsMatch(userRequest.PhoneNumber)))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "PhoneNumber không đúng định dạng.");
+            }
 
             var user = await _context.User.FirstOrDefaultAsync(u => u.Username == userRequest.Username);
             if (user != null)
@@ -287,7 +339,7 @@ namespace apiServer.Controllers
                 return StatusCode(StatusCodes.Status404NotFound, "Tài khoản không tồn tại!");
 
             if (!user.IsEnable)
-                return StatusCode(StatusCodes.Status400BadRequest, "Tài khoản chưa kích hoạt. Hãy kiểm tra hộp thư email của bạn để kích hoạt!");
+                return StatusCode(StatusCodes.Status400BadRequest, "Tài khoản chưa được kích hoạt. Hãy kiểm tra hộp email của bạn để kích hoạt!");
 
             if (user.Status == 0)
                 return StatusCode(StatusCodes.Status403Forbidden, "Tài khoản của bạn đã bị khóa! Liên hệ qua blogwebsite@gmail.com để được hỗ trợ!");
@@ -399,6 +451,11 @@ namespace apiServer.Controllers
         [HttpPost("requestPasswordReset")]
         public async Task<IActionResult> RequestPasswordReset([FromQuery] string email)
         {
+            if (!(new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$").IsMatch(email)))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Email không đúng định dạng.");
+            }
+
             // generate activate account code
             string code = UserService.GenerateVerificationCode();
 
@@ -432,7 +489,7 @@ namespace apiServer.Controllers
             var mailContent = new MailContent();
             mailContent.To = user.Email;
             mailContent.Subject = "Blog Website";
-            mailContent.Body = "<h1>Chào bạn, Đây là mã xác nhận để thay đổi mật khẩu. Lưu ý mã chỉ được sử dụng duy nhất 1 lần!</h1><br/>" + code;
+            mailContent.Body = "<p>Chào bạn, Đây là mã xác nhận để thay đổi mật khẩu. Lưu ý mã chỉ được sử dụng duy nhất 1 lần!</p><br/>" +"<b>" +code+"</b>";
             await MailService.SendMail(mailContent);
             return Ok("Chúng tôi đã gởi mã xác nhận đến email tài khoản của bạn!");
         }
@@ -451,7 +508,7 @@ namespace apiServer.Controllers
 
             if (changePwCode == null)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, "Mã xác nhận không hợp lệ!");
+                return StatusCode(StatusCodes.Status400BadRequest, "Mã xác nhận không chính xác!");
             }
 
             user = await _context.User
@@ -464,6 +521,13 @@ namespace apiServer.Controllers
 
             if (user.Email != email)
                 return StatusCode(StatusCodes.Status400BadRequest, "Email không hợp lệ!");
+
+
+            if (newPassword.Length < 6)
+                return StatusCode(StatusCodes.Status400BadRequest, "Mật khẩu tối thiểu 6 ký tự");
+            if (newPassword != confirmPassword)
+                return StatusCode(StatusCodes.Status400BadRequest, "Mật khẩu không khớp");
+
             user.Password = UserService.HashPw(newPassword);
             _context.User.Update(user);
             _context.ChangePwCode.Remove(changePwCode);

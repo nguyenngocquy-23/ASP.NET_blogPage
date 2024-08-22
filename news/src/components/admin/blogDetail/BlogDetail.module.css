@@ -70,7 +70,11 @@
     margin-top: 5px;
 }
 
+.buttonSubmit:hover {
+    opacity: 0.8;
+}
 .buttonSubmit {
+    margin-top: 10px ;
     background: #447ec5;
     border: none;
     border-radius: 3px;

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace apiServer.Controllers
 {
@@ -55,6 +56,16 @@ namespace apiServer.Controllers
         [HttpPost("createBlog")]
         public async Task<ActionResult<bool>> create(Blog blog)
         {
+            var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            if (userNameClaim == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+            }
+
+            var userName = userNameClaim.Value;
+            User adminUser = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
+            if (adminUser == null || adminUser.Role == 1)
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
             if (blog == null)
             {
                 return BadRequest("Blog data is null.");
@@ -70,6 +81,17 @@ namespace apiServer.Controllers
         [HttpPost("updateBlog")]
         public async Task<ActionResult<bool>> update(BlogDetailDTO blogDTO)
         {
+            var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            if (userNameClaim == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+            }
+
+            var userName = userNameClaim.Value;
+            User adminUser = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
+            if (adminUser == null || adminUser.Role == 1)
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+
             if (blogDTO == null)
             {
                 return BadRequest("blog không tồn tại.");
@@ -98,6 +120,17 @@ namespace apiServer.Controllers
         [HttpGet("{blogId}")]
         public async Task<ActionResult<Blog>> Get(int blogId)
         {
+            var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            if (userNameClaim == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+            }
+
+            var userName = userNameClaim.Value;
+            User adminUser = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
+            if (adminUser == null || adminUser.Role == 1)
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+
             var blog = await _context.Blog.FindAsync(blogId);
             if (blog == null)
             {
@@ -134,6 +167,17 @@ namespace apiServer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Blog>>> GetBlogs()
         {
+            var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            if (userNameClaim == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+            }
+
+            var userName = userNameClaim.Value;
+            User adminUser = await _context.User.FirstOrDefaultAsync(u => u.Username == userName);
+            if (adminUser == null || adminUser.Role == 1)
+                return StatusCode(StatusCodes.Status403Forbidden, "Không có quyền hạn");
+
             var blogs = await _context.Blog
                               .OrderByDescending(b => b.CreatedAt)
                               .ToListAsync();

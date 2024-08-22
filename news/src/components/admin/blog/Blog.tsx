@@ -32,10 +32,11 @@ const Blog: React.FC = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (currentUser?.role != 0) {
+    if (currentUser && currentUser.role !== 0) {
       navigate("/unauthorized");
     }
   }, [currentUser, navigate]);
+
 
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,7 +45,11 @@ const Blog: React.FC = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("https://localhost:7125/AdminBlog");
+        const response = await axios.get("https://localhost:7125/AdminBlog",{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        });
         setBlogs(response.data);
         setSearchData(response.data);
         setLoading(false);
@@ -98,6 +103,7 @@ const Blog: React.FC = () => {
 
         // Cập nhật lại danh sách bài viết sau khi xóa thành công
         setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
+        setSearchData((prevBlogs) => prevBlogs?.filter((blog) => blog.id !== id));
 
         // Hiển thị thông báo thành công
         Swal.fire({
