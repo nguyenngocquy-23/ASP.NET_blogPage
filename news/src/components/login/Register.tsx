@@ -16,6 +16,7 @@ function Register() {
     const navigate = useNavigate();
 
     const handleRegister = async (e: React.FormEvent) => {
+        setError('')
         e.preventDefault();
         if (password !== confirmPassword) {
             setError('Mật khẩu không khớp');
