@@ -38,11 +38,6 @@ function AuthorProfile({authorId}) {
                 <div className="location">
                     <IoFootstepsSharp/> {formatRelativeTime(authProfile.createdAt)}
                 </div>
-                <div className="icons">
-                    <a href="#" className="fab fa-instagram"></a>
-                    <a href="#" className="fab fa-linkedin"></a>
-                    <a href="#" className="fab fa-github"></a>
-                </div>
                 <a href="#" className="contact-btn">
                    Ủng hộ tác giả !
                 </a>

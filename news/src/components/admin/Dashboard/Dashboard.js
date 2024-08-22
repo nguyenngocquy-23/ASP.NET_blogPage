@@ -10,7 +10,7 @@ import {
   FaThumbsUp,
   FaUsers,
 } from "react-icons/fa";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AiFillLike} from "react-icons/ai";
 
@@ -241,7 +241,7 @@ const Dashboard = () => {
             {TopBlog.map(blog => (
                 <tr className={styles.active_row}>
                   <td>{blog.blog.id}</td>
-                  <td><a href={`http://localhost:3000/detail/${blog.blog.id}`}>{blog.blog.title}</a></td>
+                  <td><Link to={`http://localhost:3000/detail/${blog.blog.id}`}>{blog.blog.title}</Link></td>
                   <td>{blog.likeCount}</td>
                 </tr>
             ))}

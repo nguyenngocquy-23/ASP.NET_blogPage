@@ -123,10 +123,13 @@ namespace apiServer.Controllers
             }
         }
 
-        [HttpPost("getBlogByAuthId")]
-        public async Task<ActionResult<IEnumerable<Blog>>> getBlogByAuthId([FromQuery] int authId, int blogId) 
+
+        [HttpPost("getBlogRelate")]
+        public async Task<ActionResult<IEnumerable<Blog>>> getBlogRelate([FromQuery] int categoryId, int blogId)
         {
-            var blogs = await _context.Blog.Where(blog => blog.AuthId == authId && blog.Id != blogId && blog.Status == 1).OrderBy(blog => Guid.NewGuid()).Take(5).ToListAsync();
+            var blogs = await _context.Blog.Where(blog => blog.Status == 1 && blog.CategoryId == categoryId && blog.Id != blogId).
+                OrderBy(blog => EF.Functions.Random()).Take(5).ToListAsync();
+
             return Ok(blogs);
         }
     }

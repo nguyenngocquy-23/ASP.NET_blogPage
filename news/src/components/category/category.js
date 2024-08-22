@@ -87,9 +87,9 @@ function Category() {
                 <div className={styles.breadcrumb}>
                     <div className={styles['breadcrumb__title']}>
                         <div className="breadcrumb__title-home active">
-                            <a href="/" title="VietNamNet">
+                            <Link to="/" title="VietNamNet">
                                 <span className="icon-home"></span>
-                            </a>
+                            </Link>
                         </div>
                         <div className="breadcrumb__heading">
                             <h1><a title={state.name}>{state.name}</a></h1>
