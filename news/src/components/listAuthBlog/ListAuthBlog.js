@@ -83,9 +83,11 @@ function ListAuthBlog(props) {
                     ))}
                 </div>
                 {hasMore && (
-                    <button onClick={handleShowMore} className="show-more-button">
-                        Xem thêm ...
-                    </button>
+
+                    <div onClick={handleShowMore} className="show-more-button">
+                       <p> Xem thêm ... </p>
+                    </div>
+
                 )}
 
             </div>
