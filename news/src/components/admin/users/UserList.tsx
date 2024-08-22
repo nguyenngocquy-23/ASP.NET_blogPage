@@ -27,7 +27,7 @@ function UserList() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (currentUser && currentUser.role !== 0) {
+    if (currentUser == undefined || currentUser ==null || (currentUser && currentUser.role !== 0)) {
       navigate("/unauthorized");
     } else {
       fetchUsers();
