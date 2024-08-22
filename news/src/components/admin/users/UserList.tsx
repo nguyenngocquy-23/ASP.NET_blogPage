@@ -7,6 +7,7 @@ import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../reduxStore/Store";
+import { MdAdminPanelSettings } from "react-icons/md";
 
 interface User {
   id: number;
@@ -15,6 +16,7 @@ interface User {
   email: string;
   phoneNumber: string;
   status: number;
+  role: number;
 }
 
 function UserList() {
@@ -27,7 +29,11 @@ function UserList() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (currentUser == undefined || currentUser ==null || (currentUser && currentUser.role !== 0)) {
+    if (
+      currentUser == undefined ||
+      currentUser == null ||
+      (currentUser && currentUser.role !== 0)
+    ) {
       navigate("/unauthorized");
     } else {
       fetchUsers();
@@ -45,7 +51,7 @@ function UserList() {
         },
       });
       setUsers(response.data);
-      setSearchData(response.data)
+      setSearchData(response.data);
       console.log(response.data);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -63,8 +69,12 @@ function UserList() {
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newData = users.filter(row => {
-      return row.fullName.toLowerCase().includes(event.target.value.toLowerCase()) || row.username.toLowerCase().includes(event.target.value.toLowerCase())|| row.email.toLowerCase().includes(event.target.value.toLowerCase());
+    const newData = users.filter((row) => {
+      return (
+        row.fullName.toLowerCase().includes(event.target.value.toLowerCase()) ||
+        row.username.toLowerCase().includes(event.target.value.toLowerCase()) ||
+        row.email.toLowerCase().includes(event.target.value.toLowerCase())
+      );
     });
     setSearchData(newData);
   };
@@ -88,16 +98,16 @@ function UserList() {
           showConfirmButton: false,
           timer: 1000,
           toast: true,
-          timerProgressBar: true
+          timerProgressBar: true,
         });
-        else
+      else
         Swal.fire({
-    title: "Đã mở tài khoản!",
-    icon: "success",
-    showConfirmButton: false,
-    timer: 1000,
-    toast: true,
-    timerProgressBar: true
+          title: "Đã mở tài khoản!",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1000,
+          toast: true,
+          timerProgressBar: true,
         });
       fetchUsers();
     } catch (err) {
@@ -120,17 +130,19 @@ function UserList() {
       name: "ID",
       selector: (row: User) => row.id,
       sortable: true,
-      width: "100px",
+      width: "70px",
     },
     {
       name: "Tên Tài Khoản",
       selector: (row: User) => row.fullName,
       sortable: true,
+      width: "170px",
     },
     {
       name: "Tên Đăng Nhập",
       selector: (row: User) => row.username,
       sortable: true,
+      width: "180px",
     },
     {
       name: "Email",
@@ -141,27 +153,33 @@ function UserList() {
       name: "Số điện thoại",
       selector: (row: User) => row.phoneNumber,
       sortable: true,
+        width:'200px'
     },
     {
       name: "Trạng thái",
-      cell: (row: User) => (
-        <button
-          style={{ margin: "auto", cursor: "pointer" }}
-          onClick={() => {
-            if (row.status === 1) {
-              toggleLockStatus(row.id, true);
-            } else if (row.status === 0) {
-              toggleLockStatus(row.id, false);
-            }
-          }}
-        >
-          {row.status === 0 ? (
-            <FaLock style={{ color: "red" }} />
-          ) : (
-            <FaUnlock />
-          )}
-        </button>
-      ),
+      cell: (row: User) =>
+        row.role === 1 ? (
+          <button
+            style={{ margin: "auto", cursor: "pointer" }}
+            onClick={() => {
+              if (row.status === 1) {
+                toggleLockStatus(row.id, true);
+              } else if (row.status === 0) {
+                toggleLockStatus(row.id, false);
+              }
+            }}
+          >
+            {row.status === 0 ? (
+              <FaLock style={{ color: "red" }} />
+            ) : (
+              <FaUnlock />
+            )}
+          </button>
+        ) : (
+          <MdAdminPanelSettings style={{margin:'auto', fontSize:'25px', color:'#009879'}} title="Admin nè"/>
+        ),
+        sortable: true,
+        width:'150px'
     },
   ];
 
